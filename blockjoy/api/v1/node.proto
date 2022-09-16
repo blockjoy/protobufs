@@ -4,6 +4,19 @@ package blockjoy.api.v1;
 
 import "messages.proto";
 
+// Declare node type
+enum NodeType {
+    // Define the type of node
+    UndefinedType = 0;
+    Node = 1;
+    API = 2;
+    ETL = 3;
+    Miner = 4;
+    Validator = 5;
+    Oracle = 6;
+    Relay = 7;
+}
+
 message NodeInfo {
     // Possible states the container is described with
     enum ContainerStatus {

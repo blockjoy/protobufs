@@ -113,20 +113,21 @@ message HostProvision {
   optional string install_cmd = 6;
 }
 
-enum NodeType {
-  // Define the type of node
-  UndefinedType = 0;
-  Node = 1;
-  API = 2;
-  ETL = 3;
-  Miner = 4;
-  Validator = 5;
-  Oracle = 6;
-  Relay = 7;
-}
-
 /* Blockchain node representation */
 message Node {
+  /* Declare node type */
+  enum NodeType {
+    // Define the type of node
+    UndefinedType = 0;
+    Node = 1;
+    API = 2;
+    ETL = 3;
+    Miner = 4;
+    Validator = 5;
+    Oracle = 6;
+    Relay = 7;
+  }
+
   /**
    * Describe the node's chain related status
    * Generic, NOT chain specific states. These states are used to describe the
@@ -258,7 +259,7 @@ message Blockchain {
   bool supports_staking = 9;
   bool supports_broadcast = 10;
   optional string version = 11;
-  repeated NodeType supported_nodes_types = 12;
+  repeated Node.NodeType supported_nodes_types = 12;
   optional google.protobuf.Timestamp created_at = 13;
   optional google.protobuf.Timestamp updated_at = 14;
 }
