@@ -241,11 +241,12 @@ message Parameter {
 
 message Blockchain {
   enum BlockchainStatus {
-    Development = 0;
-    Alpha = 1;
-    Beta = 2;
-    Production = 3;
-    Deleted = 4;
+    UndefinedBlockchainStatus = 0;
+    Development = 1;
+    Alpha = 2;
+    Beta = 3;
+    Production = 4;
+    Deleted = 5;
   }
 
   Uuid id = 1;
@@ -254,12 +255,12 @@ message Blockchain {
   BlockchainStatus status = 4;
   optional string project_url = 5;
   optional string repo_url = 6;
+  optional string version = 11;
+  optional google.protobuf.Timestamp created_at = 13;
+  optional google.protobuf.Timestamp updated_at = 14;
   bool supports_etl = 7;
   bool supports_node = 8;
   bool supports_staking = 9;
   bool supports_broadcast = 10;
-  optional string version = 11;
   repeated Node.NodeType supported_nodes_types = 12;
-  optional google.protobuf.Timestamp created_at = 13;
-  optional google.protobuf.Timestamp updated_at = 14;
 }
