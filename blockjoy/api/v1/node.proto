@@ -103,12 +103,7 @@ message NodeUpgrade {
 message NodeInfoUpdate {
     optional string name = 1;
     optional bool self_update = 2;
-    repeated NodeProperty properties = 3;
-}
-
-message NodeProperty {
-    string name = 1;
-    optional string value = 2;
+    repeated Parameter properties = 3;
 }
 
 message NodeInfoGet {}
@@ -125,7 +120,7 @@ message NodeCreate {
     string ip = 5;
     string gateway = 6;
     bool self_update = 7;
-    repeated NodeProperty properties = 8;
+    repeated Parameter properties = 8;
 }
 
 message NodeDelete {}
