@@ -184,6 +184,7 @@ message Node {
   optional string ip_gateway = 20;
   optional bool self_update = 21;
   optional string network = 22;
+  optional string blockchain_name = 23;
 }
 
 /* Organization representation */
