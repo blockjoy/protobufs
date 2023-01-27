@@ -22,6 +22,11 @@ message NodeMetrics {
     optional NodeInfo.StakingStatus staking_status = 3;
     // Iff the blockchain is in consensus, this field is `true``.
     optional bool consensus = 4;
+    // This field represents the current status of the blockchain node application.
+    optional NodeInfo.ApplicationStatus application_status = 5;
+    // The status of the node with respect to the rest of the network, i.e. whether it is in sync
+    // with the other nodes.
+    optional NodeInfo.SyncStatus sync_status = 6;
 }
 
 // This message is used to store the metrics for a given set of hosts.
