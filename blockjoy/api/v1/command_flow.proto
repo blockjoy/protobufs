@@ -6,10 +6,15 @@ import "node.proto";
 import "host.proto";
 import "command.proto";
 
+message Heartbeat {
+    bool good = 1;
+}
+
 message Command {
     oneof type {
         NodeCommand node = 1;
         HostCommand host = 2;
+        Heartbeat heartbeat = 3;
     }
 }
 
@@ -18,6 +23,7 @@ message InfoUpdate {
         HostInfo host = 1;
         NodeInfo node = 2;
         CommandInfo command = 3;
+        Heartbeat heartbeat = 4;
     }
 }
 
