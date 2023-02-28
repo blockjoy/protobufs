@@ -61,6 +61,17 @@ message HostInfoUpdateResponse {
     optional string origin_request_id = 2;
 }
 
+message GetServicesRequest {}
+
+message GetServicesResponse {
+    /// Url of key service for getting secrets
+    string blockjoy_keys_url = 1;
+    /// Url of cookbook service for getting fs images, babel configs, kernel files, etc.
+    string blockjoy_registry_url = 2;
+    /// Url for mqtt broker to receive commands and updates from.
+    string blockjoy_mqtt_url = 3;
+}
+
 // @see https://github.com/blockjoy/stakejoy-api/blob/86ee17643d02af81221ee2fa6403fc34155fe087/src/models/mod.rs#L54
 message HostUpdateBVS {
     string version = 1;

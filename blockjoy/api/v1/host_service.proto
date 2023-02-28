@@ -7,6 +7,7 @@ import "host.proto";
 service Hosts {
     rpc Provision(ProvisionHostRequest) returns (ProvisionHostResponse) {}
     rpc InfoUpdate(HostInfoUpdateRequest) returns (HostInfoUpdateResponse) {}
+    rpc GetServices(GetServicesRequest) returns (GetServicesResponse) {}
     /* Delete a single host */
     rpc Delete(DeleteHostRequest) returns (DeleteHostResponse) {}
 }
