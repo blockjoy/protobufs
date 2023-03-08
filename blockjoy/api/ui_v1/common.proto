@@ -189,6 +189,11 @@ message Node {
   optional bool self_update = 21;
   optional string network = 22;
   optional string blockchain_name = 23;
+  // The id of the user that created this node. For the earliest nodes we created, this field was
+  // not tracked and is therefore not populated.
+  optional string created_by = 24;
+  // The name of the aforementioned user.
+  optional string created_by_name = 25;
 }
 
 message OrgUser {
