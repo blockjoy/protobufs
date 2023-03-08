@@ -194,6 +194,8 @@ message Node {
   optional string created_by = 24;
   // The name of the aforementioned user.
   optional string created_by_name = 25;
+  // The email of said aforementioned user.
+  optional string created_by_email = 26;
 }
 
 message OrgUser {
