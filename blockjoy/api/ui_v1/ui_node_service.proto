@@ -18,6 +18,7 @@ message CreateNodeRequest {
 
 message CreateNodeResponse {
   ResponseMeta meta = 1;
+  Node node = 2;
 }
 
 message GetNodeRequest {

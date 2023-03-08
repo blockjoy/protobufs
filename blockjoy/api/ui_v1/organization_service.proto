@@ -22,6 +22,7 @@ message CreateOrganizationRequest {
 
 message CreateOrganizationResponse {
   ResponseMeta meta = 1;
+  Organization organization = 2;
 }
 
 message UpdateOrganizationRequest {
