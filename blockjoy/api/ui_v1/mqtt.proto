@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package blockjoy.api.ui_v1;
+
+import "common.proto";
+
+message NodeMessage {
+  oneof message {
+    NodeCreated created = 1;
+    NodeUpdated updated = 2;
+    NodeDeleted deleted = 3;
+  }
+}
+
+message NodeCreated {
+    Node node = 1;
+}
+
+message NodeUpdated {
+    Node node = 1;
+}
+
+message NodeDeleted {
+    string node_id = 1;
+}
