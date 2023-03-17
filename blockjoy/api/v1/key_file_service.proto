@@ -6,34 +6,34 @@ package blockjoy.api.v1;
    * A single keyfile representation
    */
 message Keyfile {
-    string name = 1;
-    bytes content = 2;
+  string name = 1;
+  bytes content = 2;
 }
 
 message KeyFilesGetRequest {
-    optional string request_id = 1;
-    string node_id = 2;
+  optional string request_id = 1;
+  string node_id = 2;
 }
 
 message KeyFilesGetResponse {
-    optional string origin_request_id = 1;
-    repeated Keyfile key_files = 2;
+  optional string origin_request_id = 1;
+  repeated Keyfile key_files = 2;
 }
 
 message KeyFilesSaveRequest {
-    optional string request_id = 1;
-    string node_id = 2;
-    repeated Keyfile key_files = 3;
+  optional string request_id = 1;
+  string node_id = 2;
+  repeated Keyfile key_files = 3;
 }
 
 message KeyFilesSaveResponse {
-    optional string origin_request_id = 1;
-    repeated string messages = 2;
+  optional string origin_request_id = 1;
+  repeated string messages = 2;
 }
 
 service KeyFiles {
-    /* Return all available key files for given node ID */
-    rpc Get(KeyFilesGetRequest) returns (KeyFilesGetResponse) {}
-    /* Save key files for given node ID */
-    rpc Save(KeyFilesSaveRequest) returns (KeyFilesSaveResponse) {}
+  /* Return all available key files for given node ID */
+  rpc Get(KeyFilesGetRequest) returns (KeyFilesGetResponse);
+  /* Save key files for given node ID */
+  rpc Save(KeyFilesSaveRequest) returns (KeyFilesSaveResponse);
 }

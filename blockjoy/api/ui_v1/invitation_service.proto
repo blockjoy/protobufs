@@ -38,15 +38,15 @@ message InvitationRequest {
 /* Manage invitations */
 service InvitationService {
   /* Create an invitation for an org the calling user is owner/admin of */
-  rpc Create(CreateInvitationRequest) returns (CreateInvitationResponse) {}
+  rpc Create(CreateInvitationRequest) returns (CreateInvitationResponse);
   /* List pending invitations for given org */
-  rpc ListPending(ListPendingInvitationRequest) returns (InvitationsResponse) {}
+  rpc ListPending(ListPendingInvitationRequest) returns (InvitationsResponse);
   /* List received invitations for given user */
-  rpc ListReceived(ListReceivedInvitationRequest) returns (InvitationsResponse) {}
+  rpc ListReceived(ListReceivedInvitationRequest) returns (InvitationsResponse);
   /* Accept invitation and become member of the desired org */
-  rpc Accept(InvitationRequest) returns (google.protobuf.Empty) {}
+  rpc Accept(InvitationRequest) returns (google.protobuf.Empty);
   /* Decline invitation and DON'T become member of the desired org */
-  rpc Decline(InvitationRequest) returns (google.protobuf.Empty) {}
+  rpc Decline(InvitationRequest) returns (google.protobuf.Empty);
   /* Revoke (delete) pending invitation */
-  rpc Revoke(InvitationRequest) returns (google.protobuf.Empty) {}
+  rpc Revoke(InvitationRequest) returns (google.protobuf.Empty);
 }

@@ -58,13 +58,13 @@ message DeleteNodeRequest {
 
 service NodeService {
   /* Get single blockchain node */
-  rpc Get(GetNodeRequest) returns (GetNodeResponse) {}
+  rpc Get(GetNodeRequest) returns (GetNodeResponse);
   /* Get nodes belonging to org */
-  rpc List(ListNodesRequest) returns (ListNodesResponse) {}
+  rpc List(ListNodesRequest) returns (ListNodesResponse);
   /* Create a single blockchain node */
-  rpc Create(CreateNodeRequest) returns (CreateNodeResponse) {}
+  rpc Create(CreateNodeRequest) returns (CreateNodeResponse);
   /* Update a single blockchain node */
-  rpc Update(UpdateNodeRequest) returns (UpdateNodeResponse) {}
+  rpc Update(UpdateNodeRequest) returns (UpdateNodeResponse);
   /* Delete a single node */
-  rpc Delete(DeleteNodeRequest) returns (google.protobuf.Empty) {}
+  rpc Delete(DeleteNodeRequest) returns (google.protobuf.Empty);
 }

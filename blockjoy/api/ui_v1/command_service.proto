@@ -17,25 +17,25 @@ message CommandResponse {
 /* Service providing commands invoked by the UI */
 service CommandService {
   /* "Create node" command */
-  rpc CreateNode(CommandRequest) returns (CommandResponse) {}
+  rpc CreateNode(CommandRequest) returns (CommandResponse);
   /* "Delete node" command */
-  rpc DeleteNode(CommandRequest) returns (CommandResponse) {}
+  rpc DeleteNode(CommandRequest) returns (CommandResponse);
   /* "Start node" command */
-  rpc StartNode(CommandRequest) returns (CommandResponse) {}
+  rpc StartNode(CommandRequest) returns (CommandResponse);
   /* "Stop node" command */
-  rpc StopNode(CommandRequest) returns (CommandResponse) {}
+  rpc StopNode(CommandRequest) returns (CommandResponse);
   /* "Restart node" command */
-  rpc RestartNode(CommandRequest) returns (CommandResponse) {}
+  rpc RestartNode(CommandRequest) returns (CommandResponse);
   /* "Create host" command */
-  rpc CreateHost(CommandRequest) returns (CommandResponse) {}
+  rpc CreateHost(CommandRequest) returns (CommandResponse);
   /* "Delete host" command */
-  rpc DeleteHost(CommandRequest) returns (CommandResponse) {}
+  rpc DeleteHost(CommandRequest) returns (CommandResponse);
   /* "Start host" command */
-  rpc StartHost(CommandRequest) returns (CommandResponse) {}
+  rpc StartHost(CommandRequest) returns (CommandResponse);
   /* "Stop host" command */
-  rpc StopHost(CommandRequest) returns (CommandResponse) {}
+  rpc StopHost(CommandRequest) returns (CommandResponse);
   /* "Restart host" command */
-  rpc RestartHost(CommandRequest) returns (CommandResponse) {}
+  rpc RestartHost(CommandRequest) returns (CommandResponse);
   /* Generic command used for additional stuff we don't know yet */
-  rpc ExecuteGeneric(CommandRequest) returns (CommandResponse) {}
+  rpc ExecuteGeneric(CommandRequest) returns (CommandResponse);
 }

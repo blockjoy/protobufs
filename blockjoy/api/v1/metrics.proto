@@ -2,72 +2,80 @@ syntax = "proto3";
 
 package blockjoy.api.v1;
 
-import "node.proto";
 import "google/protobuf/empty.proto";
+import "node.proto";
 
 // This message is used to store the metrics for a given set of nodes.
 message NodeMetricsRequest {
-    // This field maps the id of the node to the metrics that apply to that node.
-    map<string, NodeMetrics> metrics = 1;
+  // This field maps the id of the node to the metrics that apply to that node.
+  map<string, NodeMetrics> metrics = 1;
 }
 
-// The metrics for a single `Node`. Note that there is no node id in this message, because it is
-// embedded in the `NodeMetricsRequest`, where the key of the map already is the id of the node.
+// The metrics for a single `Node`. Note that there is no node id in this
+// message, because it is embedded in the `NodeMetricsRequest`, where the key
+// of the map already is the id of the node.
 message NodeMetrics {
-    // This is the current height of the blockchain.
-    optional uint64 height = 1;
-    // This is the age of the most recent block, measured in seconds.
-    optional uint64 block_age = 2;
-    // This is the current staking status of the node.
-    optional NodeInfo.StakingStatus staking_status = 3;
-    // Iff the blockchain is in consensus, this field is `true``.
-    optional bool consensus = 4;
-    // This field represents the current status of the blockchain node application.
-    optional NodeInfo.ApplicationStatus application_status = 5;
-    // The status of the node with respect to the rest of the network, i.e. whether it is in sync
-    // with the other nodes.
-    optional NodeInfo.SyncStatus sync_status = 6;
+  // This is the current height of the blockchain.
+  optional uint64 height = 1;
+  // This is the age of the most recent block, measured in seconds.
+  optional uint64 block_age = 2;
+  // This is the current staking status of the node.
+  optional NodeInfo.StakingStatus staking_status = 3;
+  // Iff the blockchain is in consensus, this field is `true``.
+  optional bool consensus = 4;
+  // This field represents the current status of the blockchain node
+  // application.
+  optional NodeInfo.ApplicationStatus application_status = 5;
+  // The status of the node with respect to the rest of the network, i.e.
+  // whether it is in sync with the other nodes.
+  optional NodeInfo.SyncStatus sync_status = 6;
 }
 
 // This message is used to store the metrics for a given set of hosts.
 message HostMetricsRequest {
-    // This field maps the id of the host to the metrics that apply to that host.
-    map<string, HostMetrics> metrics = 1;
+  // This field maps the id of the host to the metrics that apply to that host.
+  map<string, HostMetrics> metrics = 1;
 }
 
-// The metrics for a single `Host`. Note that there is no host id in this message, because it is
-// embedded in the `HostMetricsRequest`, where the key of the map already is the id of the host.
+// The metrics for a single `Host`. Note that there is no host id in this
+// message, because it is embedded in the `HostMetricsRequest`, where the key of
+// the map already is the id of the host.
 message HostMetrics {
-    // The amount of CPU that is currently in use. This is given as the sum of percentages of each
-    // core that is used. Example: if there are 4 cores, and each is at 78% usage, the number sent
-    // will be 312.
-    optional uint32 used_cpu = 1;
-    // This is the amount of memory used, given in bytes.
-    optional uint64 used_memory = 2;
-    // This is the amount of disk used, given in bytes.
-    optional uint64 used_disk_space = 3;
-    // This is the load during the last minute, given as a percentage. Example: if the load given
-    // by top is `2.73, 2.96, 2.53`, then the value sent here will be 2.73.
-    optional double load_one = 4;
-    // This is the load during the last five minutes, given as a percentage. Example: if the load
-    // given by top is `2.73, 2.96, 2.53`, then the value sent here will be 2.96.
-    optional double load_five = 5;
-    // This is the load during the last five minutes, given as a percentage. Example: if the load
-    // given by top is `2.73, 2.96, 2.53`, then the value sent here will be 2.53.
-    optional double load_fifteen = 6;
-    // This is the number of bytes (not bits) received over the network since the start of the
-    // node. This means that this value is going to increase monotonically when the node starts.
-    optional uint64 network_received = 7;
-    // This is the number of bytes (not bits) sent over the network since the start of the node.
-    // This means that this value is going to increase monotonically when the node starts.
-    optional uint64 network_sent = 8;
-    // This is the number of seconds that has elapsed since the node has started.
-    optional uint64 uptime = 9;
+  // The amount of CPU that is currently in use. This is given as the sum of
+  // percentages of each core that is used. Example: if there are 4 cores, and
+  // each is at 78% usage, the number sent will be 312.
+  optional uint32 used_cpu = 1;
+  // This is the amount of memory used, given in bytes.
+  optional uint64 used_memory = 2;
+  // This is the amount of disk used, given in bytes.
+  optional uint64 used_disk_space = 3;
+  // This is the load during the last minute, given as a percentage. Example: if
+  // the load given by top is `2.73, 2.96, 2.53`, then the value sent here will
+  // be 2.73.
+  optional double load_one = 4;
+  // This is the load during the last five minutes, given as a percentage.
+  // Example: if the load given by top is `2.73, 2.96, 2.53`, then the value
+  // sent here will be 2.96.
+  optional double load_five = 5;
+  // This is the load during the last five minutes, given as a percentage.
+  // Example: if the load given by top is `2.73, 2.96, 2.53`, then the value
+  // sent here will be 2.53.
+  optional double load_fifteen = 6;
+  // This is the number of bytes (not bits) received over the network since the
+  // start of the node. This means that this value is going to increase
+  // monotonically when the node starts.
+  optional uint64 network_received = 7;
+  // This is the number of bytes (not bits) sent over the network since the
+  // start of the node. This means that this value is going to increase
+  // monotonically when the node starts.
+  optional uint64 network_sent = 8;
+  // This is the number of seconds that has elapsed since the node has started.
+  optional uint64 uptime = 9;
 }
 
 service MetricsService {
-    // Overwrite the metrics for the given nodes.
-    rpc Node(NodeMetricsRequest) returns (google.protobuf.Empty);
-    // Overwrite the metrics for the given hosts.
-    rpc Host(HostMetricsRequest) returns (google.protobuf.Empty);
+  // Overwrite the metrics for the given nodes.
+  rpc Node(NodeMetricsRequest) returns (google.protobuf.Empty);
+  // Overwrite the metrics for the given hosts.
+  rpc Host(HostMetricsRequest) returns (google.protobuf.Empty);
 }

@@ -48,11 +48,11 @@ message DeleteHostResponse {
 /* Manage hosts */
 service HostService {
   /* Get host(s) by id, org_id or token or just every host */
-  rpc Get(GetHostsRequest) returns (GetHostsResponse) {}
+  rpc Get(GetHostsRequest) returns (GetHostsResponse);
   /* Create a single host */
-  rpc Create(CreateHostRequest) returns (CreateHostResponse) {}
+  rpc Create(CreateHostRequest) returns (CreateHostResponse);
   /* Update a single host */
-  rpc Update(UpdateHostRequest) returns (UpdateHostResponse) {}
+  rpc Update(UpdateHostRequest) returns (UpdateHostResponse);
   /* Delete a single host */
-  rpc Delete(DeleteHostRequest) returns (DeleteHostResponse) {}
+  rpc Delete(DeleteHostRequest) returns (DeleteHostResponse);
 }

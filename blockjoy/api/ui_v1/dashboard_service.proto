@@ -17,5 +17,5 @@ message DashboardMetricsResponse {
 /* Get dashboard metrics */
 service DashboardService {
   /* Get metrics for nodes/hosts etc. */
-  rpc Metrics(DashboardMetricsRequest) returns (DashboardMetricsResponse) {}
+  rpc Metrics(DashboardMetricsRequest) returns (DashboardMetricsResponse);
 }

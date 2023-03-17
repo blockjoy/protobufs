@@ -8,12 +8,12 @@ import "google/protobuf/empty.proto";
  * All relevant service URLs
  */
 message ServicesResponse {
-    string key_service_url = 1;
-    string registry_url = 2;
-    string notification_url = 3;
+  string key_service_url = 1;
+  string registry_url = 2;
+  string notification_url = 3;
 }
 
 service Discovery {
-    /* Return relevant service URLs */
-    rpc Services(google.protobuf.Empty) returns (ServicesResponse) {}
+  /* Return relevant service URLs */
+  rpc Services(google.protobuf.Empty) returns (ServicesResponse);
 }

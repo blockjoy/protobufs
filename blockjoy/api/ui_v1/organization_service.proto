@@ -76,20 +76,22 @@ message LeaveOrganizationRequest {
 
 /* Manage organizations */
 service OrganizationService {
-  /* Get all the organizations for a user. All users automatically get a private (internal) organization */
-  rpc Get(GetOrganizationsRequest) returns (GetOrganizationsResponse) {}
+  /* Get all the organizations for a user. All users automatically get a
+   * private (internal) organization 
+   */
+  rpc Get(GetOrganizationsRequest) returns (GetOrganizationsResponse);
   /* Create a single organization */
-  rpc Create(CreateOrganizationRequest) returns (CreateOrganizationResponse) {}
+  rpc Create(CreateOrganizationRequest) returns (CreateOrganizationResponse);
   /* Update a single organization */
-  rpc Update(UpdateOrganizationRequest) returns (UpdateOrganizationResponse) {}
+  rpc Update(UpdateOrganizationRequest) returns (UpdateOrganizationResponse);
   /* Mark a single organization as deleted */
-  rpc Delete(DeleteOrganizationRequest) returns (DeleteOrganizationResponse) {}
+  rpc Delete(DeleteOrganizationRequest) returns (DeleteOrganizationResponse);
   /* Restore a previously deleted organization */
-  rpc Restore(RestoreOrganizationRequest) returns (RestoreOrganizationResponse) {}
+  rpc Restore(RestoreOrganizationRequest) returns (RestoreOrganizationResponse);
   /* Retrieve organization members */
-  rpc Members(OrganizationMemberRequest) returns (OrganizationMemberResponse) {}
+  rpc Members(OrganizationMemberRequest) returns (OrganizationMemberResponse);
   /* Remove organization member */
-  rpc RemoveMember(RemoveMemberRequest) returns (google.protobuf.Empty) {}
+  rpc RemoveMember(RemoveMemberRequest) returns (google.protobuf.Empty);
   /* Leave an organization the user is member of */
-  rpc Leave(LeaveOrganizationRequest) returns (google.protobuf.Empty) {}
+  rpc Leave(LeaveOrganizationRequest) returns (google.protobuf.Empty);
 }

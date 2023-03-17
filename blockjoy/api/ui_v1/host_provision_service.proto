@@ -25,8 +25,9 @@ message CreateHostProvisionResponse {
 
 /* Host provisioning */
 service HostProvisionService {
-  /* Get a single host provision identified by ID or a list of all available host provisions */
-  rpc Get(GetHostProvisionRequest) returns (GetHostProvisionResponse) {}
+  /* Get a single host provision identified by ID or a list of all available
+   * host provisions */
+  rpc Get(GetHostProvisionRequest) returns (GetHostProvisionResponse);
   /* Create a single host provision */
-  rpc Create(CreateHostProvisionRequest) returns (CreateHostProvisionResponse) {}
+  rpc Create(CreateHostProvisionRequest) returns (CreateHostProvisionResponse);
 }

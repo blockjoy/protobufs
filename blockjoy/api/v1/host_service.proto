@@ -5,8 +5,8 @@ package blockjoy.api.v1;
 import "host.proto";
 
 service Hosts {
-    rpc Provision(ProvisionHostRequest) returns (ProvisionHostResponse) {}
-    rpc InfoUpdate(HostInfoUpdateRequest) returns (HostInfoUpdateResponse) {}
-    /* Delete a single host */
-    rpc Delete(DeleteHostRequest) returns (DeleteHostResponse) {}
+  rpc Provision(ProvisionHostRequest) returns (ProvisionHostResponse);
+  rpc InfoUpdate(HostInfoUpdateRequest) returns (HostInfoUpdateResponse);
+  /* Delete a single host */
+  rpc Delete(DeleteHostRequest) returns (DeleteHostResponse);
 }

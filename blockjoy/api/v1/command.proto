@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package blockjoy.api.v1;
 
-import "node.proto";
+import "google/protobuf/empty.proto";
 import "host.proto";
 import "messages.proto";
-import "google/protobuf/empty.proto";
+import "node.proto";
 
 message Command {
   oneof type {

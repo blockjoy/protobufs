@@ -17,5 +17,5 @@ message CreateBillResponse {
 
 /* Billing related services */
 service BillingService {
-  rpc Create(CreateBillRequest) returns (CreateBillResponse) {}
+  rpc Create(CreateBillRequest) returns (CreateBillResponse);
 }

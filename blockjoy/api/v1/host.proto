@@ -6,88 +6,88 @@ import "google/protobuf/timestamp.proto";
 import "messages.proto";
 
 enum ConnectionStatus {
-    UndefinedConnectionStatus = 0;
-    Online = 1;
-    Offline = 2;
+  CONNECTION_STATUS_UNSPECIFIED = 0;
+  CONNECTION_STATUS_ONLINE = 1;
+  CONNECTION_STATUS_OFFLINE = 2;
 }
 
 message HostInfo {
-    optional string id = 1;
-    optional string name = 2;
-    optional string version = 3;
-    optional string location = 4;
-    optional int64 cpu_count = 5;
-    optional int64 mem_size = 6;
-    optional int64 disk_size = 7;
-    optional string os = 8;
-    optional string os_version = 9;
-    optional string ip = 10;
-    optional string ip_range_from = 11;
-    optional string ip_range_to = 12;
-    optional string ip_gateway = 13;
+  optional string id = 1;
+  optional string name = 2;
+  optional string version = 3;
+  optional string location = 4;
+  optional int64 cpu_count = 5;
+  optional int64 mem_size = 6;
+  optional int64 disk_size = 7;
+  optional string os = 8;
+  optional string os_version = 9;
+  optional string ip = 10;
+  optional string ip_range_from = 11;
+  optional string ip_range_to = 12;
+  optional string ip_gateway = 13;
 }
 
 message DeleteHostRequest {
-    optional string request_id = 1;
-    string host_id = 2;
+  optional string request_id = 1;
+  string host_id = 2;
 }
 
 message DeleteHostResponse {
-    repeated string messages = 1;
-    optional string origin_request_id = 2;
+  repeated string messages = 1;
+  optional string origin_request_id = 2;
 }
 
 message ProvisionHostRequest {
-    optional string request_id = 1;
-    string otp = 2;
-    HostInfo info = 3;
-    ConnectionStatus status = 4;
+  optional string request_id = 1;
+  string otp = 2;
+  HostInfo info = 3;
+  ConnectionStatus status = 4;
 }
 
 message ProvisionHostResponse {
-    string host_id = 1;
-    string token = 2;
-    repeated string messages = 3;
-    optional string origin_request_id = 4;
+  string host_id = 1;
+  string token = 2;
+  repeated string messages = 3;
+  optional string origin_request_id = 4;
 }
 
 message HostInfoUpdateRequest {
-    optional string request_id = 1;
-    HostInfo info = 2;
+  optional string request_id = 1;
+  HostInfo info = 2;
 }
 
 message HostInfoUpdateResponse {
-    repeated string messages = 1;
-    optional string origin_request_id = 2;
+  repeated string messages = 1;
+  optional string origin_request_id = 2;
 }
 
-// @see https://github.com/blockjoy/stakejoy-api/blob/86ee17643d02af81221ee2fa6403fc34155fe087/src/models/mod.rs#L54
 message HostUpdateBVS {
-    string version = 1;
+  string version = 1;
 }
 
-// @see https://github.com/blockjoy/stakejoy-api/blob/86ee17643d02af81221ee2fa6403fc34155fe087/src/models/mod.rs#L54
-message HostRestartBVS {}
+message HostRestartBVS {
+}
 
-// @see https://github.com/blockjoy/stakejoy-api/blob/86ee17643d02af81221ee2fa6403fc34155fe087/src/models/mod.rs#L54
-message HostRemoveBVS {}
+message HostRemoveBVS {
+}
 
 message HostGenericCommand {
-    repeated Parameter params = 1;
+  repeated Parameter params = 1;
 }
 
-message HostInfoGet {}
+message HostInfoGet {
+}
 
 message HostCommand {
-    string host_id = 1;
-    string api_command_id = 2;
-    google.protobuf.Timestamp created_at = 3;
+  string host_id = 1;
+  string api_command_id = 2;
+  google.protobuf.Timestamp created_at = 3;
 
-    oneof command {
-        HostGenericCommand generic = 4;
-        HostInfoGet info_get = 5;
-        HostUpdateBVS update_bvs = 6;
-        HostRestartBVS restart_bvs = 7;
-        HostRemoveBVS remove_bvs = 8;
-    }
+  oneof command {
+    HostGenericCommand generic = 4;
+    HostInfoGet info_get = 5;
+    HostUpdateBVS update_bvs = 6;
+    HostRestartBVS restart_bvs = 7;
+    HostRemoveBVS remove_bvs = 8;
+  }
 }
