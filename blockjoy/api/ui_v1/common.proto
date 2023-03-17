@@ -23,7 +23,7 @@ message Pagination {
   int32 items_per_page = 3;
 }
 
-/* General request meta data */
+/* General request metadata */
 message RequestMeta {
   /* Request ID. Should be generated when constructing the request */
   optional string id = 1;
@@ -35,7 +35,7 @@ message RequestMeta {
   optional Pagination pagination = 5;
 }
 
-/* General response meta data */
+/* General response metadata */
 message ResponseMeta {
   /* Response status codes */
   enum Status {

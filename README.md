@@ -19,7 +19,7 @@ see [OpenAPI doc](https://stakejoy.stoplight.io/docs/blockvisor-api/6119082e85f3
 Calling HostsService.Provision results in claiming the host provision earlier created during BV setup.
 
 The one-time-password (OTP) required in [ProvisionHostRequest](https://github.com/blockjoy/api-proto/blob/63e00e0fdc527b737da2b4b8e3d051dc89e0d148/blockjoy/api/v1/host.proto#L26)
-is assigned to the user who provisioned (registered) the host by showing it on the command line.
+is assigned to the user who provisioned (registered) the host by showing it on the command-line.
 
 
 ### Command flow service
@@ -50,7 +50,7 @@ Possible commands are (defined in [node.proto](https://github.com/blockjoy/api-p
 - **HostRemoveBVS:** Remove BVS from host
 
 
-All commands are wrapped inside a [NodeCommand](https://github.com/blockjoy/api-proto/blob/63e00e0fdc527b737da2b4b8e3d051dc89e0d148/blockjoy/api/v1/node.proto#L75) message, containing the node ID and corresponding meta data.
+All commands are wrapped inside a [NodeCommand](https://github.com/blockjoy/api-proto/blob/63e00e0fdc527b737da2b4b8e3d051dc89e0d148/blockjoy/api/v1/node.proto#L75) message, containing the node ID and corresponding metadata.
 
 
 **Info updates**
