@@ -16,9 +16,11 @@ message GetUserResponse {
 
 message CreateUserRequest {
   RequestMeta meta = 1;
-  User user = 2;
-  string password = 3;
-  string password_confirmation = 4;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string password = 5;
+  string password_confirmation = 6;
 }
 
 message CreateUserResponse {
@@ -27,7 +29,9 @@ message CreateUserResponse {
 
 message UpdateUserRequest {
   RequestMeta meta = 1;
-  User user = 2;
+  string id = 2;
+  optional string first_name = 3;
+  optional string last_name = 4;
 }
 
 message UpdateUserResponse {

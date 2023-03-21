@@ -6,31 +6,41 @@ import "common.proto";
 import "google/protobuf/empty.proto";
 
 message GetOrganizationsRequest {
+  // Metadata about the request.
   RequestMeta meta = 1;
   optional string org_id = 2;
 }
 
 message GetOrganizationsResponse {
+  // Metadata about the response.
   ResponseMeta meta = 1;
   repeated Organization organizations = 2;
 }
 
 message CreateOrganizationRequest {
+  // Metadata about the request.
   RequestMeta meta = 1;
-  Organization organization = 2;
+  string name = 2;
 }
 
 message CreateOrganizationResponse {
+  // Metadata about the response.
   ResponseMeta meta = 1;
   Organization organization = 2;
 }
 
 message UpdateOrganizationRequest {
+  // Metadata about the request.
   RequestMeta meta = 1;
-  Organization organization = 2;
+  // The id of the organization to be updated.
+  string id = 2;
+  // If this value is provided, the name of the organization will be set to the
+  // provided value.
+  optional string name = 3;
 }
 
 message UpdateOrganizationResponse {
+  // Metadata about the response.
   ResponseMeta meta = 1;
 }
 

@@ -80,23 +80,39 @@ message Host {
     HOST_STATUS_SNAPSHOTTING = 11;
   }
 
-  optional string id = 1;
-  optional string name = 2;
+  // This is the id of the host.
+  string id = 1;
+  // This is the randomly generated name of the host.
+  string name = 2;
+  // The version of the blockjoy control software running on the host.
   optional string version = 3;
+  // The physical location of the server.
   optional string location = 4;
-  optional int64 cpu_count = 5;
-  optional int64 mem_size = 6;
-  optional int64 disk_size = 7;
+  // The number of logical cores the machine has.
+  optional uint64 cpu_count = 5;
+  // The amount of physical memory the machine has in megabytes.
+  optional uint64 mem_size = 6;
+  // The size of the physical disks the machine has, in gigabytes.
+  optional uint64 disk_size = 7;
+  // The operating system running on the machine, i.e. "BSD" or "Linux".
   optional string os = 8;
+  // The version of said operating system running on the host.
   optional string os_version = 9;
-  optional string ip = 10;
-  optional HostStatus status = 11;
+  // The ip address on which the machine is reachable.
+  string ip = 10;
+  // Current status of the machine, or `UNSPECIFIED`.
+  HostStatus status = 11;
+  // All the nodes running on this machine.
   repeated Node nodes = 12;
-  optional google.protobuf.Timestamp created_at = 13;
+  // The moment this host was created. Corresponds to the moment that the
+  // host_provision was 
+  google.protobuf.Timestamp created_at = 13;
+  // The lowest ip address that this host may assign to a node.
   optional string ip_range_from = 14;
+  // The highest ip address that this host may assign to a node.
   optional string ip_range_to = 15;
+  // The ip gateway of this host.
   optional string ip_gateway = 16;
-  optional string org_id = 17;
 }
 
 /* HostProvision entity */
@@ -167,28 +183,51 @@ message Node {
     STAKING_STATUS_UNSTAKED = 6;
   }
 
-  optional string id = 1;
-  optional string org_id = 2;
-  optional string host_id = 3;
-  optional string host_name = 4;
-  optional string blockchain_id = 5;
-  optional string name = 6;
-  repeated string groups = 7;
+  enum NodeType {
+    NODE_TYPE_UNSPECIFIED = 0;
+    NODE_TYPE_MINER = 1;
+    NODE_TYPE_ETL = 2;
+    NODE_TYPE_VALIDATOR = 3;
+    NODE_TYPE_API = 4;
+    NODE_TYPE_ORACLE = 5;
+    NODE_TYPE_RELAY = 6;
+    NODE_TYPE_EXECUTION = 7;
+    NODE_TYPE_BEACON = 8;
+    NODE_TYPE_MEVBOOST = 9;
+    NODE_TYPE_NODE = 10;
+    NODE_TYPE_FULLNODE = 11;
+    NODE_TYPE_LIGHTNODE = 12;
+  }
+
+  message NodeProperty {
+    string name = 1;
+    string label = 2;
+    string description = 3;
+    string ui_type = 4;
+    bool disabled = 5;
+    bool required = 6;
+    optional string value = 7;
+  }
+
+  string id = 1;
+  string org_id = 2;
+  string host_id = 3;
+  string host_name = 4;
+  string blockchain_id = 5;
+  string name = 6;
   optional string version = 8;
   optional string ip = 9;
-  optional string type = 10;
-  optional string address = 11;
-  optional string wallet_address = 12;
+  NodeType type = 10;
+  repeated NodeProperty properties = 11;
   optional int64 block_height = 13;
-  optional bytes node_data = 14;
-  optional google.protobuf.Timestamp created_at = 15;
-  optional google.protobuf.Timestamp updated_at = 16;
-  optional NodeStatus status = 17;
-  optional SyncStatus sync_status = 18;
+  google.protobuf.Timestamp created_at = 15;
+  google.protobuf.Timestamp updated_at = 16;
+  NodeStatus status = 17;
+  SyncStatus sync_status = 18;
   optional StakingStatus staking_status = 19;
-  optional string ip_gateway = 20;
-  optional bool self_update = 21;
-  optional string network = 22;
+  string ip_gateway = 20;
+  bool self_update = 21;
+  string network = 22;
   optional string blockchain_name = 23;
   // The id of the user that created this node. For the earliest nodes we
   // created, this field was not tracked and is therefore not populated.
@@ -214,23 +253,34 @@ message OrgUser {
 
 /* Organization representation */
 message Organization {
-  optional string id = 1;
-  optional string name = 2;
-  optional bool personal = 3;
-  optional int64 member_count = 4;
-  optional google.protobuf.Timestamp created_at = 13;
-  optional google.protobuf.Timestamp updated_at = 14;
+  // The UUID of a the organization.
+  string id = 1;
+  // The name of this organization.
+  string name = 2;
+  // If this field is set to true, this organization is a personal
+  // organization. A personal organization is the default organzation for a
+  // user that contains only them.
+  bool personal = 3;
+  // The number of users in this organization.
+  uint64 member_count = 4;
+  // The moment which this organization was created.
+  google.protobuf.Timestamp created_at = 13;
+  // The moment which this organization was last updated.
+  google.protobuf.Timestamp updated_at = 14;
+  // This field contains the `OrgRole` that the user has within this
+  // organization, which controls the level of permissions they have to perform
+  // mutations (i.e. kick other users).
   optional OrgUser current_user = 15;
 }
 
 /* User representation */
 message User {
-  optional string id = 1;
-  optional string email = 2;
-  optional string first_name = 3;
-  optional string last_name = 4;
-  optional google.protobuf.Timestamp created_at = 5;
-  optional google.protobuf.Timestamp updated_at = 6;
+  string id = 1;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
 }
 
 /* Bill representation */

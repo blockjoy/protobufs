@@ -17,7 +17,7 @@ message NodeInfo {
     // Up to 15 to ensure only 1 byte is used for the most common values
     reserved 12 to 15;
 
-    CONTAINER_STATUS_UNDEFINEDCONTAINERSTATUS_UNSPECIFIED = 0;
+    CONTAINER_STATUS_UNSPECIFIED = 0;
     CONTAINER_STATUS_CREATING = 1;
     CONTAINER_STATUS_RUNNING = 2;
     CONTAINER_STATUS_STARTING = 3;
@@ -52,7 +52,7 @@ message NodeInfo {
     // Up to 15 to ensure only 1 byte is used for the most common values
     reserved 3 to 15;
 
-    SYNC_STATUS_UNDEFINEDSYNCSTATUS_UNSPECIFIED = 0;
+    SYNC_STATUS_UNSPECIFIED = 0;
     SYNC_STATUS_SYNCING = 1;
     SYNC_STATUS_SYNCED = 2;
   }
@@ -62,7 +62,7 @@ message NodeInfo {
   // node's states as seen by the blockchain. Babel is responsible for mapping
   // chain specific states to the one in here.
   enum ApplicationStatus {
-    APPLICATION_STATUS_UNDEFINEDAPPLICATIONSTATUS_UNSPECIFIED = 0;
+    APPLICATION_STATUS_UNSPECIFIED = 0;
     // General chain states
     APPLICATION_STATUS_PROVISIONING = 1;
     APPLICATION_STATUS_BROADCASTING = 2;
@@ -158,14 +158,14 @@ message NodeCommand {
 }
 
 enum Policy {
-  POLICY_UNDEFINEDPOLICY_UNSPECIFIED = 0;
+  POLICY_UNSPECIFIED = 0;
   POLICY_ALLOW = 1;
   POLICY_DENY = 2;
   POLICY_REJECT = 3;
 }
 
 enum Direction {
-  DIRECTION_UNDEFINEDDIRECTION_UNSPECIFIED = 0;
+  DIRECTION_UNSPECIFIED = 0;
   DIRECTION_OUT = 1;
   DIRECTION_IN = 2;
 }

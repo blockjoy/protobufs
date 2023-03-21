@@ -20,7 +20,18 @@ message GetHostsResponse {
 
 message CreateHostRequest {
   RequestMeta meta = 1;
-  Host host = 2;
+  string name = 2;
+  optional string version = 3;
+  optional string location = 4;
+  optional uint64 cpu_count = 5;
+  optional uint64 mem_size = 6;
+  optional uint64 disk_size = 7;
+  optional string os = 8;
+  optional string os_version = 9;
+  string ip_addr = 10;
+  string ip_range_from = 11;
+  string ip_range_to = 12;
+  string ip_gateway = 13;
 }
 
 message CreateHostResponse {
@@ -29,7 +40,13 @@ message CreateHostResponse {
 
 message UpdateHostRequest {
   RequestMeta meta = 1;
-  Host host = 2;
+  
+  string id = 2;
+  optional string name = 3;
+  optional string version = 4;
+  optional string location = 5;
+  optional string os = 6;
+  optional string os_version = 7;
 }
 
 message UpdateHostResponse {

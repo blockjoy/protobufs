@@ -10,7 +10,7 @@ message Parameter {
 message ContainerImage {
   /* Define config status */
   enum StatusName {
-    STATUS_NAME_UNDEFINEDSTATUSNAME_UNSPECIFIED = 0;
+    STATUS_NAME_UNSPECIFIED = 0;
     STATUS_NAME_DEVELOPMENT = 1;
     STATUS_NAME_UNSTABLE = 2;
     STATUS_NAME_STABLE = 3;
