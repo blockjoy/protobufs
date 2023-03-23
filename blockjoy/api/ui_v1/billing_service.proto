@@ -36,7 +36,8 @@ message SubscriptionRequest {
 /* Billing related services */
 service BillingService {
   // Retrieve all available subscription plans
-  rpc SubscriptionPlans(google.protobuf.Empty) returns (SubscriptionPlansResponse);
+  rpc SubscriptionPlans(google.protobuf.Empty) returns
+      (SubscriptionPlansResponse);
   // Actually create a subscription
   rpc CreateSubscription(SubscriptionRequest) returns (google.protobuf.Empty);
   // Update subscription
