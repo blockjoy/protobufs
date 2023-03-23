@@ -324,3 +324,32 @@ message Invitation {
   optional string created_by_user_name = 8;
   optional string created_for_org_name = 9;
 }
+
+/* Invoice  */
+message Invoice {
+  enum InvoiceStatus {
+    UNSPECIFIED_INVOICE_STATUS = 0;
+    DRAFT = 1;
+    OPEN = 2;
+    PAID = 3;
+    VOID = 4;
+    UNCOLLECTIBLE = 5;
+  }
+
+  string id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  float amount = 3;
+  InvoiceStatus status = 4;
+}
+
+/* Subscription plan  */
+message SubscriptionPlan {
+  string id = 1;
+  string name = 2;
+  string period = 3;
+  string description = 4;
+  repeated string features = 5;
+  bool best_value = 6;
+  float price_per_month = 7;
+  float price_per_year = 8;
+}
