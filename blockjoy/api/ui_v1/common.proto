@@ -346,10 +346,24 @@ message Invoice {
 message SubscriptionPlan {
   string id = 1;
   string name = 2;
-  string period = 3;
   string description = 4;
   repeated string features = 5;
   bool best_value = 6;
   float price_per_month = 7;
   float price_per_year = 8;
+}
+
+/* Subscription item  */
+message Subscription {
+  enum BillingPeriod {
+    UNSPECIFIED_PERIOD = 0;
+    MONTHLY = 1;
+    ANNUALLY = 2;
+  }
+
+  string id = 1;
+  string plan_id = 2;
+  bool cancel = 3;
+  bool auto_renew = 4;
+  BillingPeriod period = 5;
 }
