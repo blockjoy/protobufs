@@ -28,10 +28,18 @@ message GetInvoiceResponse {
   Invoice invoice = 2;
 }
 
+message UpdateSubscriptionPlanRequest {
+  ResponseMeta meta = 1;
+  SubscriptionPlan new_plan = 2;
+  bool cancel = 3;
+}
+
 /* Billing related services */
 service BillingService {
   // Retrieve all available subscription plans
   rpc SubscriptionPlans(google.protobuf.Empty) returns (SubscriptionPlansResponse);
+  // Update subscription plan
+  rpc UpdateSubscriptionPlan(UpdateSubscriptionPlanRequest) returns (SubscriptionPlansResponse);
   // Get all available invoices (incl. pagination)
   rpc ListInvoices(ListInvoicesRequest) returns (ListInvoicesResponse);
   // Get a single invoice identified by it's ID
