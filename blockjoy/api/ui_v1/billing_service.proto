@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package blockjoy.api.ui_v1;
 
-import "google/protobuf/empty.proto";
 import "common.proto";
+import "google/protobuf/empty.proto";
 
 message SubscriptionPlansResponse {
   ResponseMeta meta = 1;
@@ -28,12 +28,7 @@ message GetInvoiceResponse {
   Invoice invoice = 2;
 }
 
-message UpdateSubscriptionRequest {
-  RequestMeta meta = 1;
-  Subscription subscription = 2;
-}
-
-message CreateSubscriptionRequest {
+message SubscriptionRequest {
   RequestMeta meta = 1;
   Subscription subscription = 2;
 }
@@ -43,9 +38,9 @@ service BillingService {
   // Retrieve all available subscription plans
   rpc SubscriptionPlans(google.protobuf.Empty) returns (SubscriptionPlansResponse);
   // Actually create a subscription
-  rpc CreateSubscription(CreateSubscriptionRequest) returns (google.protobuf.Empty);
+  rpc CreateSubscription(SubscriptionRequest) returns (google.protobuf.Empty);
   // Update subscription
-  rpc UpdateSubscription(UpdateSubscriptionRequest) returns (google.protobuf.Empty);
+  rpc UpdateSubscription(SubscriptionRequest) returns (google.protobuf.Empty);
   // Get all available invoices (incl. pagination)
   rpc ListInvoices(ListInvoicesRequest) returns (ListInvoicesResponse);
   // Get a single invoice identified by it's ID

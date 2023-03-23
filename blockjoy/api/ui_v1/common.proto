@@ -328,12 +328,12 @@ message Invitation {
 /* Invoice  */
 message Invoice {
   enum InvoiceStatus {
-    UNSPECIFIED_INVOICE_STATUS = 0;
-    DRAFT = 1;
-    OPEN = 2;
-    PAID = 3;
-    VOID = 4;
-    UNCOLLECTIBLE = 5;
+    INVOICE_STATUS_UNSPECIFIED = 0;
+    INVOICE_STATUS_DRAFT = 1;
+    INVOICE_STATUS_OPEN = 2;
+    INVOICE_STATUS_PAID = 3;
+    INVOICE_STATUS_VOID = 4;
+    INVOICE_STATUS_UNCOLLECTIBLE = 5;
   }
 
   string id = 1;
@@ -356,9 +356,9 @@ message SubscriptionPlan {
 /* Subscription item  */
 message Subscription {
   enum BillingPeriod {
-    UNSPECIFIED_PERIOD = 0;
-    MONTHLY = 1;
-    ANNUALLY = 2;
+    BILLING_PERIOD_UNSPECIFIED = 0;
+    BILLING_PERIOD_MONTHLY = 1;
+    BILLING_PERIOD_ANNUALLY = 2;
   }
 
   string id = 1;
