@@ -215,6 +215,9 @@ message Node {
   string host_name = 4;
   string blockchain_id = 5;
   string name = 6;
+  // The P2P address of the node on the blockchain. This field is only set as
+  // the node is started, so therefore it is optional.
+  optional string address = 7;
   optional string version = 8;
   optional string ip = 9;
   NodeType type = 10;
