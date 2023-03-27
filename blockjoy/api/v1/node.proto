@@ -183,11 +183,23 @@ message Rule {
   optional Protocol protocol = 4;
   optional string ips = 5;
   repeated uint32 ports = 6;
+  bool enabled = 7;
+  Policy default_in = 8;
+  Policy default_out = 9;
+}
+
+message RuleSet {
+  string name = 1;
+  string org_id = 2;
+  repeated Rule rules = 3;
+  bool default = 4;
 }
 
 message NodeFirewallUpdate {
-  bool enabled = 1;
-  Policy default_in = 2;
-  Policy default_out = 3;
-  repeated Rule rules = 4;
+  repeated RuleSet rules = 1;
+}
+
+message RuleUpdateRequest {
+  string id = 1;
+  repeated Rule rule = 2;
 }
