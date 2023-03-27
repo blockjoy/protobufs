@@ -184,8 +184,8 @@ message Rule {
   string dns_name = 5;
   repeated uint32 ports = 6;
   bool enabled = 7;
-  Policy default_in = 8;
-  Policy default_out = 9;
+  optional Policy default_in = 8;
+  optional Policy default_out = 9;
 }
 
 message RuleSet {
