@@ -181,7 +181,7 @@ message Rule {
   Policy policy = 2;
   Direction direction = 3;
   optional Protocol protocol = 4;
-  optional string ips = 5;
+  string dns_name = 5;
   repeated uint32 ports = 6;
   bool enabled = 7;
   Policy default_in = 8;
