@@ -201,5 +201,5 @@ message NodeFirewallUpdate {
 
 message RuleUpdateRequest {
   string id = 1;
-  repeated Rule rule = 2;
+  repeated Rule rules = 2;
 }
