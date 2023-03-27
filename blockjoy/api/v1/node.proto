@@ -132,6 +132,7 @@ message NodeCreate {
   string gateway = 6;
   bool self_update = 7;
   repeated Parameter properties = 8;
+  FirewallConfiguration firewall_config = 9;
 }
 
 message NodeDelete {
@@ -157,11 +158,11 @@ message NodeCommand {
   };
 }
 
-enum Policy {
-  POLICY_UNSPECIFIED = 0;
-  POLICY_ALLOW = 1;
-  POLICY_DENY = 2;
-  POLICY_REJECT = 3;
+enum Action {
+  ACTION_UNSPECIFIED = 0;
+  ACTION_ALLOW = 1;
+  ACTION_DENY = 2;
+  ACTION_REJECT = 3;
 }
 
 enum Direction {
@@ -171,34 +172,47 @@ enum Direction {
 }
 
 enum Protocol{
-  PROTOCOL_BOTH_UNSPECIFIED = 0;
+  PROTOCOL_UNSPECIFIED = 0;
   PROTOCOL_TCP = 1;
   PROTOCOL_UDP = 2;
+  PROTOCOL_BOTH = 3;
+}
+
+message FirewallConfiguration {
+  FallbackRule fallback = 1;
+  repeated RuleSet rules = 2;
+  // Use at your very own risk
+  optional bool enabled = 3;
+}
+
+message FallbackRule {
+  Action inbound = 1;
+  Action outbound = 2;
 }
 
 message Rule {
   string name = 1;
-  Policy policy = 2;
+  Action action = 2;
   Direction direction = 3;
-  optional Protocol protocol = 4;
-  string dns_name = 5;
+  Protocol protocol = 4;
+  optional string inbound_ips = 5;
   repeated uint32 ports = 6;
-  bool enabled = 7;
-  optional Policy default_in = 8;
-  optional Policy default_out = 9;
+  optional bool enabled = 7;
 }
 
 message RuleSet {
-  string name = 1;
-  string org_id = 2;
-  repeated Rule rules = 3;
-  bool default = 4;
+  string id = 1;
+  repeated Rule rules = 2;
+  string org_id = 3;
 }
 
+// CRUD for a whole ruleset
 message NodeFirewallUpdate {
   repeated RuleSet rules = 1;
+  optional FallbackRule fallback = 2;
 }
 
+// CRUD for a single rule
 message RuleUpdateRequest {
   string id = 1;
   repeated Rule rules = 2;
