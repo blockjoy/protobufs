@@ -44,9 +44,9 @@ message ProvisionHostRequest {
   string name = 4;
   string version = 5;
   int64 cpu_count = 6;
-  // The amount of memory in bytes that the host should have.
+  // The amount of memory in bytes that the host has.
   int64 mem_size_bytes = 7;
-  // The amount of disk space in bytes that the host should have.
+  // The amount of disk space in bytes that the host has.
   int64 disk_size_bytes = 8;
   string os = 9;
   string os_version = 10;
