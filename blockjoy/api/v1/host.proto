@@ -28,13 +28,13 @@ message Host {
 }
 
 message DeleteHostRequest {
-  optional string request_id = 1;
+  string request_id = 1;
   string host_id = 2;
 }
 
 message DeleteHostResponse {
   repeated string messages = 1;
-  optional string origin_request_id = 2;
+  string origin_request_id = 2;
 }
 
 message ProvisionHostRequest {
@@ -65,9 +65,6 @@ message HostUpdateRequest {
   optional string os = 4;
   optional string os_version = 5;
   optional string ip = 6;
-  optional string ip_range_from = 7;
-  optional string ip_range_to = 8;
-  optional string ip_gateway = 9;
 }
 
 message HostUpdateResponse {
