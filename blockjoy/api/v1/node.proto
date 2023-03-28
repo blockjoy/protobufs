@@ -119,7 +119,6 @@ message NodeUpgrade {
 
 message NodeUpdate {
   optional bool self_update = 1;
-  repeated Parameter properties = 2;
 }
 
 message NodeGet {
