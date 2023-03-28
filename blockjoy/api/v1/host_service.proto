@@ -4,9 +4,10 @@ package blockjoy.api.v1;
 
 import "host.proto";
 
-service Hosts {
+service HostService {
+  // This endpoint creates a new host from an already created host provision.
   rpc Provision(ProvisionHostRequest) returns (ProvisionHostResponse);
-  rpc InfoUpdate(HostInfoUpdateRequest) returns (HostInfoUpdateResponse);
+  rpc Update(HostUpdateRequest) returns (HostUpdateResponse);
   /* Delete a single host */
   rpc Delete(DeleteHostRequest) returns (DeleteHostResponse);
 }

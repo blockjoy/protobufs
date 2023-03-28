@@ -3,31 +3,31 @@ syntax = "proto3";
 package blockjoy.api.v1;
 
 /**
-   * A single keyfile representation
-   */
+  * A single keyfile representation
+  */
 message Keyfile {
   string name = 1;
   bytes content = 2;
 }
 
 message KeyFilesGetRequest {
-  optional string request_id = 1;
+  string request_id = 1;
   string node_id = 2;
 }
 
 message KeyFilesGetResponse {
-  optional string origin_request_id = 1;
+  string origin_request_id = 1;
   repeated Keyfile key_files = 2;
 }
 
 message KeyFilesSaveRequest {
-  optional string request_id = 1;
+  string request_id = 1;
   string node_id = 2;
   repeated Keyfile key_files = 3;
 }
 
 message KeyFilesSaveResponse {
-  optional string origin_request_id = 1;
+  string origin_request_id = 1;
   repeated string messages = 2;
 }
 

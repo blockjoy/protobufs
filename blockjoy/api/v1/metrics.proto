@@ -20,15 +20,15 @@ message NodeMetrics {
   // This is the age of the most recent block, measured in seconds.
   optional uint64 block_age = 2;
   // This is the current staking status of the node.
-  optional NodeInfo.StakingStatus staking_status = 3;
-  // Iff the blockchain is in consensus, this field is `true``.
+  optional Node.StakingStatus staking_status = 3;
+  // Iff the blockchain is in consensus, this field is `true`.
   optional bool consensus = 4;
   // This field represents the current status of the blockchain node
   // application.
-  optional NodeInfo.ApplicationStatus application_status = 5;
+  optional Node.ApplicationStatus application_status = 5;
   // The status of the node with respect to the rest of the network, i.e.
   // whether it is in sync with the other nodes.
-  optional NodeInfo.SyncStatus sync_status = 6;
+  optional Node.SyncStatus sync_status = 6;
 }
 
 // This message is used to store the metrics for a given set of hosts.

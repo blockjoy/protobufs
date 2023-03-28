@@ -5,7 +5,7 @@ package blockjoy.api.v1;
 import "google/protobuf/empty.proto";
 import "node.proto";
 
-service Nodes {
+service NodeService {
   /* Update a single node */
-  rpc InfoUpdate(NodeInfoUpdateRequest) returns (google.protobuf.Empty);
+  rpc Update(NodeUpdateRequest) returns (google.protobuf.Empty);
 }
