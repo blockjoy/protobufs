@@ -32,7 +32,7 @@ message Node {
     // Up to 15 to ensure only 1 byte is used for the most common values
     reserved 7 to 15;
 
-    STAKING_STATUS_UNKNOWNSTAKINGSTATUS_UNSPECIFIED = 0;
+    STAKING_STATUS_UNSPECIFIED = 0;
     STAKING_STATUS_FOLLOWER = 1;
     STAKING_STATUS_STAKED = 2;
     STAKING_STATUS_STAKING = 3;
