@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package blockjoy.api.ui_v1;
+
+import "common.proto";
+
+// A message about an event that happened to a node.
+message NodeMessage {
+  oneof message {
+    NodeCreated created = 1;
+    NodeUpdated updated = 2;
+    NodeDeleted deleted = 3;
+  }
+}
+
+message NodeCreated {
+  Node node = 1;
+}
+
+message NodeUpdated {
+  Node node = 1;
+  // The id of the person that updated the node
+  string updated_by = 2;
+  string updated_by_name = 3;
+  string updated_by_email = 4;
+}
+
+message NodeDeleted {
+  string node_id = 1;
+  string host_id = 2;
+  string organization_id = 3;
+  // The id of the persona that deleted the node
+  string deleted_by = 4;
+  string deleted_by_name = 5;
+  string deleted_by_email = 6;
+}
+
+message OrgMessage {
+  oneof message {
+    OrgCreated created = 1;
+    OrgUpdated updated = 2;
+    OrgDeleted deleted = 3;
+  }
+}
+
+message OrgCreated {
+  Organization org = 1;
+  string created_by = 2;
+  string created_by_name = 3;
+  string created_by_email = 4;
+}
+
+message OrgUpdated {
+  Organization org = 1;
+  string updated_by = 2;
+  string updated_by_name = 3;
+  string updated_by_email = 4;
+}
+
+message OrgDeleted {
+  string organization_id = 1;
+  string deleted_by = 2;
+  string deleted_by_name = 3;
+  string deleted_by_email = 4;
+}
