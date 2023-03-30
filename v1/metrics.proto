@@ -3,7 +3,7 @@ syntax = "proto3";
 package v1;
 
 import "google/protobuf/empty.proto";
-import "messages.proto";
+import "v1/node.proto";
 
 // This message is used to store the metrics for a given set of nodes.
 message NodeMetricsRequest {
@@ -20,12 +20,12 @@ message NodeMetrics {
   // This is the age of the most recent block, measured in seconds.
   optional uint64 block_age = 2;
   // This is the current staking status of the node.
-  optional Node.StakingStatus staking_status = 3;
+  optional v1.Node.StakingStatus staking_status = 3;
   // Iff the blockchain is in consensus, this field is `true`.
   optional bool consensus = 4;
   // This field represents the current status of the blockchain node
   // application.
-  optional Node.ApplicationStatus application_status = 5;
+  optional v1.Node.NodeStatus application_status = 5;
   // The status of the node with respect to the rest of the network, i.e.
   // whether it is in sync with the other nodes.
   optional Node.SyncStatus sync_status = 6;

@@ -6,8 +6,8 @@ syntax = "proto3";
 
 package v1;
 
-import "node.proto";
-import "organization.proto";
+import "v1/node.proto";
+import "v1/organization.proto";
 
 // A message about an event that happened to a node.
 message NodeMessage {
@@ -49,14 +49,14 @@ message OrgMessage {
 }
 
 message OrgCreated {
-  Organization org = 1;
+  v1.Organization org = 1;
   string created_by = 2;
   string created_by_name = 3;
   string created_by_email = 4;
 }
 
 message OrgUpdated {
-  Organization org = 1;
+  v1.Organization org = 1;
   string updated_by = 2;
   string updated_by_name = 3;
   string updated_by_email = 4;
