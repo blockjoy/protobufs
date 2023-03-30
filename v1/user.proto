@@ -5,7 +5,7 @@ package v1;
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
-// User representation
+// User representation.
 message User {
   string id = 1;
   string email = 2;
@@ -15,26 +15,26 @@ message User {
   google.protobuf.Timestamp updated_at = 6;
 }
 
-/* UI configuration */
+// UI configuration.
 message UserConfigurationParameter {
   string name = 1;
   string value = 2;
 }
 
-/* User related services */
+// User related services.
 service UserService {
-  /* Retrieve a single user */
+  // Retrieve a single user.
   rpc Get(GetUserRequest) returns (GetUserResponse);
-  /* Create a single user */
+  // Create a single user.
   rpc Create(CreateUserRequest) returns (CreateUserResponse);
-  /* Update a single user. */
+  // Update a single user.
   rpc Update(UpdateUserRequest) returns (UpdateUserResponse);
-  /* Delete a single user. */
+  // Delete a single user.
   rpc Delete(DeleteUserRequest) returns (google.protobuf.Empty);
-  /* Create/update configuration parameters */
+  // Create/update configuration parameters.
   rpc UpsertConfiguration(UpsertConfigurationRequest)
     returns (UpsertConfigurationResponse);
-  /* Retrieve all configuration parameters */
+  // Retrieve all configuration parameters.
   rpc GetConfiguration(GetConfigurationRequest)
     returns (GetConfigurationResponse);
 }
@@ -91,7 +91,7 @@ message GetConfigurationResponse {
   repeated UserConfigurationParameter params = 2;
 }
 
-/* Users can only delete themselves, so no need for any further params */
+// Users can only delete themselves, so no need for any further params
 message DeleteUserRequest {
   RequestMeta meta = 1;
 }

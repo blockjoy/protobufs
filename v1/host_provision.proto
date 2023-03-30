@@ -2,11 +2,13 @@ syntax = "proto3";
 
 package v1;
 
-/* HostProvision entity */
+import "google/protobuf/timestamp.proto";
+
+// HostProvision entity
 message HostProvision {
-  optional string id = 1;
+  string id = 1;
   optional string host_id = 2;
-  optional google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp created_at = 3;
   optional google.protobuf.Timestamp claimed_at = 4;
   optional string install_cmd = 5;
   string ip_range_from = 6;
@@ -15,12 +17,12 @@ message HostProvision {
   optional string org_id = 9;
 }
 
-/* Host provisioning */
+// Host provisioning
 service HostProvisionService {
-  /* Get a single host provision identified by ID or a list of all available
-   * host provisions */
+  // Get a single host provision identified by ID or a list of all available
+  // host provisions
   rpc Get(GetHostProvisionRequest) returns (GetHostProvisionResponse);
-  /* Create a single host provision */
+  // Create a single host provision
   rpc Create(CreateHostProvisionRequest) returns (CreateHostProvisionResponse);
 }
 

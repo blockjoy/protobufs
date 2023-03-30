@@ -44,11 +44,11 @@ message BlockchainNetwork {
   NetworkType net_type = 3;
 }
 
-/* Blockchain related service */
+// Blockchain related service.
 service BlockchainService {
-  /* Returns a single blockchain as identified by its id */
+  // Returns a single blockchain as identified by its id.
   rpc Get(GetBlockchainRequest) returns (GetBlockchainResponse);
-  /* Returns a list of all blockchains */
+  // Returns a list of all blockchains.
   rpc List(ListBlockchainsRequest) returns (ListBlockchainsResponse);
 }
 

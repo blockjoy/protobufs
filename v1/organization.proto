@@ -5,7 +5,7 @@ package v1;
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
-/* Organization representation */
+// Organization representation
 message Organization {
   // The UUID of a the organization.
   string id = 1;
@@ -40,25 +40,24 @@ message OrgUser {
   OrgRole role = 3;
 }
 
-/* Manage organizations */
+// Manage organizations
 service OrganizationService {
-  /* Get all the organizations for a user. All users automatically get a
-   * private (internal) organization 
-   */
+  // Get all the organizations for a user. All users automatically get a private
+  // (internal) organization. 
   rpc Get(GetOrganizationsRequest) returns (GetOrganizationsResponse);
-  /* Create a single organization */
+  // Create a single organization
   rpc Create(CreateOrganizationRequest) returns (CreateOrganizationResponse);
-  /* Update a single organization */
+  // Update a single organization
   rpc Update(UpdateOrganizationRequest) returns (UpdateOrganizationResponse);
-  /* Mark a single organization as deleted */
+  // Mark a single organization as deleted
   rpc Delete(DeleteOrganizationRequest) returns (DeleteOrganizationResponse);
-  /* Restore a previously deleted organization */
+  // Restore a previously deleted organization
   rpc Restore(RestoreOrganizationRequest) returns (RestoreOrganizationResponse);
-  /* Retrieve organization members */
+  // Retrieve organization members
   rpc Members(OrganizationMemberRequest) returns (OrganizationMemberResponse);
-  /* Remove organization member */
+  // Remove organization member
   rpc RemoveMember(RemoveMemberRequest) returns (google.protobuf.Empty);
-  /* Leave an organization the user is member of */
+  // Leave an organization the user is member of
   rpc Leave(LeaveOrganizationRequest) returns (google.protobuf.Empty);
 }
 

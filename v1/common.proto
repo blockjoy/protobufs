@@ -2,33 +2,30 @@ syntax = "proto3";
 
 package v1;
 
-/*
- * Pagination information, used in the response type
- */
+// Pagination information, used in the response type
 message Pagination {
-  /* Optional total number of items, may not be bigger than
-   * PAGINATION_MAX_COUNT
-   */
+  // Optional total number of items, may not be bigger than
+  // PAGINATION_MAX_COUNT
   optional int32 total_items = 1;
   int32 current_page = 2;
   int32 items_per_page = 3;
 }
 
-/* General request metadata */
+// General request metadata
 message RequestMeta {
-  /* Request ID. Should be generated when constructing the request */
+  // Request ID. Should be generated when constructing the request
   optional string id = 1;
-  /* The user issuing this request, identified by it's API token */
+  // The user issuing this request, identified by it's API token
   optional ApiToken token = 2;
-  /* Optionally pass in an array of field names expected to be returned. */
+  // Optionally pass in an array of field names expected to be returned.
   repeated string fields = 3;
-  /* Optionally pass in pagination */
+  // Optionally pass in pagination
   optional Pagination pagination = 5;
 }
 
-/* General response metadata */
+// General response metadata
 message ResponseMeta {
-  /* Response status codes */
+  // Response status codes
   enum Status {
     reserved 3 to 15;
 
@@ -37,19 +34,19 @@ message ResponseMeta {
     STATUS_GENERALERROR = 2;
   }
 
-  /* Response status code */
+  // Response status code
   Status status = 1;
-  /* Request ID which generated this response */
+  // Request ID which generated this response
   string origin_request_id = 2;
-  /* Optional array of additional messages */
+  // Optional array of additional messages
   repeated string messages = 3;
-  /* Optional pagination information */
+  // Optional pagination information
   optional Pagination pagination = 4;
-  /* Updated user token, if needed */
+  // Updated user token, if needed
   optional ApiToken token = 5;
 }
 
-/* Generic parameter key/value pair */
+// Generic parameter key/value pair
 message Parameter {
   string name = 1;
   string value = 2;

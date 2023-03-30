@@ -74,20 +74,6 @@ service HostService {
   rpc Provision(ProvisionHostRequest) returns (ProvisionHostResponse);
 }
 
-message GetHostsRequest {
-  RequestMeta meta = 1;
-
-  oneof param {
-    string id = 2;
-    string token = 3;
-  }
-}
-
-message GetHostsResponse {
-  ResponseMeta meta = 1;
-  repeated Host hosts = 2;
-}
-
 message CreateHostRequest {
   RequestMeta meta = 1;
   string name = 2;
@@ -106,6 +92,20 @@ message CreateHostRequest {
 
 message CreateHostResponse {
   ResponseMeta meta = 1;
+}
+
+message GetHostsRequest {
+  RequestMeta meta = 1;
+
+  oneof param {
+    string id = 2;
+    string token = 3;
+  }
+}
+
+message GetHostsResponse {
+  ResponseMeta meta = 1;
+  repeated Host hosts = 2;
 }
 
 message UpdateHostRequest {

@@ -2,6 +2,11 @@ syntax = "proto3";
 
 package v1;
 
+service Discovery {
+  /* Return relevant service URLs */
+  rpc Services(ServicesRequest) returns (ServicesResponse);
+}
+
 message ServicesRequest {
   // This is here for forwards compatibility.
 }
@@ -11,9 +16,4 @@ message ServicesResponse {
   string key_service_url = 1;
   string registry_url = 2;
   string notification_url = 3;
-}
-
-service Discovery {
-  /* Return relevant service URLs */
-  rpc Services(ServicesRequest) returns (ServicesResponse);
 }
