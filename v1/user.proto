@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package v1;
 
-import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 // User representation.
 message User {
@@ -40,58 +40,47 @@ service UserService {
 }
 
 message GetUserRequest {
-  RequestMeta meta = 1;
 }
 
 message GetUserResponse {
-  ResponseMeta meta = 1;
-  User user = 2;
+  User user = 1;
 }
 
 message CreateUserRequest {
-  RequestMeta meta = 1;
-  string email = 2;
-  string first_name = 3;
-  string last_name = 4;
-  string password = 5;
-  string password_confirmation = 6;
+  string email = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string password = 4;
+  string password_confirmation = 5;
 }
 
 message CreateUserResponse {
-  ResponseMeta meta = 1;
 }
 
 message UpdateUserRequest {
-  RequestMeta meta = 1;
-  string id = 2;
-  optional string first_name = 3;
-  optional string last_name = 4;
+  string id = 1;
+  optional string first_name = 2;
+  optional string last_name = 3;
 }
 
 message UpdateUserResponse {
-  ResponseMeta meta = 1;
-  User user = 2;
+  User user = 1;
 }
 
 message UpsertConfigurationRequest {
-  RequestMeta meta = 1;
-  repeated UserConfigurationParameter params = 3;
+  repeated UserConfigurationParameter params = 1;
 }
 
 message UpsertConfigurationResponse {
-  ResponseMeta meta = 1;
 }
 
 message GetConfigurationRequest {
-  RequestMeta meta = 1;
 }
 
 message GetConfigurationResponse {
-  ResponseMeta meta = 1;
-  repeated UserConfigurationParameter params = 2;
+  repeated UserConfigurationParameter params = 1;
 }
 
 // Users can only delete themselves, so no need for any further params
 message DeleteUserRequest {
-  RequestMeta meta = 1;
 }

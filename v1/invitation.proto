@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package v1;
 
-import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 // User invitation
 message Invitation {
@@ -35,31 +35,25 @@ service InvitationService {
 }
 
 message CreateInvitationRequest {
-  RequestMeta meta = 1;
-  string invitee_email = 2;
-  string created_for_org_id = 3;
+  string invitee_email = 1;
+  string created_for_org_id = 2;
 }
 
 message CreateInvitationResponse {
-  ResponseMeta meta = 1;
 }
 
 message ListPendingInvitationRequest {
-  RequestMeta meta = 1;
-  string org_id = 2;
+  string org_id = 1;
 }
 
 message ListReceivedInvitationRequest {
-  RequestMeta meta = 1;
-  string user_id = 2;
+  string user_id = 1;
 }
 
 message InvitationsResponse {
-  ResponseMeta meta = 1;
-  repeated Invitation invitations = 2;
+  repeated Invitation invitations = 1;
 }
 
 message InvitationRequest {
-  RequestMeta meta = 1;
-  Invitation invitation = 2;
+  Invitation invitation = 1;
 }

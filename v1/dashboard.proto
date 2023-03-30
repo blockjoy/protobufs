@@ -23,11 +23,9 @@ service DashboardService {
 }
 
 message DashboardMetricsRequest {
-  RequestMeta meta = 1;
-  string org_id = 2;
+  string org_id = 1;
 }
 
 message DashboardMetricsResponse {
-  ResponseMeta meta = 1;
-  repeated Metric metrics = 2;
+  repeated Metric metrics = 1;
 }

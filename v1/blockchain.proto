@@ -53,20 +53,16 @@ service BlockchainService {
 }
 
 message GetBlockchainRequest {
-  RequestMeta meta = 1;
-  string id = 2;
+  string id = 1;
 }
 
 message GetBlockchainResponse {
-  ResponseMeta meta = 1;
-  Blockchain blockchain = 2;
+  Blockchain blockchain = 1;
 }
 
 message ListBlockchainsRequest {
-  RequestMeta meta = 1;
 }
 
 message ListBlockchainsResponse {
-  ResponseMeta meta = 1;
-  repeated Blockchain blockchains = 2;
+  repeated Blockchain blockchains = 1;
 }

@@ -23,12 +23,10 @@ service BillingService {
 }
 
 message CreateBillRequest {
-  RequestMeta meta = 1;
-  optional string user_id = 2;
-  optional string org_id = 3;
+  optional string user_id = 1;
+  optional string org_id = 2;
 }
 
 message CreateBillResponse {
-  ResponseMeta meta = 1;
-  Bill bill = 2;
+  Bill bill = 1;
 }

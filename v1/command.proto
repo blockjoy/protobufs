@@ -26,13 +26,11 @@ service CommandService {
 
 
 message CreateCommandRequest {
-  RequestMeta meta = 1;
-  string id = 2;
-  repeated Parameter params = 3;
+  string id = 1;
+  repeated Parameter params = 2;
 }
 
 message CreateCommandResponse {
-  ResponseMeta meta = 1;
 }
 
 message GetCommandRequest {
@@ -85,11 +83,14 @@ message ContainerImage {
   StatusName status = 4;
 }
 
-message NodeStart {}
+message NodeStart {
+}
 
-message NodeStop {}
+message NodeStop {
+}
 
-message NodeRestart {}
+message NodeRestart {
+}
 
 // Updates a node to use a new OS-image
 message NodeUpgrade {
@@ -100,7 +101,8 @@ message NodeUpdate {
   optional bool self_update = 1;
 }
 
-message NodeGet {}
+message NodeGet {
+}
 
 message NodeCreate {
   string name = 1;
@@ -113,7 +115,8 @@ message NodeCreate {
   repeated Parameter properties = 8;
 }
 
-message NodeDelete {}
+message NodeDelete {
+}
 
 message NodeFirewallUpdate {
   bool enabled = 1;

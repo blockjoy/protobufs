@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package v1;
 
-import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 /* Blockchain node representation */
 message Node {
@@ -126,9 +126,6 @@ message FilterCriteria {
 
 // This message is used to create a new node.
 message CreateNodeRequest {
-  // Metadata about the request.
-  RequestMeta meta = 1;
-
   // The id of the organization for which the node should be created.
   string org_id = 2;
   // The id of the blockchain that shoudl be ran inside the node.
@@ -147,65 +144,50 @@ message CreateNodeRequest {
 
 // Message returned when a node is created.
 message CreateNodeResponse {
-  // Metadata about the response.
-  ResponseMeta meta = 1;
   // The actual node that was just created.
-  Node node = 2;
+  Node node = 1;
 }
 
 // This message is used to read info about a single node. For requests
 // pertaining to multiple nodes, use `ListNodesRequest`.
 message GetNodeRequest {
-  // Metadata about the request.
-  RequestMeta meta = 1;
   // This should be the UUID of the node that you want to query.
-  string id = 2;
+  string id = 1;
 }
 
 message GetNodeResponse {
-  // Metadata about the response.
-  ResponseMeta meta = 1;
   // The node that was queried will be placed in this field.
-  Node node = 2;
+  Node node = 1;
 }
 
 // This request is used to query a set of nodes within an org by the parameters
 // that are specified in the `filter` field.
 message ListNodesRequest {
-  // Metadata about the request.
-  RequestMeta meta = 1;
   // The organization within which we will search for nodes.
-  string org_id = 2;
+  string org_id = 1;
   // The filter parameters that will be used for searching.
-  FilterCriteria filter = 3;
+  FilterCriteria filter = 2;
 }
 
 // This response will contain all the filtered nodes.
 message ListNodesResponse {
-  // Metadata about the response.
-  ResponseMeta meta = 1;
   // The nodes that match the filter will be placed in this field.
-  repeated Node nodes = 2;
+  repeated Node nodes = 1;
 }
 
 // This request is used for updating a node.
 message UpdateNodeRequest {
-  // Metadata about the request.
-  RequestMeta meta = 1;
-  
   // The UUID of the node that you want to update.
-  string id = 2;
+  string id = 1;
   // The version of the blockchain software that should now be ran on the node.
-  optional string version = 3;
+  optional string version = 2;
 }
 
 message UpdateNodeResponse {
-  ResponseMeta meta = 1;
 }
 
 message DeleteNodeRequest {
-  RequestMeta meta = 1;
-  string id = 2;
+  string id = 1;
 }
 
 service NodeService {

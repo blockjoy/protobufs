@@ -30,66 +30,53 @@ service AuthenticationService {
 }
 
 message LoginUserRequest {
-  RequestMeta meta = 1;
-  string email = 2;
-  string password = 3;
-}
-
-message LoginUserResponse {
-  ResponseMeta meta = 1;
-  ApiToken token = 2;
-}
-
-message RefreshTokenRequest {
-  RequestMeta meta = 1;
-}
-
-message RefreshTokenResponse {
-  ResponseMeta meta = 1;
-  ApiToken token = 2;
-}
-
-message ResetPasswordRequest {
-  RequestMeta meta = 1;
-  string email = 2;
-}
-
-message ResetPasswordResponse {
-  ResponseMeta meta = 1;
-}
-
-message UpdatePasswordRequest {
-  RequestMeta meta = 1;
+  string email = 1;
   string password = 2;
 }
 
+message LoginUserResponse {
+  ApiToken token = 1;
+}
+
+message RefreshTokenRequest {
+}
+
+message RefreshTokenResponse {
+  ApiToken token = 1;
+}
+
+message ResetPasswordRequest {
+  string email = 1;
+}
+
+message ResetPasswordResponse {
+}
+
+message UpdatePasswordRequest {
+  string password = 1;
+}
+
 message UpdatePasswordResponse {
-  ResponseMeta meta = 1;
-  ApiToken token = 2;
+  ApiToken token = 1;
 }
 
 message UpdateUIPasswordRequest {
-  RequestMeta meta = 1;
-  string old_pwd = 2;
-  string new_pwd = 3;
-  string new_pwd_confirmation = 4;
+  string old_pwd = 1;
+  string new_pwd = 2;
+  string new_pwd_confirmation = 3;
 }
 
 message UpdateUIPasswordResponse {
-  ResponseMeta meta = 1;
-  ApiToken token = 2;
+  ApiToken token = 1;
 }
 
 message ConfirmRegistrationRequest {
-  RequestMeta meta = 1;
 }
 
 message ConfirmRegistrationResponse {
-  ResponseMeta meta = 1;
-  ApiToken token = 2;
+  ApiToken token = 1;
 }
 
 message SwitchOrgRequest {
-  RequestMeta meta = 1;
-  string org_id = 2;
+  string org_id = 1;
 }
