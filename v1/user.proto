@@ -1,9 +1,43 @@
 syntax = "proto3";
 
-package blockjoy.api.ui_v1;
+package v1;
 
-import "common.proto";
+import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+
+// User representation
+message User {
+  string id = 1;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+/* UI configuration */
+message UserConfigurationParameter {
+  string name = 1;
+  string value = 2;
+}
+
+/* User related services */
+service UserService {
+  /* Retrieve a single user */
+  rpc Get(GetUserRequest) returns (GetUserResponse);
+  /* Create a single user */
+  rpc Create(CreateUserRequest) returns (CreateUserResponse);
+  /* Update a single user. */
+  rpc Update(UpdateUserRequest) returns (UpdateUserResponse);
+  /* Delete a single user. */
+  rpc Delete(DeleteUserRequest) returns (google.protobuf.Empty);
+  /* Create/update configuration parameters */
+  rpc UpsertConfiguration(UpsertConfigurationRequest)
+    returns (UpsertConfigurationResponse);
+  /* Retrieve all configuration parameters */
+  rpc GetConfiguration(GetConfigurationRequest)
+    returns (GetConfigurationResponse);
+}
 
 message GetUserRequest {
   RequestMeta meta = 1;
@@ -60,22 +94,4 @@ message GetConfigurationResponse {
 /* Users can only delete themselves, so no need for any further params */
 message DeleteUserRequest {
   RequestMeta meta = 1;
-}
-
-/* User related services */
-service UserService {
-  /* Retrieve a single user */
-  rpc Get(GetUserRequest) returns (GetUserResponse);
-  /* Create a single user */
-  rpc Create(CreateUserRequest) returns (CreateUserResponse);
-  /* Update a single user. */
-  rpc Update(UpdateUserRequest) returns (UpdateUserResponse);
-  /* Delete a single user. */
-  rpc Delete(DeleteUserRequest) returns (google.protobuf.Empty);
-  /* Create/update configuration parameters */
-  rpc UpsertConfiguration(UpsertConfigurationRequest)
-    returns (UpsertConfigurationResponse);
-  /* Retrieve all configuration parameters */
-  rpc GetConfiguration(GetConfigurationRequest)
-    returns (GetConfigurationResponse);
 }

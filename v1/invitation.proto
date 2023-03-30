@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// User invitation
+message Invitation {
+  string id = 1;
+  string created_by_id = 2;
+  string created_for_org_id = 3;
+  string invitee_email = 4;
+  google.protobuf.Timestamp created_at = 5;
+  optional google.protobuf.Timestamp accepted_at = 6;
+  optional google.protobuf.Timestamp declined_at = 7;
+  string created_by_user_name = 8;
+  string created_for_org_name = 9;
+}
+
+// Manage invitations
+service InvitationService {
+  // Create an invitation for an org the calling user is owner/admin of
+  rpc Create(CreateInvitationRequest) returns (CreateInvitationResponse);
+  // List pending invitations for given org
+  rpc ListPending(ListPendingInvitationRequest) returns (InvitationsResponse);
+  // List received invitations for given user
+  rpc ListReceived(ListReceivedInvitationRequest) returns (InvitationsResponse);
+  // Accept invitation and become member of the desired org
+  rpc Accept(InvitationRequest) returns (google.protobuf.Empty);
+  // Decline invitation and DON'T become member of the desired org
+  rpc Decline(InvitationRequest) returns (google.protobuf.Empty);
+  // Revoke (delete) pending invitation
+  rpc Revoke(InvitationRequest) returns (google.protobuf.Empty);
+}
+
+message CreateInvitationRequest {
+  RequestMeta meta = 1;
+  string invitee_email = 2;
+  string created_for_org_id = 3;
+}
+
+message CreateInvitationResponse {
+  ResponseMeta meta = 1;
+}
+
+message ListPendingInvitationRequest {
+  RequestMeta meta = 1;
+  string org_id = 2;
+}
+
+message ListReceivedInvitationRequest {
+  RequestMeta meta = 1;
+  string user_id = 2;
+}
+
+message InvitationsResponse {
+  ResponseMeta meta = 1;
+  repeated Invitation invitations = 2;
+}
+
+message InvitationRequest {
+  RequestMeta meta = 1;
+  Invitation invitation = 2;
+}

@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package blockjoy.api.v1;
+package v1;
 
 import "google/protobuf/empty.proto";
-import "node.proto";
+import "messages.proto";
 
 // This message is used to store the metrics for a given set of nodes.
 message NodeMetricsRequest {

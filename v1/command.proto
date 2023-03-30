@@ -1,11 +1,8 @@
 syntax = "proto3";
 
-package blockjoy.api.v1;
+package v1;
 
-import "google/protobuf/empty.proto";
-import "host.proto";
-import "messages.proto";
-import "node.proto";
+import "google/protobuf/timestamp.proto";
 
 message Command {
   oneof type {
@@ -14,28 +11,165 @@ message Command {
   }
 }
 
-message CommandInfo {
+// Service providing commands invoked by the UI
+service CommandService {
+  // Creates a new command in the database and sends it to the apropriate
+  // instance of blockvisor.
+  rpc Create(CreateCommandRequest) returns (CreateCommandResponse);
+  // Retrieve a single command
+  rpc Get(GetCommandRequest) returns (GetCommandResponse);
+  // Update a single command status
+  rpc Update(UpdateCommandRequest) returns (UpdateCommandResponse);
+  // Get pending commands for host
+  rpc Pending(PendingCommandsRequest) returns (PendingCommandsResponse);
+}
+
+
+message CreateCommandRequest {
+  RequestMeta meta = 1;
+  string id = 2;
+  repeated Parameter params = 3;
+}
+
+message CreateCommandResponse {
+  ResponseMeta meta = 1;
+}
+
+message GetCommandRequest {
+  string id = 1;
+}
+
+message GetCommandResponse {
+  Command command = 1;
+}
+
+message UpdateCommandRequest {
   string id = 1;
   optional string response = 2;
   optional int32 exit_code = 3;
 }
 
-message CommandResponse {
-  repeated Command commands = 1;
+message UpdateCommandResponse {
+  Command command = 1;
 }
 
 message PendingCommandsRequest {
   string host_id = 1;
-  /* maybe use it for getting only specific type of pending commands? */
   optional string filter_type = 2;
 }
 
-/* Commands service used in favour of deprecated command flow */
-service Commands {
-  /* Retrieve a single command */
-  rpc Get(CommandInfo) returns (Command);
-  /* Update a single command status */
-  rpc Update(CommandInfo) returns (google.protobuf.Empty);
-  /* Get pending commands for host */
-  rpc Pending(PendingCommandsRequest) returns (CommandResponse);
+message PendingCommandsResponse {
+  repeated Command commands = 1;
+}
+
+message Parameter {
+  string name = 1;
+  string value = 2;
+}
+
+message ContainerImage {
+  // Define config status
+  enum StatusName {
+    STATUS_NAME_UNSPECIFIED = 0;
+    STATUS_NAME_DEVELOPMENT = 1;
+    STATUS_NAME_UNSTABLE = 2;
+    STATUS_NAME_STABLE = 3;
+  }
+
+  // snake_cased name of the blockchain
+  string protocol = 1;
+  // snake_cased name of the node type
+  string node_type = 2;
+  // semantic version string of the node type version
+  string node_version = 3;
+  StatusName status = 4;
+}
+
+message NodeStart {}
+
+message NodeStop {}
+
+message NodeRestart {}
+
+// Updates a node to use a new OS-image
+message NodeUpgrade {
+  ContainerImage image = 1;
+}
+
+message NodeUpdate {
+  optional bool self_update = 1;
+}
+
+message NodeGet {}
+
+message NodeCreate {
+  string name = 1;
+  string blockchain = 2;
+  ContainerImage image = 3;
+  string type = 4;
+  string ip = 5;
+  string gateway = 6;
+  bool self_update = 7;
+  repeated Parameter properties = 8;
+}
+
+message NodeDelete {}
+
+message NodeFirewallUpdate {
+  bool enabled = 1;
+  Policy default_in = 2;
+  Policy default_out = 3;
+  repeated Rule rules = 4;
+}
+
+message NodeCommand {
+  string node_id = 1;
+  string host_id = 2;
+  string api_command_id = 3;
+  google.protobuf.Timestamp created_at = 4;
+
+  oneof command {
+    NodeStart start = 5;
+    NodeStop stop = 6;
+    NodeRestart restart = 7;
+    NodeUpgrade upgrade = 8;
+    NodeUpdate update = 9;
+    NodeGet info_get = 10;
+    NodeCreate create = 11;
+    NodeDelete delete = 12;
+    NodeFirewallUpdate firewall_update = 14;
+  };
+}
+
+message Rule {
+  string name = 1;
+  Policy policy = 2;
+  Direction direction = 3;
+  optional Protocol protocol = 4;
+  optional string ips = 5;
+  repeated uint32 ports = 6;
+}
+
+enum Policy {
+  POLICY_UNSPECIFIED = 0;
+  POLICY_ALLOW = 1;
+  POLICY_DENY = 2;
+  POLICY_REJECT = 3;
+}
+
+enum Direction {
+  DIRECTION_UNSPECIFIED = 0;
+  DIRECTION_OUT = 1;
+  DIRECTION_IN = 2;
+}
+
+enum Protocol {
+  PROTOCOL_UNSPECIFIED = 0;
+  PROTOCOL_TCP = 1;
+  PROTOCOL_UDP = 2;
+  PROTOCOL_BOTH = 3;
+}
+
+message HostCommand {
+  // We don't do this yet, but it is here for forwards compatibility.
 }

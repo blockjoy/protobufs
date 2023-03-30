@@ -1,0 +1,222 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+/* Blockchain node representation */
+message Node {
+  /**
+   * Describe the node's chain related status
+   * Generic, NOT chain specific states. These states are used to describe the
+   * node's states as seen by the blockchain
+   */
+  enum NodeStatus {
+    NODE_STATUS_UNSPECIFIED = 0;
+    // General chain states
+    NODE_STATUS_PROVISIONING = 1;
+    NODE_STATUS_BROADCASTING = 2;
+    NODE_STATUS_CANCELLED = 3;
+    NODE_STATUS_DELEGATING = 4;
+    NODE_STATUS_DELINQUENT = 5;
+    NODE_STATUS_DISABLED = 6;
+    NODE_STATUS_EARNING = 7;
+    NODE_STATUS_ELECTING = 8;
+    NODE_STATUS_ELECTED = 9;
+    NODE_STATUS_EXPORTED = 10;
+    NODE_STATUS_INGESTING = 11;
+    NODE_STATUS_MINING = 12;
+    NODE_STATUS_MINTING = 13;
+    NODE_STATUS_PROCESSING = 14;
+    NODE_STATUS_RELAYING = 15;
+    NODE_STATUS_REMOVED = 16;
+    NODE_STATUS_REMOVING = 17;
+  }
+
+  // Describe the node's syncing status
+  enum SyncStatus {
+    // Reserving values up to 15 for possible later use
+    // Up to 15 to ensure only 1 byte is used for the most common values
+    reserved 3 to 15;
+
+    SYNC_STATUS_UNSPECIFIED = 0;
+    SYNC_STATUS_SYNCING = 1;
+    SYNC_STATUS_SYNCED = 2;
+  }
+
+  // Describe the node's staking status
+  enum StakingStatus {
+    // Reserving values up to 15 for possible later use
+    // Up to 15 to ensure only 1 byte is used for the most common values
+    reserved 7 to 15;
+
+    STAKING_STATUS_UNSPECIFIED = 0;
+    STAKING_STATUS_FOLLOWER = 1;
+    STAKING_STATUS_STAKED = 2;
+    STAKING_STATUS_STAKING = 3;
+    STAKING_STATUS_VALIDATING = 4;
+    STAKING_STATUS_CONSENSUS = 5;
+    STAKING_STATUS_UNSTAKED = 6;
+  }
+
+  enum NodeType {
+    NODE_TYPE_UNSPECIFIED = 0;
+    NODE_TYPE_MINER = 1;
+    NODE_TYPE_ETL = 2;
+    NODE_TYPE_VALIDATOR = 3;
+    NODE_TYPE_API = 4;
+    NODE_TYPE_ORACLE = 5;
+    NODE_TYPE_RELAY = 6;
+    NODE_TYPE_EXECUTION = 7;
+    NODE_TYPE_BEACON = 8;
+    NODE_TYPE_MEVBOOST = 9;
+    NODE_TYPE_NODE = 10;
+    NODE_TYPE_FULLNODE = 11;
+    NODE_TYPE_LIGHTNODE = 12;
+  }
+
+  message NodeProperty {
+    string name = 1;
+    string label = 2;
+    string description = 3;
+    string ui_type = 4;
+    bool disabled = 5;
+    bool required = 6;
+    optional string value = 7;
+  }
+
+  string id = 1;
+  string org_id = 2;
+  string host_id = 3;
+  string host_name = 4;
+  string blockchain_id = 5;
+  string name = 6;
+  // The P2P address of the node on the blockchain. This field is only set as
+  // the node is started, so therefore it is optional.
+  optional string address = 7;
+  optional string version = 8;
+  optional string ip = 9;
+  NodeType type = 10;
+  repeated NodeProperty properties = 11;
+  optional int64 block_height = 13;
+  google.protobuf.Timestamp created_at = 15;
+  google.protobuf.Timestamp updated_at = 16;
+  NodeStatus status = 17;
+  SyncStatus sync_status = 18;
+  optional StakingStatus staking_status = 19;
+  string ip_gateway = 20;
+  bool self_update = 21;
+  string network = 22;
+  optional string blockchain_name = 23;
+  // The id of the user that created this node. For the earliest nodes we
+  // created, this field was not tracked and is therefore not populated.
+  optional string created_by = 24;
+  // The name of the aforementioned user.
+  optional string created_by_name = 25;
+  // The email of said aforementioned user.
+  optional string created_by_email = 26;
+}
+
+message FilterCriteria {
+  repeated string states = 1;
+  repeated string node_types = 2;
+  repeated string blockchain_ids = 3;
+}
+
+// This message is used to create a new node.
+message CreateNodeRequest {
+  // Metadata about the request.
+  RequestMeta meta = 1;
+
+  // The id of the organization for which the node should be created.
+  string org_id = 2;
+  // The id of the blockchain that shoudl be ran inside the node.
+  string blockchain_id = 3;
+  // The version of the node software that is ran. If this is not provided, the
+  // latest version is used.
+  optional string version = 4;
+  // The type of node that you want to create.
+  Node.NodeType type = 5;
+  // A list of properties.
+  repeated Node.NodeProperty properties = 6;
+  // The network that the blockchain will be a part of. Many blockchains have a
+  // dedicated test network, such as "goerli" for ethereum.
+  string network = 7;
+}
+
+// Message returned when a node is created.
+message CreateNodeResponse {
+  // Metadata about the response.
+  ResponseMeta meta = 1;
+  // The actual node that was just created.
+  Node node = 2;
+}
+
+// This message is used to read info about a single node. For requests
+// pertaining to multiple nodes, use `ListNodesRequest`.
+message GetNodeRequest {
+  // Metadata about the request.
+  RequestMeta meta = 1;
+  // This should be the UUID of the node that you want to query.
+  string id = 2;
+}
+
+message GetNodeResponse {
+  // Metadata about the response.
+  ResponseMeta meta = 1;
+  // The node that was queried will be placed in this field.
+  Node node = 2;
+}
+
+// This request is used to query a set of nodes within an org by the parameters
+// that are specified in the `filter` field.
+message ListNodesRequest {
+  // Metadata about the request.
+  RequestMeta meta = 1;
+  // The organization within which we will search for nodes.
+  string org_id = 2;
+  // The filter parameters that will be used for searching.
+  FilterCriteria filter = 3;
+}
+
+// This response will contain all the filtered nodes.
+message ListNodesResponse {
+  // Metadata about the response.
+  ResponseMeta meta = 1;
+  // The nodes that match the filter will be placed in this field.
+  repeated Node nodes = 2;
+}
+
+// This request is used for updating a node.
+message UpdateNodeRequest {
+  // Metadata about the request.
+  RequestMeta meta = 1;
+  
+  // The UUID of the node that you want to update.
+  string id = 2;
+  // The version of the blockchain software that should now be ran on the node.
+  optional string version = 3;
+}
+
+message UpdateNodeResponse {
+  ResponseMeta meta = 1;
+}
+
+message DeleteNodeRequest {
+  RequestMeta meta = 1;
+  string id = 2;
+}
+
+service NodeService {
+  /* Get single blockchain node */
+  rpc Get(GetNodeRequest) returns (GetNodeResponse) {}
+  /* Get nodes belonging to org */
+  rpc List(ListNodesRequest) returns (ListNodesResponse) {}
+  /* Create a single blockchain node */
+  rpc Create(CreateNodeRequest) returns (CreateNodeResponse) {}
+  /* Update a single blockchain node */
+  rpc Update(UpdateNodeRequest) returns (UpdateNodeResponse) {}
+  /* Delete a single node */
+  rpc Delete(DeleteNodeRequest) returns (google.protobuf.Empty) {}
+}

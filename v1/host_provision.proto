@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package v1;
+
+/* HostProvision entity */
+message HostProvision {
+  optional string id = 1;
+  optional string host_id = 2;
+  optional google.protobuf.Timestamp created_at = 3;
+  optional google.protobuf.Timestamp claimed_at = 4;
+  optional string install_cmd = 5;
+  string ip_range_from = 6;
+  string ip_range_to = 7;
+  string ip_gateway = 8;
+  optional string org_id = 9;
+}
+
+/* Host provisioning */
+service HostProvisionService {
+  /* Get a single host provision identified by ID or a list of all available
+   * host provisions */
+  rpc Get(GetHostProvisionRequest) returns (GetHostProvisionResponse);
+  /* Create a single host provision */
+  rpc Create(CreateHostProvisionRequest) returns (CreateHostProvisionResponse);
+}
+
+message GetHostProvisionRequest {
+  RequestMeta meta = 1;
+  optional string id = 2;
+}
+
+message GetHostProvisionResponse {
+  ResponseMeta meta = 1;
+  repeated HostProvision host_provisions = 2;
+}
+
+message CreateHostProvisionRequest {
+  RequestMeta meta = 1;
+  string ip_range_from = 2;
+  string ip_range_to = 3;
+  string ip_gateway = 4;
+}
+
+message CreateHostProvisionResponse {
+  ResponseMeta meta = 1;
+}

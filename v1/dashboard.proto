@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package v1;
+
+// Single metric value
+message Metric {
+  enum Name {
+    NAME_UNSPECIFIED = 0;
+    NAME_NODES = 1;
+    NAME_HOSTS = 2;
+    NAME_ONLINE = 3;
+    NAME_OFFLINE = 4;
+  }
+
+  Name name = 1;
+  string value = 2;
+}
+
+// Get dashboard metrics
+service DashboardService {
+  // Get metrics for nodes/hosts etc.
+  rpc Metrics(DashboardMetricsRequest) returns (DashboardMetricsResponse);
+}
+
+message DashboardMetricsRequest {
+  RequestMeta meta = 1;
+  string org_id = 2;
+}
+
+message DashboardMetricsResponse {
+  ResponseMeta meta = 1;
+  repeated Metric metrics = 2;
+}
