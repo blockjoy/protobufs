@@ -10,7 +10,7 @@ message ApiToken {
 }
 
 // Retrieve and refresh API token
-service AuthenticationService {
+service Authentication {
   // Login user, i.e. retrieve token
   rpc Login(LoginUserRequest) returns (LoginUserResponse);
   // Confirm user registration

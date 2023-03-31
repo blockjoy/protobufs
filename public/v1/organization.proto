@@ -42,7 +42,7 @@ message OrgUser {
 }
 
 // Manage organizations
-service OrganizationService {
+service Orgs {
   // Get all the organizations for a user. All users automatically get a private
   // (internal) organization. 
   rpc Get(GetOrganizationsRequest) returns (GetOrganizationsResponse);

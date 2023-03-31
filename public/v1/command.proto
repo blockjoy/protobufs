@@ -12,7 +12,7 @@ message Command {
 }
 
 // Service providing commands invoked by the UI
-service CommandService {
+service Commands {
   // Creates a new command in the database and sends it to the apropriate
   // instance of blockvisor.
   rpc Create(CreateCommandRequest) returns (CreateCommandResponse);

@@ -73,7 +73,7 @@ message HostMetrics {
   optional uint64 uptime = 9;
 }
 
-service MetricsService {
+service Metrics{
   // Overwrite the metrics for the given nodes.
   rpc Node(NodeMetricsRequest) returns (google.protobuf.Empty);
   // Overwrite the metrics for the given hosts.

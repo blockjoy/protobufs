@@ -22,7 +22,7 @@ message UserConfigurationParameter {
 }
 
 // User related services.
-service UserService {
+service Users {
   // Retrieve a single user.
   rpc Get(GetUserRequest) returns (GetUserResponse);
   // Create a single user.

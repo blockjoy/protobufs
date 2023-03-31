@@ -19,7 +19,7 @@ message Invitation {
 }
 
 // Manage invitations
-service InvitationService {
+service Invitations {
   // Create an invitation for an org the calling user is owner/admin of
   rpc Create(CreateInvitationRequest) returns (CreateInvitationResponse);
   // List pending invitations for given org

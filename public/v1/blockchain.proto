@@ -45,7 +45,7 @@ message BlockchainNetwork {
 }
 
 // Blockchain related service.
-service BlockchainService {
+service Blockchains {
   // Returns a single blockchain as identified by its id.
   rpc Get(GetBlockchainRequest) returns (GetBlockchainResponse);
   // Returns a list of all blockchains.

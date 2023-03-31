@@ -190,7 +190,7 @@ message DeleteNodeRequest {
   string id = 1;
 }
 
-service NodeService {
+service Nodes {
   /* Get single blockchain node */
   rpc Get(GetNodeRequest) returns (GetNodeResponse) {}
   /* Get nodes belonging to org */
