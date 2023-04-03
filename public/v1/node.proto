@@ -116,12 +116,24 @@ message Node {
   optional string created_by_name = 25;
   // The email of said aforementioned user.
   optional string created_by_email = 26;
+  // A list of ip addresses allowed to access public ports on this node.
+  repeated FilteredIpAddr allow_ips = 27;
+  // A list of ip addresses denied all access to any ports on this node.
+  repeated FilteredIpAddr deny_ips = 28;
 }
 
 message FilterCriteria {
   repeated string states = 1;
   repeated string node_types = 2;
   repeated string blockchain_ids = 3;
+}
+
+// IP Addresses used to filter access.
+message FilteredIpAddr {
+  // The ip address used in this filter.
+  string ip = 1;
+  // A user's description of what/why this address is being filtered.
+  optional string description = 2;
 }
 
 // This message is used to create a new node.
