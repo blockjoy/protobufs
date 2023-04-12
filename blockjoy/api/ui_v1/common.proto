@@ -277,7 +277,9 @@ message Organization {
   // The moment which this organization was last updated.
   google.protobuf.Timestamp updated_at = 14;
   // This field contains the users of this organization.
-  repeated User members = 15;
+  repeated OrgUser members = 15;
+  // This is the currently logged in user.
+  optional OrgUser current_user = 16;
 }
 
 /* User representation */
