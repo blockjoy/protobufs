@@ -256,6 +256,8 @@ message OrgUser {
   string user_id = 1;
   string org_id = 2;
   OrgRole role = 3;
+  string name = 4;
+  string email = 5;
 }
 
 /* Organization representation */
@@ -274,10 +276,8 @@ message Organization {
   google.protobuf.Timestamp created_at = 13;
   // The moment which this organization was last updated.
   google.protobuf.Timestamp updated_at = 14;
-  // This field contains the `OrgRole` that the user has within this
-  // organization, which controls the level of permissions they have to perform
-  // mutations (i.e. kick other users).
-  optional OrgUser current_user = 15;
+  // This field contains the users of this organization.
+  repeated User members = 15;
 }
 
 /* User representation */
