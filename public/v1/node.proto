@@ -211,13 +211,13 @@ message ListNodesRequest {
   uint64 limit = 3;
   // If this list is non-empty, only nodes that are any of these states will be
   // returned.
-  repeated Node.NodeStatus status = 4;
+  repeated Node.NodeStatus statuses = 4;
   // If this list is non-empty, only nodes of any of these types will be
   // returned.
-  repeated Node.NodeType node_type = 5;
+  repeated Node.NodeType node_types = 5;
   // If this list is non-empty, only nodes that run a blockchain identified by
   // any of these blockchain ids will be returned.
-  repeated string blockchain_id = 6;
+  repeated string blockchain_ids = 6;
 }
 
 // This response will contain all the filtered nodes.

@@ -6,9 +6,9 @@ syntax = "proto3";
 
 package v1;
 
+import "v1/host.proto";
 import "v1/node.proto";
 import "v1/organization.proto";
-import "v1/host.proto";
 
 // A message about an event that happened to a node.
 message NodeMessage {
