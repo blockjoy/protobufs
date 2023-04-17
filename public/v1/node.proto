@@ -212,8 +212,12 @@ message ListNodesResponse {
 message UpdateNodeRequest {
   // The UUID of the node that you want to update.
   string id = 1;
+  // The P2P address of the node on the blockchain. This field is only set as
+  // the node is started, so therefore it is optional.
+  optional string address = 7;
   // The version of the blockchain software that should now be ran on the node.
-  optional string version = 2;
+  optional string version = 8;
+  optional Node.ContainerStatus container_status = 13;
 }
 
 message UpdateNodeResponse {
