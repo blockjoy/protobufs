@@ -153,6 +153,7 @@ message NodeUpgrade {
 
 message NodeUpdate {
   optional bool self_update = 1;
+  repeated Rule rules = 2;
 }
 
 message NodeGet {
@@ -167,6 +168,7 @@ message NodeCreate {
   string gateway = 6;
   bool self_update = 7;
   repeated Parameter properties = 8;
+  repeated Rule rules = 9;
 }
 
 message NodeDelete {
@@ -174,8 +176,8 @@ message NodeDelete {
 
 message NodeFirewallUpdate {
   bool enabled = 1;
-  Policy default_in = 2;
-  Policy default_out = 3;
+  Action default_in = 2;
+  Action default_out = 3;
   repeated Rule rules = 4;
 }
 
@@ -200,18 +202,18 @@ message NodeCommand {
 
 message Rule {
   string name = 1;
-  Policy policy = 2;
+  Action action = 2;
   Direction direction = 3;
   optional Protocol protocol = 4;
   optional string ips = 5;
   repeated uint32 ports = 6;
 }
 
-enum Policy {
-  POLICY_UNSPECIFIED = 0;
-  POLICY_ALLOW = 1;
-  POLICY_DENY = 2;
-  POLICY_REJECT = 3;
+enum Action {
+  ACTION_UNSPECIFIED = 0;
+  ACTION_ALLOW = 1;
+  ACTION_DENY = 2;
+  ACTION_REJECT = 3;
 }
 
 enum Direction {
