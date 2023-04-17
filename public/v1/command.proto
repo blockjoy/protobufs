@@ -3,17 +3,22 @@ syntax = "proto3";
 package v1;
 
 import "google/protobuf/timestamp.proto";
+import "v1/node.proto";
 
 message Command {
   // Each command has a unique id that identifies it.
   string id = 1;
+  // A command may have an outcome message.
+  optional string response = 2;
+  // A command may have an exit code.
+  optional int32 exit_code = 3;
   // The rest of the fields are split in two. There are commands that are meant
   // to instrument hosts, and commands that are meant to instrument nodes. The
   // reason we have this dichotomy is because the commands that go to a node
   // typically look different from those that go to a host.
   oneof command {
-    NodeCommand node = 2;
-    HostCommand host = 3;
+    NodeCommand node = 4;
+    HostCommand host = 5;
   }
 }
 
@@ -131,7 +136,7 @@ message ContainerImage {
   // snake_cased name of the blockchain
   string protocol = 1;
   // snake_cased name of the node type
-  string node_type = 2;
+  Node.NodeType node_type = 2;
   // semantic version string of the node type version
   string node_version = 3;
   StatusName status = 4;
@@ -163,7 +168,7 @@ message NodeCreate {
   string name = 1;
   string blockchain = 2;
   ContainerImage image = 3;
-  string type = 4;
+  Node.NodeType node_type = 4;
   string ip = 5;
   string gateway = 6;
   bool self_update = 7;

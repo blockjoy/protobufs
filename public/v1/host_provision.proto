@@ -41,4 +41,5 @@ message CreateHostProvisionRequest {
 }
 
 message CreateHostProvisionResponse {
+  HostProvision host_provision = 1;
 }

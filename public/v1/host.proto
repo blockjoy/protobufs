@@ -62,8 +62,8 @@ message Host {
 service Hosts {
   // Create a single host
   rpc Create(CreateHostRequest) returns (CreateHostResponse);
-  // Get host(s) by id, org_id or token or just every host
-  rpc Get(GetHostsRequest) returns (GetHostsResponse);
+  rpc Get(GetHostRequest) returns (GetHostResponse);
+  rpc List(ListHostsRequest) returns (ListHostsResponse);
   // Update a single host
   rpc Update(UpdateHostRequest) returns (UpdateHostResponse);
   // Delete a single host
@@ -90,14 +90,18 @@ message CreateHostRequest {
 message CreateHostResponse {
 }
 
-message GetHostsRequest {
-  oneof param {
-    string id = 1;
-    string token = 2;
-  }
+message GetHostRequest {
+  string id = 1;
 }
 
-message GetHostsResponse {
+message GetHostResponse {
+  Host hosts = 1;
+}
+
+message ListHostsRequest {
+}
+
+message ListHostsResponse {
   repeated Host hosts = 1;
 }
 

@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package v1;
 
-import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 /* Blockchain node representation */
@@ -143,6 +142,19 @@ message Node {
   repeated FilteredIpAddr deny_ips = 28;
 }
 
+service Nodes {
+  /* Get single blockchain node */
+  rpc Get(GetNodeRequest) returns (GetNodeResponse) {}
+  /* Get nodes belonging to org */
+  rpc List(ListNodesRequest) returns (ListNodesResponse) {}
+  /* Create a single blockchain node */
+  rpc Create(CreateNodeRequest) returns (CreateNodeResponse) {}
+  /* Update a single blockchain node */
+  rpc Update(UpdateNodeRequest) returns (UpdateNodeResponse) {}
+  /* Delete a single node */
+  rpc Delete(DeleteNodeRequest) returns (DeleteNodeResponse) {}
+}
+
 // IP Addresses used to filter access.
 message FilteredIpAddr {
   // The ip address used in this filter.
@@ -227,15 +239,5 @@ message DeleteNodeRequest {
   string id = 1;
 }
 
-service Nodes {
-  /* Get single blockchain node */
-  rpc Get(GetNodeRequest) returns (GetNodeResponse) {}
-  /* Get nodes belonging to org */
-  rpc List(ListNodesRequest) returns (ListNodesResponse) {}
-  /* Create a single blockchain node */
-  rpc Create(CreateNodeRequest) returns (CreateNodeResponse) {}
-  /* Update a single blockchain node */
-  rpc Update(UpdateNodeRequest) returns (UpdateNodeResponse) {}
-  /* Delete a single node */
-  rpc Delete(DeleteNodeRequest) returns (google.protobuf.Empty) {}
+message DeleteNodeResponse {
 }
