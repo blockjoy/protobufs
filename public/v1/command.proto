@@ -5,9 +5,15 @@ package v1;
 import "google/protobuf/timestamp.proto";
 
 message Command {
-  oneof type {
-    NodeCommand node = 1;
-    HostCommand host = 2;
+  // Each command has a unique id that identifies it.
+  string id = 1;
+  // The rest of the fields are split in two. There are commands that are meant
+  // to instrument hosts, and commands that are meant to instrument nodes. The
+  // reason we have this dichotomy is because the commands that go to a node
+  // typically look different from those that go to a host.
+  oneof command {
+    NodeCommand node = 2;
+    HostCommand host = 3;
   }
 }
 
@@ -24,10 +30,58 @@ service Commands {
   rpc Pending(PendingCommandsRequest) returns (PendingCommandsResponse);
 }
 
-
+// This request is used to create new commands. They will be stored in the
+// database and then emitted over MQTT. Note that this message cannot be used
+// for creating every possible command. For example, a `CreateNodeCommand` is
+// emitted when `Nodes.Create` is called.
 message CreateCommandRequest {
-  string id = 1;
-  repeated Parameter params = 2;
+  oneof command {
+    // This variant will cause a new `StartNodeCommand` to be created.
+    StartNodeCommand start_node = 1;
+    // This variant will cause a new `StopNodeCommand` to be created.
+    StopNodeCommand stop_node = 2;
+    // This variant will cause a new `RestartNodeCommand` to be created.
+    RestartNodeCommand restart_node = 3;
+    // This variant will cause a new `StartHostCommand` to be created.
+    StartHostCommand start_host = 4;
+    // This variant will cause a new `StopHostCommand` to be created.
+    StopHostCommand stop_host = 5;
+    // This variant will cause a new `RestartHostCommand` to be created.
+    RestartHostCommand restart_host = 6;
+  }
+}
+
+// Implies that the node identified by `node_id` should be started. If the node
+// is already running, this message should be ignored.
+message StartNodeCommand {
+  // The node to be started.
+  string node_id = 1;
+}
+
+// Implies that the node identified by `node_id` should be stopped. If the node
+// is already stopped, this message should be ignored.
+message StopNodeCommand {
+  // The node to be stopped.
+  string node_id = 1;
+}
+
+// Implies that the node identified by `node_id` should be restarted. If the
+// node is already stopped, it should just be started.
+message RestartNodeCommand {
+  // The node to be restarted.
+  string node_id = 1;
+}
+
+message StartHostCommand {
+  string host_id = 1;
+}
+
+message StopHostCommand {
+  string host_id = 1;
+}
+
+message RestartHostCommand {
+  string host_id = 1;
 }
 
 message CreateCommandResponse {

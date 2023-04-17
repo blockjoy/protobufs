@@ -16,22 +16,18 @@ service KeyFiles {
 }
 
 message KeyFilesGetRequest {
-  string request_id = 1;
-  string node_id = 2;
+  string node_id = 1;
 }
 
 message KeyFilesGetResponse {
-  string origin_request_id = 1;
-  repeated Keyfile key_files = 2;
+  repeated Keyfile key_files = 1;
 }
 
 message KeyFilesSaveRequest {
-  string request_id = 1;
-  string node_id = 2;
-  repeated Keyfile key_files = 3;
+  string node_id = 1;
+  repeated Keyfile key_files = 2;
 }
 
 message KeyFilesSaveResponse {
-  string origin_request_id = 1;
-  repeated string messages = 2;
+  repeated string messages = 1;
 }

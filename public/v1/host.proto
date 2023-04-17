@@ -35,10 +35,10 @@ message Host {
   optional string location = 4;
   // The number of logical cores the machine has.
   optional uint64 cpu_count = 5;
-  // The amount of physical memory the machine has in megabytes.
-  optional uint64 mem_size = 6;
-  // The size of the physical disks the machine has, in gigabytes.
-  optional uint64 disk_size = 7;
+  // The amount of physical memory the machine has.
+  optional uint64 mem_size_bytes = 6;
+  // The size of the physical disks the machine has.
+  optional uint64 disk_size_bytes = 7;
   // The operating system running on the machine, i.e. "BSD" or "Linux".
   optional string os = 8;
   // The version of said operating system running on the host.
@@ -126,25 +126,22 @@ message ProvisionHostRequest {
     CONNECTION_STATUS_ONLINE = 1;
     CONNECTION_STATUS_OFFLINE = 2;
   }
-
-  string request_id = 1;
-  string otp = 2;
-  ConnectionStatus status = 3;
-  string name = 4;
-  string version = 5;
-  int64 cpu_count = 6;
+  
+  string otp = 1;
+  ConnectionStatus status = 2;
+  string name = 3;
+  string version = 4;
+  uint64 cpu_count = 5;
   // The amount of memory in bytes that the host has.
-  int64 mem_size_bytes = 7;
+  uint64 mem_size_bytes = 6;
   // The amount of disk space in bytes that the host has.
-  int64 disk_size_bytes = 8;
-  string os = 9;
-  string os_version = 10;
-  string ip = 11;
+  uint64 disk_size_bytes = 7;
+  string os = 8;
+  string os_version = 9;
+  string ip = 10;
 }
 
 message ProvisionHostResponse {
   string host_id = 1;
   string token = 2;
-  repeated string messages = 3;
-  string origin_request_id = 4;
 }
