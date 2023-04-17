@@ -62,14 +62,14 @@ message HostMetrics {
   // sent here will be 2.53.
   optional double load_fifteen = 6;
   // This is the number of bytes (not bits) received over the network since the
-  // start of the node. This means that this value is going to increase
-  // monotonically when the node starts.
+  // start of the host. This means that this value is going to increase
+  // monotonically when the host starts.
   optional uint64 network_received = 7;
   // This is the number of bytes (not bits) sent over the network since the
-  // start of the node. This means that this value is going to increase
-  // monotonically when the node starts.
+  // start of the host. This means that this value is going to increase
+  // monotonically when the host starts.
   optional uint64 network_sent = 8;
-  // This is the number of seconds that has elapsed since the node has started.
+  // This is the number of seconds that has elapsed since the host has started.
   optional uint64 uptime = 9;
 }
 

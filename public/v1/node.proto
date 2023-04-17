@@ -122,12 +122,6 @@ message Node {
   repeated FilteredIpAddr deny_ips = 28;
 }
 
-message FilterCriteria {
-  repeated string states = 1;
-  repeated string node_types = 2;
-  repeated string blockchain_ids = 3;
-}
-
 // IP Addresses used to filter access.
 message FilteredIpAddr {
   // The ip address used in this filter.
@@ -179,6 +173,12 @@ message ListNodesRequest {
   string org_id = 1;
   // The filter parameters that will be used for searching.
   FilterCriteria filter = 2;
+}
+
+message FilterCriteria {
+  repeated string states = 1;
+  repeated string node_types = 2;
+  repeated string blockchain_ids = 3;
 }
 
 // This response will contain all the filtered nodes.

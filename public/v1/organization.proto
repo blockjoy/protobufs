@@ -22,10 +22,8 @@ message Organization {
   google.protobuf.Timestamp created_at = 13;
   // The moment which this organization was last updated.
   google.protobuf.Timestamp updated_at = 14;
-  // This field contains the `OrgRole` that the user has within this
-  // organization, which controls the level of permissions they have to perform
-  // mutations (i.e. kick other users).
-  optional OrgUser current_user = 15;
+  // This field contains the users of this organization.
+  repeated OrgUser members = 15;
 }
 
 message OrgUser {
