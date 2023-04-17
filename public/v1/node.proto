@@ -34,6 +34,26 @@ message Node {
     NODE_STATUS_REMOVING = 17;
   }
 
+  // Possible states the container is described with
+  enum ContainerStatus {
+    // Reserving values up to 15 for possible later use
+    // Up to 15 to ensure only 1 byte is used for the most common values
+    reserved 12 to 15;
+
+    CONTAINER_STATUS_UNSPECIFIED = 0;
+    CONTAINER_STATUS_CREATING = 1;
+    CONTAINER_STATUS_RUNNING = 2;
+    CONTAINER_STATUS_STARTING = 3;
+    CONTAINER_STATUS_STOPPING = 4;
+    CONTAINER_STATUS_STOPPED = 5;
+    CONTAINER_STATUS_UPGRADING = 6;
+    CONTAINER_STATUS_UPGRADED = 7;
+    CONTAINER_STATUS_DELETING = 8;
+    CONTAINER_STATUS_DELETED = 9;
+    CONTAINER_STATUS_INSTALLING = 10;
+    CONTAINER_STATUS_SNAPSHOTTING = 11;
+  }
+
   // Describe the node's syncing status
   enum SyncStatus {
     // Reserving values up to 15 for possible later use
@@ -97,13 +117,14 @@ message Node {
   optional string address = 7;
   optional string version = 8;
   optional string ip = 9;
-  NodeType type = 10;
+  NodeType node_type = 10;
   repeated NodeProperty properties = 11;
   optional int64 block_height = 13;
   google.protobuf.Timestamp created_at = 15;
   google.protobuf.Timestamp updated_at = 16;
   NodeStatus status = 17;
   SyncStatus sync_status = 18;
+  ContainerStatus container_status = 12;
   optional StakingStatus staking_status = 19;
   string ip_gateway = 20;
   bool self_update = 21;
