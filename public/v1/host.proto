@@ -74,13 +74,13 @@ service Hosts {
 
 message CreateHostRequest {
   string name = 1;
-  optional string version = 2;
+  string version = 2;
   optional string location = 3;
-  optional uint64 cpu_count = 4;
-  optional uint64 mem_size = 5;
-  optional uint64 disk_size = 6;
-  optional string os = 7;
-  optional string os_version = 8;
+  uint64 cpu_count = 4;
+  uint64 mem_size_bytes = 5;
+  uint64 disk_size_bytes = 6;
+  string os = 7;
+  string os_version = 8;
   string ip_addr = 9;
   string ip_range_from = 10;
   string ip_range_to = 11;
@@ -95,7 +95,7 @@ message GetHostRequest {
 }
 
 message GetHostResponse {
-  Host hosts = 1;
+  Host host = 1;
 }
 
 message ListHostsRequest {

@@ -18,7 +18,7 @@ message HostProvision {
 }
 
 // Host provisioning
-service HostProvisionService {
+service HostProvisions {
   // Get a single host provision identified by ID or a list of all available
   // host provisions
   rpc Get(GetHostProvisionRequest) returns (GetHostProvisionResponse);
@@ -27,11 +27,11 @@ service HostProvisionService {
 }
 
 message GetHostProvisionRequest {
-  optional string id = 1;
+  string id = 1;
 }
 
 message GetHostProvisionResponse {
-  repeated HostProvision host_provisions = 1;
+  HostProvision host_provisions = 1;
 }
 
 message CreateHostProvisionRequest {

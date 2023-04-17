@@ -90,6 +90,7 @@ message RestartHostCommand {
 }
 
 message CreateCommandResponse {
+  Command command = 1;
 }
 
 message GetCommandRequest {
@@ -228,4 +229,5 @@ enum Protocol {
 
 message HostCommand {
   // We don't do this yet, but it is here for forwards compatibility.
+  string host_id = 1;
 }

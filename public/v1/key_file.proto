@@ -9,25 +9,24 @@ message Keyfile {
 }
 
 service KeyFiles {
-  // Return all available key files for given node ID
-  rpc Get(KeyFilesGetRequest) returns (KeyFilesGetResponse);
   // Save key files for given node ID
-  rpc Save(KeyFilesSaveRequest) returns (KeyFilesSaveResponse);
+  rpc Create(CreateKeyFilesRequest) returns (CreateKeyFilesResponse);
+  // Return all available key files for given node ID
+  rpc Get(GetKeyFilesRequest) returns (GetKeyFilesResponse);
 }
 
-message KeyFilesGetRequest {
+message GetKeyFilesRequest {
   string node_id = 1;
 }
 
-message KeyFilesGetResponse {
+message GetKeyFilesResponse {
   repeated Keyfile key_files = 1;
 }
 
-message KeyFilesSaveRequest {
+message CreateKeyFilesRequest {
   string node_id = 1;
   repeated Keyfile key_files = 2;
 }
 
-message KeyFilesSaveResponse {
-  repeated string messages = 1;
+message CreateKeyFilesResponse {
 }

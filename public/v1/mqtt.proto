@@ -8,6 +8,7 @@ package v1;
 
 import "v1/node.proto";
 import "v1/organization.proto";
+import "v1/host.proto";
 
 // A message about an event that happened to a node.
 message NodeMessage {
@@ -20,6 +21,10 @@ message NodeMessage {
 
 message NodeCreated {
   Node node = 1;
+  // The id of the person that updated the node
+  string created_by = 2;
+  string created_by_name = 3;
+  string created_by_email = 4;
 }
 
 message NodeUpdated {
@@ -33,7 +38,7 @@ message NodeUpdated {
 message NodeDeleted {
   string node_id = 1;
   string host_id = 2;
-  string organization_id = 3;
+  string org_id = 3;
   // The id of the persona that deleted the node
   string deleted_by = 4;
   string deleted_by_name = 5;
@@ -49,21 +54,50 @@ message OrgMessage {
 }
 
 message OrgCreated {
-  v1.Organization org = 1;
+  Org org = 1;
   string created_by = 2;
   string created_by_name = 3;
   string created_by_email = 4;
 }
 
 message OrgUpdated {
-  v1.Organization org = 1;
+  Org org = 1;
   string updated_by = 2;
   string updated_by_name = 3;
   string updated_by_email = 4;
 }
 
 message OrgDeleted {
-  string organization_id = 1;
+  string org_id = 1;
+  string deleted_by = 2;
+  string deleted_by_name = 3;
+  string deleted_by_email = 4;
+}
+
+message HostMessage {
+  oneof message {
+    HostCreated created = 1;
+    HostUpdated updated = 2;
+    HostDeleted deleted = 3;
+  }
+}
+
+message HostCreated {
+  Host host = 1;
+  string created_by = 2;
+  string created_by_name = 3;
+  string created_by_email = 4;
+}
+
+message HostUpdated {
+  Host host = 1;
+  string updated_by = 2;
+  string updated_by_name = 3;
+  string updated_by_email = 4;
+}
+
+message HostDeleted {
+  string host_id = 1;
   string deleted_by = 2;
   string deleted_by_name = 3;
   string deleted_by_email = 4;

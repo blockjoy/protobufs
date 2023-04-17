@@ -7,7 +7,7 @@ import "google/protobuf/timestamp.proto";
 import "v1/user.proto";
 
 // Organization representation
-message Organization {
+message Org {
   // The UUID of a the organization.
   string id = 1;
   // The name of this organization.
@@ -37,46 +37,57 @@ message OrgUser {
   string user_id = 1;
   string org_id = 2;
   OrgRole role = 3;
+  string name = 4;
+  string email = 5;
 }
 
 // Manage organizations
 service Orgs {
   // Get all the organizations for a user. All users automatically get a private
   // (internal) organization. 
-  rpc Get(GetOrganizationsRequest) returns (GetOrganizationsResponse);
+  rpc Get(GetOrgRequest) returns (GetOrgResponse);
+  rpc List(ListOrgsRequest) returns (ListOrgsResponse);
   // Create a single organization
-  rpc Create(CreateOrganizationRequest) returns (CreateOrganizationResponse);
+  rpc Create(CreateOrgRequest) returns (CreateOrgResponse);
   // Update a single organization
-  rpc Update(UpdateOrganizationRequest) returns (UpdateOrganizationResponse);
+  rpc Update(UpdateOrgRequest) returns (UpdateOrgResponse);
   // Mark a single organization as deleted
-  rpc Delete(DeleteOrganizationRequest) returns (DeleteOrganizationResponse);
+  rpc Delete(DeleteOrgRequest) returns (DeleteOrgResponse);
   // Restore a previously deleted organization
-  rpc Restore(RestoreOrganizationRequest) returns (RestoreOrganizationResponse);
+  rpc Restore(RestoreOrgRequest) returns (RestoreOrgResponse);
   // Retrieve organization members
-  rpc Members(OrganizationMemberRequest) returns (OrganizationMemberResponse);
+  rpc Members(OrgMembersRequest) returns (OrgMembersResponse);
   // Remove organization member
   rpc RemoveMember(RemoveMemberRequest) returns (google.protobuf.Empty);
   // Leave an organization the user is member of
-  rpc Leave(LeaveOrganizationRequest) returns (google.protobuf.Empty);
+  rpc Leave(LeaveOrgRequest) returns (google.protobuf.Empty);
 }
 
-message GetOrganizationsRequest {
-  optional string org_id = 1;
+message GetOrgRequest {
+  string org_id = 1;
 }
 
-message GetOrganizationsResponse {
-  repeated Organization organizations = 1;
+message GetOrgResponse {
+  Org org = 1;
 }
 
-message CreateOrganizationRequest {
+message ListOrgsRequest {
+  optional string member_id = 1;
+}
+
+message ListOrgsResponse {
+  repeated Org orgs = 1;
+}
+
+message CreateOrgRequest {
   string name = 1;
 }
 
-message CreateOrganizationResponse {
-  Organization organization = 1;
+message CreateOrgResponse {
+  Org org = 1;
 }
 
-message UpdateOrganizationRequest {
+message UpdateOrgRequest {
   // The id of the organization to be updated.
   string id = 1;
   // If this value is provided, the name of the organization will be set to the
@@ -84,30 +95,30 @@ message UpdateOrganizationRequest {
   optional string name = 2;
 }
 
-message UpdateOrganizationResponse {
+message UpdateOrgResponse {
 }
 
-message DeleteOrganizationRequest {
+message DeleteOrgRequest {
   string id = 1;
 }
 
-message DeleteOrganizationResponse {
+message DeleteOrgResponse {
 }
 
-message OrganizationMemberRequest {
+message OrgMembersRequest {
   string id = 1;
 }
 
-message OrganizationMemberResponse {
+message OrgMembersResponse {
   repeated User users = 1;
 }
 
-message RestoreOrganizationRequest {
+message RestoreOrgRequest {
   string id = 1;
 }
 
-message RestoreOrganizationResponse {
-  Organization organization = 1;
+message RestoreOrgResponse {
+  Org org = 1;
 }
 
 message RemoveMemberRequest {
@@ -115,6 +126,6 @@ message RemoveMemberRequest {
   string org_id = 2;
 }
 
-message LeaveOrganizationRequest {
+message LeaveOrgRequest {
   string org_id = 1;
 }
