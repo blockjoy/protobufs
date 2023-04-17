@@ -174,13 +174,6 @@ message NodeCreate {
 message NodeDelete {
 }
 
-message NodeFirewallUpdate {
-  bool enabled = 1;
-  Action default_in = 2;
-  Action default_out = 3;
-  repeated Rule rules = 4;
-}
-
 message NodeCommand {
   string node_id = 1;
   string host_id = 2;
@@ -196,7 +189,6 @@ message NodeCommand {
     NodeGet info_get = 10;
     NodeCreate create = 11;
     NodeDelete delete = 12;
-    NodeFirewallUpdate firewall_update = 14;
   };
 }
 
