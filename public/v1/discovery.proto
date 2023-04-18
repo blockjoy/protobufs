@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package v1;
+package public.v1;
 
 service Discovery {
   /* Return relevant service URLs */

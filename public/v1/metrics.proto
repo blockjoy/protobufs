@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package v1;
+package public.v1;
 
 import "google/protobuf/empty.proto";
-import "v1/node.proto";
+import "node.proto";
 
 // This message is used to store the metrics for a given set of nodes.
 message NodeMetricsRequest {

@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package v1;
+package public.v1;
 
 import "google/protobuf/timestamp.proto";
-import "v1/node.proto";
+import "node.proto";
 
 message Command {
   // Each command has a unique id that identifies it.
