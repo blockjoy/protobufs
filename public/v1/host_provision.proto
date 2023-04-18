@@ -7,8 +7,12 @@ import "google/protobuf/timestamp.proto";
 // HostProvision entity
 message HostProvision {
   string id = 1;
+  // This field is populated only if this HostProvision has been used to create
+  // a host. Afer that happens, the created host's id will be placed here.
   optional string host_id = 2;
   google.protobuf.Timestamp created_at = 3;
+  // If this HostProvision has been used to create a Host, the moment of host
+  // creation  will be placed here.
   optional google.protobuf.Timestamp claimed_at = 4;
   optional string install_cmd = 5;
   string ip_range_from = 6;

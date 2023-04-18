@@ -23,12 +23,8 @@ message Blockchain {
   optional string version = 7;
   google.protobuf.Timestamp created_at = 8;
   optional google.protobuf.Timestamp updated_at = 9;
-  bool supports_etl = 10;
-  bool supports_node = 11;
-  bool supports_staking = 12;
-  bool supports_broadcast = 13;
-  string supported_nodes_types = 14;
-  repeated BlockchainNetwork networks = 15;
+  string supported_nodes_types = 10;
+  repeated BlockchainNetwork networks = 11;
 }
 
 message BlockchainNetwork {

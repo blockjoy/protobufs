@@ -118,7 +118,7 @@ message Node {
   optional string ip = 9;
   NodeType node_type = 10;
   repeated NodeProperty properties = 11;
-  optional int64 block_height = 13;
+  optional uint64 block_height = 13;
   google.protobuf.Timestamp created_at = 15;
   google.protobuf.Timestamp updated_at = 16;
   NodeStatus status = 17;
