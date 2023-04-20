@@ -4,32 +4,34 @@ package v1;
 
 import "google/protobuf/timestamp.proto";
 
-// User invitation
+// The invitation resource. This invites users into organization 
 message Invitation {
-  // A uuid that uniquely determines that this invitation.
+  // A uuid that uniquely determines the invitation.
   string id = 1;
   // The id of the user that created this invitation.
-  string created_by = 24;
-  // The full name of the user that created this invatation.
-  string created_by_name = 8;
-  // This field denotes the id of the organization that the user is being
-  // invited to.
-  string org_id = 2;
+  string created_by = 2;
+  // The full name of the user that created this invitation.
+  string created_by_name = 3;
+  // The id of the organization the invitee is being invited to.
+  string org_id = 4;
   // This is the name of the organization that this invitation has been created
   // for.
-  string org_name = 9;
-  // This field denotes the id of the person that is being invited here. Note
-  // that this is not the uuid of some user, because the person that is being
-  // invited might not have an account (yet).
-  string invitee_email = 4;
-  // This field contains the moment this invitation was created.
-  google.protobuf.Timestamp created_at = 5;
-  // If this invitation has been accepted, this is indicated by this field being
-  // populated. The value is set to the moment of acceptance.
-  optional google.protobuf.Timestamp accepted_at = 6;
-  // If this invitation has been declined, this is indicated by this field being
-  // populated. The value is set to the moment of declination.
-  optional google.protobuf.Timestamp declined_at = 7;
+  string org_name = 5;
+  // The id of the person that is being invited here. Note that this is not the
+  // uuid of some user, because the person that is being invited might not have
+  // an account (yet).
+  string invitee_email = 6;
+  // The moment this invitation was created.
+  google.protobuf.Timestamp created_at = 7;
+  // The status of the invitation, indicating what user action has been taken
+  // with this invitation.
+  InvitationStatus status = 8;
+  // If this invitation has been accepted, this field is set to the moment of
+  // acceptance.
+  optional google.protobuf.Timestamp accepted_at = 9;
+  // If this invitation has been declined, this field is set to the moment of
+  // declination.
+  optional google.protobuf.Timestamp declined_at = 10;
 }
 
 // Manage invitations
@@ -48,13 +50,26 @@ service Invitations {
   rpc Revoke(RevokeInvitationRequest) returns (RevokeInvitationResponse);
 }
 
+// The status of an invitation.
+enum InvitationStatus {
+  INVITATION_STATUS_UNSPECIFIED = 0;
+  // This invitation has not been used yet. The user may still accept or decline
+  // it.
+  INVITATION_STATUS_OPEN = 1;
+  // This invitation has been accepted. The user is now a member of the
+  // specified organization and this invitation is not useful anymore.
+  INVITATION_STATUS_ACCEPTED = 2;
+  // This invitation has been declined. This means that the user can no longer
+  // use this invitation anymore to join the organization.
+  INVITATION_STATUS_DECLINED = 3;
+}
+
 message CreateInvitationRequest {
-  // This field denotes the id of the person that is being invited here. Note
-  // that this is not the uuid of some user, because the person that is being
-  // invited might not have an account (yet).
+  // The id of the person that is being invited here. Note that this is not the
+  // uuid of some user, because the person that is being invited might not have
+  // an account (yet).
   string invitee_email = 1;
-  // This field denotes the id of the organization that the user is being
-  // invited to.
+  // The id of the organization that the user is being invited to.
   string org_id = 2;
 }
 
