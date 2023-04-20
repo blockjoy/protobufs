@@ -2,13 +2,6 @@ syntax = "proto3";
 
 package v1;
 
-// API token representation
-// As there's no specific token type, we use this one to indicate the value of
-// the field will be an API token
-message ApiToken {
-  string value = 1;
-}
-
 // Retrieve and refresh API token
 service Authentication {
   // Login user, i.e. retrieve token
@@ -35,14 +28,14 @@ message LoginUserRequest {
 }
 
 message LoginUserResponse {
-  ApiToken token = 1;
+  string token = 1;
 }
 
 message RefreshTokenRequest {
 }
 
 message RefreshTokenResponse {
-  ApiToken token = 1;
+  string token = 1;
 }
 
 message ResetPasswordRequest {
@@ -57,24 +50,23 @@ message UpdatePasswordRequest {
 }
 
 message UpdatePasswordResponse {
-  ApiToken token = 1;
+  string token = 1;
 }
 
 message UpdateUIPasswordRequest {
-  string old_pwd = 1;
-  string new_pwd = 2;
-  string new_pwd_confirmation = 3;
+  string old_password = 1;
+  string new_password = 2;
 }
 
 message UpdateUIPasswordResponse {
-  ApiToken token = 1;
+  string token = 1;
 }
 
 message ConfirmRegistrationRequest {
 }
 
 message ConfirmRegistrationResponse {
-  ApiToken token = 1;
+  string token = 1;
 }
 
 message SwitchOrgRequest {

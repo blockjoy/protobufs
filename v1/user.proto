@@ -38,7 +38,6 @@ message CreateUserRequest {
   string first_name = 2;
   string last_name = 3;
   string password = 4;
-  string password_confirmation = 5;
 }
 
 message CreateUserResponse {
