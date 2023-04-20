@@ -2,20 +2,34 @@ syntax = "proto3";
 
 package v1;
 
-import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 // User invitation
 message Invitation {
+  // A uuid that uniquely determines that this invitation.
   string id = 1;
-  string created_by_id = 2;
-  string created_for_org_id = 3;
+  // The id of the user that created this invitation.
+  string created_by = 24;
+  // The full name of the user that created this invatation.
+  string created_by_name = 8;
+  // This field denotes the id of the organization that the user is being
+  // invited to.
+  string org_id = 2;
+  // This is the name of the organization that this invitation has been created
+  // for.
+  string org_name = 9;
+  // This field denotes the id of the person that is being invited here. Note
+  // that this is not the uuid of some user, because the person that is being
+  // invited might not have an account (yet).
   string invitee_email = 4;
+  // This field contains the moment this invitation was created.
   google.protobuf.Timestamp created_at = 5;
+  // If this invitation has been accepted, this is indicated by this field being
+  // populated. The value is set to the moment of acceptance.
   optional google.protobuf.Timestamp accepted_at = 6;
+  // If this invitation has been declined, this is indicated by this field being
+  // populated. The value is set to the moment of declination.
   optional google.protobuf.Timestamp declined_at = 7;
-  string created_by_user_name = 8;
-  string created_for_org_name = 9;
 }
 
 // Manage invitations
@@ -27,16 +41,21 @@ service Invitations {
   // List received invitations for given user
   rpc ListReceived(ListReceivedInvitationRequest) returns (InvitationsResponse);
   // Accept invitation and become member of the desired org
-  rpc Accept(InvitationRequest) returns (google.protobuf.Empty);
+  rpc Accept(AcceptInvitationRequest) returns (AcceptInvitationResponse);
   // Decline invitation and DON'T become member of the desired org
-  rpc Decline(InvitationRequest) returns (google.protobuf.Empty);
+  rpc Decline(DeclineInvitationRequest) returns (DeclineInvitationResponse);
   // Revoke (delete) pending invitation
-  rpc Revoke(InvitationRequest) returns (google.protobuf.Empty);
+  rpc Revoke(RevokeInvitationRequest) returns (RevokeInvitationResponse);
 }
 
 message CreateInvitationRequest {
+  // This field denotes the id of the person that is being invited here. Note
+  // that this is not the uuid of some user, because the person that is being
+  // invited might not have an account (yet).
   string invitee_email = 1;
-  string created_for_org_id = 2;
+  // This field denotes the id of the organization that the user is being
+  // invited to.
+  string org_id = 2;
 }
 
 message CreateInvitationResponse {
@@ -54,6 +73,23 @@ message InvitationsResponse {
   repeated Invitation invitations = 1;
 }
 
-message InvitationRequest {
-  Invitation invitation = 1;
+message AcceptInvitationRequest {
+  string invitation_id = 1;
+}
+
+message AcceptInvitationResponse {
+}
+
+message DeclineInvitationRequest {
+  string invitation_id = 1;
+}
+
+message DeclineInvitationResponse {
+}
+
+message RevokeInvitationRequest {
+  string invitation_id = 1;
+}
+
+message RevokeInvitationResponse {
 }
