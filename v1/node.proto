@@ -114,7 +114,7 @@ message Node {
   // The P2P address of the node on the blockchain. This field is only set as
   // the node is started, so therefore it is optional.
   optional string address = 7;
-  optional string version = 8;
+  string version = 8;
   optional string ip = 9;
   NodeType node_type = 10;
   repeated NodeProperty properties = 11;
@@ -169,9 +169,8 @@ message CreateNodeRequest {
   string org_id = 2;
   // The id of the blockchain that shoudl be ran inside the node.
   string blockchain_id = 3;
-  // The version of the node software that is ran. If this is not provided, the
-  // latest version is used.
-  optional string version = 4;
+  // The version of the node software that is ran.
+  string version = 4;
   // The type of node that you want to create.
   Node.NodeType node_type = 5;
   // A list of properties.
