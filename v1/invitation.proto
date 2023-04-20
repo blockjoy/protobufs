@@ -36,17 +36,17 @@ message Invitation {
 
 // Manage invitations
 service Invitations {
-  // Create an invitation for an org the calling user is owner/admin of
+  // Invite a user into an organization.
   rpc Create(CreateInvitationRequest) returns (CreateInvitationResponse);
-  // List pending invitations for given org
+  // List pending invitations for given org.
   rpc ListPending(ListPendingInvitationRequest) returns (InvitationsResponse);
-  // List received invitations for given user
+  // List received invitations for given user.
   rpc ListReceived(ListReceivedInvitationRequest) returns (InvitationsResponse);
-  // Accept invitation and become member of the desired org
+  // Accept an invitation and become member of specified organization.
   rpc Accept(AcceptInvitationRequest) returns (AcceptInvitationResponse);
-  // Decline invitation and DON'T become member of the desired org
+  // Decline an invitation.
   rpc Decline(DeclineInvitationRequest) returns (DeclineInvitationResponse);
-  // Revoke (delete) pending invitation
+  // Revoke a pending invitation.
   rpc Revoke(RevokeInvitationRequest) returns (RevokeInvitationResponse);
 }
 
@@ -64,6 +64,7 @@ enum InvitationStatus {
   INVITATION_STATUS_DECLINED = 3;
 }
 
+// Use this message to create a new invitation.
 message CreateInvitationRequest {
   // The id of the person that is being invited here. Note that this is not the
   // uuid of some user, because the person that is being invited might not have
