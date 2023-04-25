@@ -76,7 +76,7 @@ service Hosts {
 message CreateHostRequest {
   string name = 1;
   string version = 2;
-  optional string location = 3;
+  //optional string location = 3;
   uint64 cpu_count = 4;
   uint64 mem_size_bytes = 5;
   uint64 disk_size_bytes = 6;
@@ -110,7 +110,7 @@ message UpdateHostRequest {
   string id = 1;
   optional string name = 2;
   optional string version = 3;
-  optional string location = 4;
+  //optional string location = 4;
   optional string os = 5;
   optional string os_version = 6;
 }
