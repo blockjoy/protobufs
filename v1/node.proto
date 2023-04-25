@@ -226,6 +226,10 @@ message CreateNodeRequest {
   // The scheduler decides where to place this node. Refer to the documentation
   // of the `NodeScheduler` message for more details.
   NodeScheduler scheduler = 8;
+  // A list of ip addresses allowed to access public ports on this node.
+  repeated FilteredIpAddr allow_ips = 9;
+  // A list of ip addresses denied all access to any ports on this node.
+  repeated FilteredIpAddr deny_ips = 10;
 }
 
 enum UiType {
@@ -293,6 +297,10 @@ message UpdateNodeRequest {
   optional Node.ContainerStatus container_status = 5;
   // Update the P2P address of the blockchain node.
   optional string address = 6;
+  // A list of ip addresses allowed to access public ports on this node.
+  repeated FilteredIpAddr allow_ips = 7;
+  // A list of ip addresses denied all access to any ports on this node.
+  repeated FilteredIpAddr deny_ips = 8;
 }
 
 message UpdateNodeResponse {
