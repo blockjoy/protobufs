@@ -13,6 +13,8 @@ service KeyFiles {
   rpc Create(CreateKeyFilesRequest) returns (CreateKeyFilesResponse);
   // Return all available key files for given node ID
   rpc Get(GetKeyFilesRequest) returns (GetKeyFilesResponse);
+  // Update keyfiles
+  rpc Update(UpdateKeyFilesRequest) returns (UpdateKeyFilesResponse);
 }
 
 message GetKeyFilesRequest {
@@ -29,4 +31,12 @@ message CreateKeyFilesRequest {
 }
 
 message CreateKeyFilesResponse {
+}
+
+message UpdateKeyFilesRequest {
+  string node_id = 1;
+  repeated Keyfile key_files = 2;
+}
+
+message UpdateKeyFilesResponse {
 }
