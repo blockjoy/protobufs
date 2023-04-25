@@ -32,7 +32,7 @@ message Host {
   // The version of the blockjoy control software running on the host.
   string version = 3;
 
-  // optional string location = 4 has been deleted. Dont use number '4' for any other field.
+  // location = 4 has been deleted. Dont use number '4' for any other field.
 
   // The number of logical cores the machine has.
   optional uint64 cpu_count = 5;
