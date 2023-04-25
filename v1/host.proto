@@ -31,8 +31,9 @@ message Host {
   string name = 2;
   // The version of the blockjoy control software running on the host.
   string version = 3;
-  // The physical location of the server.
-  optional string location = 4;
+
+  // optional string location = 4 has been deleted. Dont use number '4' for any other field.
+
   // The number of logical cores the machine has.
   optional uint64 cpu_count = 5;
   // The amount of physical memory the machine has.
@@ -48,7 +49,7 @@ message Host {
   // Current status of the machine, or `UNSPECIFIED`.
   HostStatus status = 11;
   // The moment this host was created. Corresponds to the moment that the
-  // host_provision was 
+  // host_provision was
   google.protobuf.Timestamp created_at = 12;
   // The lowest ip address that this host may assign to a node.
   optional string ip_range_from = 13;
@@ -130,7 +131,7 @@ message ProvisionHostRequest {
     CONNECTION_STATUS_ONLINE = 1;
     CONNECTION_STATUS_OFFLINE = 2;
   }
-  
+
   string otp = 1;
   ConnectionStatus status = 2;
   string name = 3;
