@@ -56,6 +56,8 @@ message Host {
   optional string ip_range_to = 14;
   // The ip gateway of this host.
   optional string ip_gateway = 15;
+  // The organization that this host belongs to.
+  optional string org_id = 16;
 }
 
 // Manage hosts
@@ -85,6 +87,8 @@ message CreateHostRequest {
   string ip_range_from = 10;
   string ip_range_to = 11;
   string ip_gateway = 12;
+  // The organization that this host belongs to.
+  optional string org_id = 13;
 }
 
 message CreateHostResponse {
