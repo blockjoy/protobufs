@@ -4,11 +4,11 @@
 
 syntax = "proto3";
 
-package v1;
+package blockjoy.v1;
 
-import "host.proto";
-import "node.proto";
-import "organization.proto";
+import "blockjoy/v1/host.proto";
+import "blockjoy/v1/node.proto";
+import "blockjoy/v1/org.proto";
 
 // A message about an event that happened to a node.
 message NodeMessage {

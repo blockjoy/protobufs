@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package blockjoy.v1;
+
+// Retrieve and refresh API token
+service AuthService {
+  // Login user, i.e. retrieve token
+  rpc Login(AuthServiceLoginRequest) returns (AuthServiceLoginResponse);
+  // Confirm user registration
+  rpc Confirm(AuthServiceConfirmRequest) returns (AuthServiceConfirmResponse);
+  // Refresh API token.
+  rpc Refresh(AuthServiceRefreshRequest) returns (AuthServiceRefreshResponse);
+  // Send the reset password email out to this user. Intentionally returns
+  // nothing to hide whether the user was registered or not.
+  rpc ResetPassword(AuthServiceResetPasswordRequest) returns
+    (AuthServiceResetPasswordResponse);
+  // Update the user's password to a new value
+  rpc UpdatePassword(AuthServiceUpdatePasswordRequest) returns
+    (AuthServiceUpdatePasswordResponse);
+  // Update the user's password via profile UI
+  rpc UpdateUIPassword(AuthServiceUpdateUIPasswordRequest)
+    returns (AuthServiceUpdateUIPasswordResponse);
+}
+
+message AuthServiceLoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message AuthServiceLoginResponse {
+  string token = 1;
+}
+
+message AuthServiceRefreshRequest {
+}
+
+message AuthServiceRefreshResponse {
+  string token = 1;
+}
+
+message AuthServiceResetPasswordRequest {
+  string email = 1;
+}
+
+message AuthServiceResetPasswordResponse {
+}
+
+message AuthServiceUpdatePasswordRequest {
+  string password = 1;
+}
+
+message AuthServiceUpdatePasswordResponse {
+  string token = 1;
+}
+
+message AuthServiceUpdateUIPasswordRequest {
+  string old_password = 1;
+  string new_password = 2;
+}
+
+message AuthServiceUpdateUIPasswordResponse {
+  string token = 1;
+}
+
+message AuthServiceConfirmRequest {
+}
+
+message AuthServiceConfirmResponse {
+  string token = 1;
+}
+
+message AuthServiceSwitchOrgRequest {
+  string org_id = 1;
+}

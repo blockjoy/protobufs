@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package blockjoy.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Organization representation
+message Org {
+  // The UUID of a the organization.
+  string id = 1;
+  // The name of this organization.
+  string name = 2;
+  // If this field is set to true, this organization is a personal
+  // organization. A personal organization is the default organzation for a
+  // user that contains only them.
+  bool personal = 3;
+  // The number of users in this organization.
+  uint64 member_count = 4;
+  // The moment which this organization was created.
+  google.protobuf.Timestamp created_at = 13;
+  // The moment which this organization was last updated.
+  google.protobuf.Timestamp updated_at = 14;
+  // This field contains the users of this organization.
+  repeated OrgUser members = 15;
+}
+
+// Manage organizations
+service OrgService {
+  // Get all the organizations for a user. All users automatically get a private
+  // (internal) organization. 
+  rpc Get(OrgServiceGetRequest) returns (OrgServiceGetResponse);
+  rpc List(OrgServiceListRequest) returns (OrgServiceListResponse);
+  // Create a single organization
+  rpc Create(OrgServiceCreateRequest) returns (OrgServiceCreateResponse);
+  // Update a single organization
+  rpc Update(OrgServiceUpdateRequest) returns (OrgServiceUpdateResponse);
+  // Mark a single organization as deleted
+  rpc Delete(OrgServiceDeleteRequest) returns (OrgServiceDeleteResponse);
+  // Remove organization member
+  rpc RemoveMember(OrgServiceRemoveMemberRequest) returns
+    (OrgServiceRemoveMemberResponse);
+}
+
+message OrgServiceGetRequest {
+  string id = 1;
+}
+
+message OrgServiceGetResponse {
+  Org org = 1;
+}
+
+message OrgServiceListRequest {
+  optional string member_id = 1;
+}
+
+message OrgServiceListResponse {
+  repeated Org orgs = 1;
+}
+
+message OrgServiceCreateRequest {
+  string name = 1;
+}
+
+message OrgServiceCreateResponse {
+  Org org = 1;
+}
+
+message OrgServiceUpdateRequest {
+  // The id of the organization to be updated.
+  string id = 1;
+  // If this value is provided, the name of the organization will be set to the
+  // provided value.
+  optional string name = 2;
+}
+
+message OrgServiceUpdateResponse {
+}
+
+message OrgServiceDeleteRequest {
+  string id = 1;
+}
+
+message OrgServiceDeleteResponse {
+}
+
+message OrgServiceRemoveMemberRequest {
+  string user_id = 1;
+  string org_id = 2;
+}
+
+message OrgServiceRemoveMemberResponse {
+}
+
+message OrgUser {
+  string user_id = 1;
+  string org_id = 2;
+  OrgRole role = 3;
+  string name = 4;
+  string email = 5;
+}
+
+enum OrgRole {
+  ORG_ROLE_UNSPECIFIED = 0;
+  ORG_ROLE_MEMBER = 1;
+  ORG_ROLE_OWNER = 2;
+  ORG_ROLE_ADMIN = 3;
+}

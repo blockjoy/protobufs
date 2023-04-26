@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package v1;
+package blockjoy.v1;
 
 import "google/protobuf/timestamp.proto";
 
@@ -15,49 +15,50 @@ message User {
 }
 
 // User related services.
-service Users {
+service UserService {
   // Retrieve a single user.
-  rpc Get(GetUserRequest) returns (GetUserResponse);
+  rpc Get(UserServiceGetRequest) returns (UserServiceGetResponse);
   // Create a single user.
-  rpc Create(CreateUserRequest) returns (CreateUserResponse);
+  rpc Create(UserServiceCreateRequest) returns (UserServiceCreateResponse);
   // Update a single user.
-  rpc Update(UpdateUserRequest) returns (UpdateUserResponse);
+  rpc Update(UserServiceUpdateRequest) returns (UserServiceUpdateResponse);
   // Delete a single user.
-  rpc Delete(DeleteUserRequest) returns (DeleteUserResponse);
+  rpc Delete(UserServiceDeleteRequest) returns (UserServiceDeleteResponse);
 }
 
-message GetUserRequest {
+message UserServiceGetRequest {
+  string id = 1;
 }
 
-message GetUserResponse {
+message UserServiceGetResponse {
   User user = 1;
 }
 
-message CreateUserRequest {
+message UserServiceCreateRequest {
   string email = 1;
   string first_name = 2;
   string last_name = 3;
   string password = 4;
 }
 
-message CreateUserResponse {
+message UserServiceCreateResponse {
   User user = 1;
 }
 
-message UpdateUserRequest {
+message UserServiceUpdateRequest {
   // The id of the user to be updated.
   string id = 1;
   optional string first_name = 2;
   optional string last_name = 3;
 }
 
-message UpdateUserResponse {
+message UserServiceUpdateResponse {
   User user = 1;
 }
 
 // Users can only delete themselves, so no need for any further params
-message DeleteUserRequest {
+message UserServiceDeleteRequest {
 }
 
-message DeleteUserResponse {
+message UserServiceDeleteResponse {
 }

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package v1;
+package blockjoy.v1;
 
 import "google/protobuf/timestamp.proto";
 
@@ -22,28 +22,30 @@ message HostProvision {
 }
 
 // Host provisioning
-service HostProvisions {
+service HostProvisionService {
   // Get a single host provision identified by ID or a list of all available
   // host provisions
-  rpc Get(GetHostProvisionRequest) returns (GetHostProvisionResponse);
+  rpc Get(HostProvisionServiceGetRequest) returns
+    (HostProvisionServiceGetResponse);
   // Create a single host provision
-  rpc Create(CreateHostProvisionRequest) returns (CreateHostProvisionResponse);
+  rpc Create(HostProvisionServiceCreateRequest) returns
+    (HostProvisionServiceCreateResponse);
 }
 
-message GetHostProvisionRequest {
+message HostProvisionServiceGetRequest {
   string id = 1;
 }
 
-message GetHostProvisionResponse {
+message HostProvisionServiceGetResponse {
   HostProvision host_provisions = 1;
 }
 
-message CreateHostProvisionRequest {
+message HostProvisionServiceCreateRequest {
   string ip_range_from = 1;
   string ip_range_to = 2;
   string ip_gateway = 3;
 }
 
-message CreateHostProvisionResponse {
+message HostProvisionServiceCreateResponse {
   HostProvision host_provision = 1;
 }

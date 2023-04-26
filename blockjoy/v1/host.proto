@@ -1,30 +1,10 @@
 syntax = "proto3";
 
-package v1;
+package blockjoy.v1;
 
 import "google/protobuf/timestamp.proto";
 
 message Host {
-  /* Possible states the container is described with */
-  enum HostStatus {
-    // Reserving values up to 15 for possible later use
-    // Up to 15 to ensure only 1 byte is used for the most common values
-    reserved 12 to 15;
-
-    HOST_STATUS_UNSPECIFIED = 0;
-    HOST_STATUS_CREATING = 1;
-    HOST_STATUS_RUNNING = 2;
-    HOST_STATUS_STARTING = 3;
-    HOST_STATUS_STOPPING = 4;
-    HOST_STATUS_STOPPED = 5;
-    HOST_STATUS_UPGRADING = 6;
-    HOST_STATUS_UPGRADED = 7;
-    HOST_STATUS_DELETING = 8;
-    HOST_STATUS_DELETED = 9;
-    HOST_STATUS_INSTALLING = 10;
-    HOST_STATUS_SNAPSHOTTING = 11;
-  }
-
   // This is the id of the host.
   string id = 1;
   // This is the randomly generated name of the host.
@@ -60,20 +40,21 @@ message Host {
 }
 
 // Manage hosts
-service Hosts {
+service HostService {
   // Create a single host
-  rpc Create(CreateHostRequest) returns (CreateHostResponse);
-  rpc Get(GetHostRequest) returns (GetHostResponse);
-  rpc List(ListHostsRequest) returns (ListHostsResponse);
+  rpc Create(HostServiceCreateRequest) returns (HostServiceCreateResponse);
+  rpc Get(HostServiceGetRequest) returns (HostServiceGetResponse);
+  rpc List(HostServiceListRequest) returns (HostServiceListResponse);
   // Update a single host
-  rpc Update(UpdateHostRequest) returns (UpdateHostResponse);
+  rpc Update(HostServiceUpdateRequest) returns (HostServiceUpdateResponse);
   // Delete a single host
-  rpc Delete(DeleteHostRequest) returns (DeleteHostResponse);
+  rpc Delete(HostServiceDeleteRequest) returns (HostServiceDeleteResponse);
   // This endpoint creates a new host from an already created host provision.
-  rpc Provision(ProvisionHostRequest) returns (ProvisionHostResponse);
+  rpc Provision(HostServiceProvisionRequest) returns
+    (HostServiceProvisionResponse);
 }
 
-message CreateHostRequest {
+message HostServiceCreateRequest {
   string name = 1;
   string version = 2;
   //optional string location = 3;
@@ -88,25 +69,27 @@ message CreateHostRequest {
   string ip_gateway = 12;
 }
 
-message CreateHostResponse {
-}
-
-message GetHostRequest {
-  string id = 1;
-}
-
-message GetHostResponse {
+message HostServiceCreateResponse {
   Host host = 1;
 }
 
-message ListHostsRequest {
+message HostServiceGetRequest {
+  string id = 1;
 }
 
-message ListHostsResponse {
+message HostServiceGetResponse {
+  Host host = 1;
+}
+
+message HostServiceListRequest {
+  string org_id = 1;
+}
+
+message HostServiceListResponse {
   repeated Host hosts = 1;
 }
 
-message UpdateHostRequest {
+message HostServiceUpdateRequest {
   string id = 1;
   optional string name = 2;
   optional string version = 3;
@@ -115,17 +98,17 @@ message UpdateHostRequest {
   optional string os_version = 6;
 }
 
-message UpdateHostResponse {
+message HostServiceUpdateResponse {
 }
 
-message DeleteHostRequest {
+message HostServiceDeleteRequest {
   string id = 1;
 }
 
-message DeleteHostResponse {
+message HostServiceDeleteResponse {
 }
 
-message ProvisionHostRequest {
+message HostServiceProvisionRequest {
   enum ConnectionStatus {
     CONNECTION_STATUS_UNSPECIFIED = 0;
     CONNECTION_STATUS_ONLINE = 1;
@@ -146,7 +129,23 @@ message ProvisionHostRequest {
   string ip = 10;
 }
 
-message ProvisionHostResponse {
+message HostServiceProvisionResponse {
   string host_id = 1;
   string token = 2;
+}
+
+// Possible states the container is described with
+enum HostStatus {
+  HOST_STATUS_UNSPECIFIED = 0;
+  HOST_STATUS_CREATING = 1;
+  HOST_STATUS_RUNNING = 2;
+  HOST_STATUS_STARTING = 3;
+  HOST_STATUS_STOPPING = 4;
+  HOST_STATUS_STOPPED = 5;
+  HOST_STATUS_UPGRADING = 6;
+  HOST_STATUS_UPGRADED = 7;
+  HOST_STATUS_DELETING = 8;
+  HOST_STATUS_DELETED = 9;
+  HOST_STATUS_INSTALLING = 10;
+  HOST_STATUS_SNAPSHOTTING = 11;
 }

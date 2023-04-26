@@ -1,0 +1,300 @@
+syntax = "proto3";
+
+package blockjoy.v1;
+
+import "google/protobuf/timestamp.proto";
+
+/* Blockchain node representation */
+message Node {
+  string id = 1;
+  string org_id = 2;
+  string host_id = 3;
+  string host_name = 4;
+  string blockchain_id = 5;
+  string name = 6;
+  // The P2P address of the node on the blockchain. This field is only set as
+  // the node is started, so therefore it is optional.
+  optional string address = 7;
+  string version = 8;
+  optional string ip = 9;
+  NodeType node_type = 10;
+  repeated NodeProperty properties = 11;
+  optional uint64 block_height = 13;
+  google.protobuf.Timestamp created_at = 15;
+  google.protobuf.Timestamp updated_at = 16;
+  NodeStatus status = 17;
+  SyncStatus sync_status = 18;
+  ContainerStatus container_status = 12;
+  optional StakingStatus staking_status = 19;
+  string ip_gateway = 20;
+  bool self_update = 21;
+  string network = 22;
+  optional string blockchain_name = 23;
+  // The id of the user that created this node. For the earliest nodes we
+  // created, this field was not tracked and is therefore not populated.
+  optional string created_by = 24;
+  // The name of the aforementioned user.
+  optional string created_by_name = 25;
+  // The email of said aforementioned user.
+  optional string created_by_email = 26;
+  // A list of ip addresses allowed to access public ports on this node.
+  repeated FilteredIpAddr allow_ips = 27;
+  // A list of ip addresses denied all access to any ports on this node.
+  repeated FilteredIpAddr deny_ips = 28;
+  // The scheduler decides where to place this node. Refer to the documentation
+  // of the `NodeScheduler` message for more details.
+  NodeScheduler scheduler = 29;
+}
+
+service NodeService {
+  /* Create a single blockchain node */
+  rpc Create(NodeServiceCreateRequest) returns (NodeServiceCreateResponse);
+  /* Get single blockchain node */
+  rpc Get(NodeServiceGetRequest) returns (NodeServiceGetResponse);
+  /* Get nodes belonging to org */
+  rpc List(NodeServiceListRequest) returns (NodeServiceListResponse);
+  /* Update a single blockchain node */
+  rpc Update(NodeServiceUpdateRequest) returns (NodeServiceUpdateResponse);
+  /* Delete a single node */
+  rpc Delete(NodeServiceDeleteRequest) returns (NodeServiceDeleteResponse);
+}
+
+// This message is used to create a new node.
+message NodeServiceCreateRequest {
+  // The id of the organization for which the node should be created.
+  string org_id = 2;
+  // The id of the blockchain that shoudl be ran inside the node.
+  string blockchain_id = 3;
+  // The version of the node software that is ran.
+  string version = 4;
+  // The type of node that you want to create.
+  NodeType node_type = 5;
+  // A list of properties.
+  repeated NodeProperty properties = 6;
+  // The network that the blockchain will be a part of. Many blockchains have a
+  // dedicated test network, such as "goerli" for ethereum.
+  string network = 7;
+  // The scheduler decides where to place this node. Refer to the documentation
+  // of the `NodeScheduler` message for more details.
+  NodeScheduler scheduler = 8;
+  // A list of ip addresses allowed to access public ports on this node.
+  repeated FilteredIpAddr allow_ips = 9;
+  // A list of ip addresses denied all access to any ports on this node.
+  repeated FilteredIpAddr deny_ips = 10;
+}
+
+// Message returned when a node is created.
+message NodeServiceCreateResponse {
+  // The actual node that was just created.
+  Node node = 1;
+}
+
+// This message is used to read info about a single node. For requests
+// pertaining to multiple nodes, use `NodeServiceListRequest`.
+message NodeServiceGetRequest {
+  // This should be the UUID of the node that you want to query.
+  string id = 1;
+}
+
+message NodeServiceGetResponse {
+  // The node that was queried will be placed in this field.
+  Node node = 1;
+}
+
+// This request is used to query a set of nodes within an org by the parameters
+// that are specified in the `filter` field.
+message NodeServiceListRequest {
+  // The organization within which we will search for nodes.
+  string org_id = 1;
+  // The number of items to be skipped over.
+  uint64 offset = 2;
+  // The number of items that will be returned. Together with offset, you can
+  // use this to get pagination.
+  uint64 limit = 3;
+  // If this list is non-empty, only nodes that are any of these states will be
+  // returned.
+  repeated NodeStatus statuses = 4;
+  // If this list is non-empty, only nodes of any of these types will be
+  // returned.
+  repeated NodeType node_types = 5;
+  // If this list is non-empty, only nodes that run a blockchain identified by
+  // any of these blockchain ids will be returned.
+  repeated string blockchain_ids = 6;
+}
+
+// This response will contain all the filtered nodes.
+message NodeServiceListResponse {
+  // The nodes that match the filter will be placed in this field.
+  repeated Node nodes = 1;
+}
+
+// This request is used for updating a node.
+message NodeServiceUpdateRequest {
+  // The UUID of the node that you want to update.
+  string id = 1;
+  // The version of the blockchain software that should now be ran on the node.
+  optional string version = 2;
+  // Whether or not the node software should update itself.
+  optional bool self_update = 4;
+  // Set the container status field to this value.
+  optional ContainerStatus container_status = 5;
+  // Update the P2P address of the blockchain node.
+  optional string address = 6;
+  // A list of ip addresses allowed to access public ports on this node.
+  repeated FilteredIpAddr allow_ips = 7;
+  // A list of ip addresses denied all access to any ports on this node.
+  repeated FilteredIpAddr deny_ips = 8;
+}
+
+message NodeServiceUpdateResponse {
+}
+
+message NodeServiceDeleteRequest {
+  string id = 1;
+}
+
+message NodeServiceDeleteResponse {
+}
+
+// A node scheduler controls the way that the node is placed onto an appropriate
+// host. There are two fields, each representing a possible method of selecting
+// a host for this node to be scheduled on. They are sorted by priority, meaning
+// that `similarity` takes precedence over `resource`. The final field is
+// required, in order to make sure that the way we schedule a node is always
+// defined.
+message NodeScheduler {
+  // Controls whether or not nodes of a similar type will be placed on the same
+  // host or, conversely, be spread out over many hosts. "Similar" is defined
+  // here as having the name `node_type`, `blockchain_id` and `org_id`. Note
+  // that `version` is ignored here, so that we don't interfere with clustering
+  // during when some of the nodes are upgraded, but others aren't yet.
+  enum SimilarNodeAffinity {
+    SIMILAR_NODE_AFFINITY_UNSPECIFIED = 0;
+    // Schedule nodes similar on the same host machine. This is useful for nodes
+    // that form groups with heavy intercommunication. Placing them on the same
+    // host machine will ensure the lowest possible network latency between
+    // them.
+    SIMILAR_NODE_AFFINITY_CLUSTER = 1;
+    // Avoid scheduling nodes on hosts that already have a similar node running
+    // on them. This is useful when multiple nodes are ran in parallel for the
+    // sake of redundancy. Spreading the nodes ensures that one host going down
+    // does not compromise other nodes.
+    SIMILAR_NODE_AFFINITY_SPREAD = 2;
+  }
+
+  // Controls whether nodes will prefer to be scheduled on the most utilized or
+  // the least utilized hosts first. This allows you to do breadth- or depth-
+  // first utilization of the available hosts.
+  enum ResourceAffinity {
+    RESOURCE_AFFINITY_UNSPECIFIED = 0;
+    // Prefer to utilize full hosts first.
+    RESOURCE_AFFINITY_MOST_RESOURCES = 1;
+    // Prefer to utilize empty hosts first.
+    RESOURCE_AFFINITY_LEAST_RESOURCES = 2;
+  }
+  // The way we want the node to react to similar nodes being on a host.
+  optional SimilarNodeAffinity similarity = 1;
+  // The way we want the node to react to hosts being full or empty.
+  ResourceAffinity resource = 2;
+}
+
+// IP Addresses used to filter access.
+message FilteredIpAddr {
+  // The ip address used in this filter.
+  string ip = 1;
+  // A user's description of what/why this address is being filtered.
+  optional string description = 2;
+}
+
+// Describe the node's chain related status
+// Generic, NOT chain specific states. These states are used to describe the
+// node's states as seen by the blockchain
+enum NodeStatus {
+  NODE_STATUS_UNSPECIFIED = 0;
+  // General chain states
+  NODE_STATUS_PROVISIONING = 1;
+  NODE_STATUS_BROADCASTING = 2;
+  NODE_STATUS_CANCELLED = 3;
+  NODE_STATUS_DELEGATING = 4;
+  NODE_STATUS_DELINQUENT = 5;
+  NODE_STATUS_DISABLED = 6;
+  NODE_STATUS_EARNING = 7;
+  NODE_STATUS_ELECTING = 8;
+  NODE_STATUS_ELECTED = 9;
+  NODE_STATUS_EXPORTED = 10;
+  NODE_STATUS_INGESTING = 11;
+  NODE_STATUS_MINING = 12;
+  NODE_STATUS_MINTING = 13;
+  NODE_STATUS_PROCESSING = 14;
+  NODE_STATUS_RELAYING = 15;
+  NODE_STATUS_REMOVED = 16;
+  NODE_STATUS_REMOVING = 17;
+}
+
+// Possible states the container is described with
+enum ContainerStatus {
+  CONTAINER_STATUS_UNSPECIFIED = 0;
+  CONTAINER_STATUS_CREATING = 1;
+  CONTAINER_STATUS_RUNNING = 2;
+  CONTAINER_STATUS_STARTING = 3;
+  CONTAINER_STATUS_STOPPING = 4;
+  CONTAINER_STATUS_STOPPED = 5;
+  CONTAINER_STATUS_UPGRADING = 6;
+  CONTAINER_STATUS_UPGRADED = 7;
+  CONTAINER_STATUS_DELETING = 8;
+  CONTAINER_STATUS_DELETED = 9;
+  CONTAINER_STATUS_INSTALLING = 10;
+  CONTAINER_STATUS_SNAPSHOTTING = 11;
+}
+
+// Describe the node's syncing status
+enum SyncStatus {
+  SYNC_STATUS_UNSPECIFIED = 0;
+  SYNC_STATUS_SYNCING = 1;
+  SYNC_STATUS_SYNCED = 2;
+}
+
+// Describe the node's staking status
+enum StakingStatus {
+  STAKING_STATUS_UNSPECIFIED = 0;
+  STAKING_STATUS_FOLLOWER = 1;
+  STAKING_STATUS_STAKED = 2;
+  STAKING_STATUS_STAKING = 3;
+  STAKING_STATUS_VALIDATING = 4;
+  STAKING_STATUS_CONSENSUS = 5;
+  STAKING_STATUS_UNSTAKED = 6;
+}
+
+enum NodeType {
+  NODE_TYPE_UNSPECIFIED = 0;
+  NODE_TYPE_MINER = 1;
+  NODE_TYPE_ETL = 2;
+  NODE_TYPE_VALIDATOR = 3;
+  NODE_TYPE_API = 4;
+  NODE_TYPE_ORACLE = 5;
+  NODE_TYPE_RELAY = 6;
+  NODE_TYPE_EXECUTION = 7;
+  NODE_TYPE_BEACON = 8;
+  NODE_TYPE_MEVBOOST = 9;
+  NODE_TYPE_NODE = 10;
+  NODE_TYPE_FULLNODE = 11;
+  NODE_TYPE_LIGHTNODE = 12;
+}
+
+enum UiType {
+  UI_TYPE_UNSPECIFIED = 0;
+  UI_TYPE_SWITCH = 1;
+  UI_TYPE_PASSWORD = 2;
+  UI_TYPE_TEXT = 3;
+  UI_TYPE_FILE_UPLOAD = 4;
+}
+
+message NodeProperty {
+  string name = 1;
+  string label = 2;
+  string description = 3;
+  UiType ui_type = 4;
+  bool disabled = 5;
+  bool required = 6;
+  optional string value = 7;
+}

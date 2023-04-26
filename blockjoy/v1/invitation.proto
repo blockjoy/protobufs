@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package v1;
+package blockjoy.v1;
 
 import "google/protobuf/timestamp.proto";
 
@@ -35,19 +35,22 @@ message Invitation {
 }
 
 // Manage invitations
-service Invitations {
+service InvitationService {
   // Invite a user into an organization.
-  rpc Create(CreateInvitationRequest) returns (CreateInvitationResponse);
+  rpc Create(InvitationServiceCreateRequest) returns
+    (InvitationServiceCreateResponse);
   // List pending invitations for given org.
-  rpc ListPending(ListPendingInvitationRequest) returns (InvitationsResponse);
-  // List received invitations for given user.
-  rpc ListReceived(ListReceivedInvitationRequest) returns (InvitationsResponse);
+  rpc List(InvitationServiceListRequest) returns
+    (InvitationServiceListResponse);
   // Accept an invitation and become member of specified organization.
-  rpc Accept(AcceptInvitationRequest) returns (AcceptInvitationResponse);
+  rpc Accept(InvitationServiceAcceptRequest) returns
+    (InvitationServiceAcceptResponse);
   // Decline an invitation.
-  rpc Decline(DeclineInvitationRequest) returns (DeclineInvitationResponse);
+  rpc Decline(InvitationServiceDeclineRequest) returns
+    (InvitationServiceDeclineResponse);
   // Revoke a pending invitation.
-  rpc Revoke(RevokeInvitationRequest) returns (RevokeInvitationResponse);
+  rpc Revoke(InvitationServiceRevokeRequest) returns
+    (InvitationServiceRevokeResponse);
 }
 
 // The status of an invitation.
@@ -65,7 +68,7 @@ enum InvitationStatus {
 }
 
 // Use this message to create a new invitation.
-message CreateInvitationRequest {
+message InvitationServiceCreateRequest {
   // The id of the person that is being invited here. Note that this is not the
   // uuid of some user, because the person that is being invited might not have
   // an account (yet).
@@ -74,14 +77,15 @@ message CreateInvitationRequest {
   string org_id = 2;
 }
 
-message CreateInvitationResponse {
+message InvitationServiceCreateResponse {
 }
 
-message ListPendingInvitationRequest {
+message InvitationServiceListRequest {
   string org_id = 1;
+  optional InvitationStatus status = 2;
 }
 
-message ListReceivedInvitationRequest {
+message InvitationServiceListResponse {
   string user_id = 1;
 }
 
@@ -89,23 +93,23 @@ message InvitationsResponse {
   repeated Invitation invitations = 1;
 }
 
-message AcceptInvitationRequest {
+message InvitationServiceAcceptRequest {
   string invitation_id = 1;
 }
 
-message AcceptInvitationResponse {
+message InvitationServiceAcceptResponse {
 }
 
-message DeclineInvitationRequest {
+message InvitationServiceDeclineRequest {
   string invitation_id = 1;
 }
 
-message DeclineInvitationResponse {
+message InvitationServiceDeclineResponse {
 }
 
-message RevokeInvitationRequest {
+message InvitationServiceRevokeRequest {
   string invitation_id = 1;
 }
 
-message RevokeInvitationResponse {
+message InvitationServiceRevokeResponse {
 }

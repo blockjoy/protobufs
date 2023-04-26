@@ -1,45 +1,59 @@
 syntax = "proto3";
 
-package v1;
+package blockjoy.v1;
 
-import "google/protobuf/empty.proto";
-import "node.proto";
+import "blockjoy/v1/node.proto";
+
+service MetricsService {
+  // Overwrite the metrics for the given nodes.
+  rpc Node(MetricsServiceNodeRequest) returns (MetricsServiceNodeResponse);
+  // Overwrite the metrics for the given hosts.
+  rpc Host(MetricsServiceHostRequest) returns (MetricsServiceHostResponse);
+}
 
 // This message is used to store the metrics for a given set of nodes.
-message NodeMetricsRequest {
+message MetricsServiceNodeRequest {
   // This field maps the id of the node to the metrics that apply to that node.
   map<string, NodeMetrics> metrics = 1;
 }
 
+// This message exists only for forward compatibility.
+message MetricsServiceNodeResponse {
+}
+
+// This message is used to store the metrics for a given set of hosts.
+message MetricsServiceHostRequest {
+  // This field maps the id of the host to the metrics that apply to that host.
+  map<string, HostMetrics> metrics = 1;
+}
+
+// This message exists only for forward compatibility.
+message MetricsServiceHostResponse {
+}
+
 // The metrics for a single `Node`. Note that there is no node id in this
-// message, because it is embedded in the `NodeMetricsRequest`, where the key
-// of the map already is the id of the node.
+// message, because it is embedded in the `MetricsServiceNodeRequest`, where the
+// key of the map already is the id of the node.
 message NodeMetrics {
   // This is the current height of the blockchain.
   optional uint64 height = 1;
   // This is the age of the most recent block, measured in seconds.
   optional uint64 block_age = 2;
   // This is the current staking status of the node.
-  optional v1.Node.StakingStatus staking_status = 3;
+  optional StakingStatus staking_status = 3;
   // Iff the blockchain is in consensus, this field is `true`.
   optional bool consensus = 4;
   // This field represents the current status of the blockchain node
   // application.
-  optional v1.Node.NodeStatus application_status = 5;
+  optional NodeStatus application_status = 5;
   // The status of the node with respect to the rest of the network, i.e.
   // whether it is in sync with the other nodes.
-  optional v1.Node.SyncStatus sync_status = 6;
-}
-
-// This message is used to store the metrics for a given set of hosts.
-message HostMetricsRequest {
-  // This field maps the id of the host to the metrics that apply to that host.
-  map<string, HostMetrics> metrics = 1;
+  optional SyncStatus sync_status = 6;
 }
 
 // The metrics for a single `Host`. Note that there is no host id in this
-// message, because it is embedded in the `HostMetricsRequest`, where the key of
-// the map already is the id of the host.
+// message, because it is embedded in the `MetricsServiceHostRequest`, where the
+// key of the map already is the id of the host.
 message HostMetrics {
   // The amount of CPU that is currently in use. This is given as the sum of
   // percentages of each core that is used. Example: if there are 4 cores, and
@@ -71,11 +85,4 @@ message HostMetrics {
   optional uint64 network_sent = 8;
   // This is the number of seconds that has elapsed since the host has started.
   optional uint64 uptime = 9;
-}
-
-service Metrics {
-  // Overwrite the metrics for the given nodes.
-  rpc Node(NodeMetricsRequest) returns (google.protobuf.Empty);
-  // Overwrite the metrics for the given hosts.
-  rpc Host(HostMetricsRequest) returns (google.protobuf.Empty);
 }

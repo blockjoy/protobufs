@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package v1;
+package blockjoy.v1;
 
+import "blockjoy/v1/node.proto";
 import "google/protobuf/timestamp.proto";
-import "node.proto";
 
 message Command {
   // Each command has a unique id that identifies it.
@@ -23,24 +23,27 @@ message Command {
 }
 
 // Service providing commands invoked by the UI
-service Commands {
+service CommandService {
   // Creates a new command in the database and sends it to the apropriate
   // instance of blockvisor.
-  rpc Create(CreateCommandRequest) returns (CreateCommandResponse);
+  rpc Create(CommandServiceCreateRequest) returns
+    (CommandServiceCreateResponse);
   // Retrieve a single command
-  rpc Get(GetCommandRequest) returns (GetCommandResponse);
+  rpc Get(CommandServiceGetRequest) returns (CommandServiceGetResponse);
   // Update a single command status
-  rpc Update(UpdateCommandRequest) returns (UpdateCommandResponse);
+  rpc Update(CommandServiceUpdateRequest) returns
+    (CommandServiceUpdateResponse);
   // Get pending commands for host. Pending is means that their execution has
   // not completed, be that successfully or unsuccessfully. This is defined as
   // commands that do not have an `exit_code`. To mark a command as no longer
   // pending, use the `Update` method and provide an `exit_code`.
-  rpc Pending(PendingCommandsRequest) returns (PendingCommandsResponse);
+  rpc Pending(CommandServicePendingRequest) returns
+    (CommandServicePendingResponse);
 }
 
 // This request is used to create new commands. They will be stored in the
 // database and then emitted over MQTT to the clients that have subscribed.
-message CreateCommandRequest {
+message CommandServiceCreateRequest {
   oneof command {
     // This variant will cause a new `StartNodeCommand` to be created.
     StartNodeCommand start_node = 1;
@@ -57,67 +60,34 @@ message CreateCommandRequest {
   }
 }
 
-// Implies that the node identified by `node_id` should be started. If the node
-// is already running, this message should be ignored.
-message StartNodeCommand {
-  // The node to be started.
-  string node_id = 1;
-}
-
-// Implies that the node identified by `node_id` should be stopped. If the node
-// is already stopped, this message should be ignored.
-message StopNodeCommand {
-  // The node to be stopped.
-  string node_id = 1;
-}
-
-// Implies that the node identified by `node_id` should be restarted. If the
-// node is already stopped, it should just be started.
-message RestartNodeCommand {
-  // The node to be restarted.
-  string node_id = 1;
-}
-
-message StartHostCommand {
-  string host_id = 1;
-}
-
-message StopHostCommand {
-  string host_id = 1;
-}
-
-message RestartHostCommand {
-  string host_id = 1;
-}
-
-message CreateCommandResponse {
+message CommandServiceCreateResponse {
   Command command = 1;
 }
 
-message GetCommandRequest {
+message CommandServiceGetRequest {
   string id = 1;
 }
 
-message GetCommandResponse {
+message CommandServiceGetResponse {
   Command command = 1;
 }
 
-message UpdateCommandRequest {
+message CommandServiceUpdateRequest {
   string id = 1;
   optional string response = 2;
   optional int32 exit_code = 3;
 }
 
-message UpdateCommandResponse {
+message CommandServiceUpdateResponse {
   Command command = 1;
 }
 
-message PendingCommandsRequest {
+message CommandServicePendingRequest {
   string host_id = 1;
   optional string filter_type = 2;
 }
 
-message PendingCommandsResponse {
+message CommandServicePendingResponse {
   repeated Command commands = 1;
 }
 
@@ -165,7 +135,7 @@ message NodeCreate {
   string name = 1;
   string blockchain = 2;
   ContainerImage image = 3;
-  Node.NodeType node_type = 4;
+  NodeType node_type = 4;
   string ip = 5;
   string gateway = 6;
   bool self_update = 7;
@@ -181,22 +151,22 @@ message Parameter {
   string value = 2;
 }
 
-message ContainerImage {
-  // Define config status
-  enum StatusName {
-    STATUS_NAME_UNSPECIFIED = 0;
-    STATUS_NAME_DEVELOPMENT = 1;
-    STATUS_NAME_UNSTABLE = 2;
-    STATUS_NAME_STABLE = 3;
-  }
+// Define config status
+enum ContainerImageStatus {
+  CONTAINER_IMAGE_STATUS_UNSPECIFIED = 0;
+  CONTAINER_IMAGE_STATUS_DEVELOPMENT = 1;
+  CONTAINER_IMAGE_STATUS_UNSTABLE = 2;
+  CONTAINER_IMAGE_STATUS_STABLE = 3;
+}
 
+message ContainerImage {
   // snake_cased name of the blockchain
   string protocol = 1;
   // snake_cased name of the node type
-  Node.NodeType node_type = 2;
+  NodeType node_type = 2;
   // semantic version string of the node type version
   string node_version = 3;
-  StatusName status = 4;
+  ContainerImageStatus status = 4;
 }
 
 message Rule {
@@ -230,5 +200,38 @@ enum Protocol {
 
 message HostCommand {
   // We don't do this yet, but it is here for forwards compatibility.
+  string host_id = 1;
+}
+
+// Implies that the node identified by `node_id` should be started. If the node
+// is already running, this message should be ignored.
+message StartNodeCommand {
+  // The node to be started.
+  string node_id = 1;
+}
+
+// Implies that the node identified by `node_id` should be stopped. If the node
+// is already stopped, this message should be ignored.
+message StopNodeCommand {
+  // The node to be stopped.
+  string node_id = 1;
+}
+
+// Implies that the node identified by `node_id` should be restarted. If the
+// node is already stopped, it should just be started.
+message RestartNodeCommand {
+  // The node to be restarted.
+  string node_id = 1;
+}
+
+message StartHostCommand {
+  string host_id = 1;
+}
+
+message StopHostCommand {
+  string host_id = 1;
+}
+
+message RestartHostCommand {
   string host_id = 1;
 }
