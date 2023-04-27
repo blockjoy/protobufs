@@ -241,6 +241,8 @@ message CreateNodeRequest {
   repeated FilteredIpAddr allow_ips = 9;
   // A list of ip addresses denied all access to any ports on this node.
   repeated FilteredIpAddr deny_ips = 10;
+  // Whether or not to enable automatic update on the node.
+  optional bool self_update = 11;
 }
 
 enum UiType {
