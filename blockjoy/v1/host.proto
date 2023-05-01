@@ -37,6 +37,8 @@ message Host {
   optional string ip_range_to = 14;
   // The ip gateway of this host.
   optional string ip_gateway = 15;
+  // The organization that this host belongs to.
+  optional string org_id = 16;
 }
 
 // Manage hosts
@@ -67,6 +69,8 @@ message HostServiceCreateRequest {
   string ip_range_from = 10;
   string ip_range_to = 11;
   string ip_gateway = 12;
+  // The organization that this host belongs to.
+  optional string org_id = 13;
 }
 
 message HostServiceCreateResponse {
@@ -109,14 +113,8 @@ message HostServiceDeleteResponse {
 }
 
 message HostServiceProvisionRequest {
-  enum ConnectionStatus {
-    CONNECTION_STATUS_UNSPECIFIED = 0;
-    CONNECTION_STATUS_ONLINE = 1;
-    CONNECTION_STATUS_OFFLINE = 2;
-  }
-
   string otp = 1;
-  ConnectionStatus status = 2;
+  HostConnectionStatus status = 2;
   string name = 3;
   string version = 4;
   uint64 cpu_count = 5;
@@ -127,6 +125,12 @@ message HostServiceProvisionRequest {
   string os = 8;
   string os_version = 9;
   string ip = 10;
+}
+
+enum HostConnectionStatus {
+  HOST_CONNECTION_STATUS_UNSPECIFIED = 0;
+  HOST_CONNECTION_STATUS_ONLINE = 1;
+  HOST_CONNECTION_STATUS_OFFLINE = 2;
 }
 
 message HostServiceProvisionResponse {

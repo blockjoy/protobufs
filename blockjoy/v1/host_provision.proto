@@ -44,6 +44,7 @@ message HostProvisionServiceCreateRequest {
   string ip_range_from = 1;
   string ip_range_to = 2;
   string ip_gateway = 3;
+  optional string org_id = 4;
 }
 
 message HostProvisionServiceCreateResponse {

@@ -81,15 +81,13 @@ message InvitationServiceCreateResponse {
 }
 
 message InvitationServiceListRequest {
-  string org_id = 1;
-  optional InvitationStatus status = 2;
+  optional string org_id = 1;
+  optional string invitee_email = 2;
+  optional string created_by = 3;
+  optional InvitationStatus status = 4;
 }
 
 message InvitationServiceListResponse {
-  string user_id = 1;
-}
-
-message InvitationsResponse {
   repeated Invitation invitations = 1;
 }
 

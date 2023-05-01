@@ -1,7 +1,7 @@
 # gRCP API protobuf definitions
 [![GitHub Super-Linter](https://github.com/blockjoy/api-proto/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
-## Compilation for typescript:
+## Compilation for TypeScript
 
 Run this for the initial setup:
 ```bash

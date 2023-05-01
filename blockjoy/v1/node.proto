@@ -41,9 +41,8 @@ message Node {
   repeated FilteredIpAddr allow_ips = 27;
   // A list of ip addresses denied all access to any ports on this node.
   repeated FilteredIpAddr deny_ips = 28;
-  // The scheduler decides where to place this node. Refer to the documentation
-  // of the `NodeScheduler` message for more details.
-  NodeScheduler scheduler = 29;
+  // Logic with regards to where the node should placed.
+  NodePlacement placement = 29;
 }
 
 service NodeService {
@@ -74,9 +73,8 @@ message NodeServiceCreateRequest {
   // The network that the blockchain will be a part of. Many blockchains have a
   // dedicated test network, such as "goerli" for ethereum.
   string network = 7;
-  // The scheduler decides where to place this node. Refer to the documentation
-  // of the `NodeScheduler` message for more details.
-  NodeScheduler scheduler = 8;
+  // Logic with regards to where the node should placed.
+  NodePlacement placement = 8;
   // A list of ip addresses allowed to access public ports on this node.
   repeated FilteredIpAddr allow_ips = 9;
   // A list of ip addresses denied all access to any ports on this node.
@@ -154,6 +152,19 @@ message NodeServiceDeleteRequest {
 }
 
 message NodeServiceDeleteResponse {
+}
+
+// This message contains the two possible ways in which the location of a node
+// may be determined.
+message NodePlacement {
+  oneof placement {
+    // Simply place the node on the provided host id. This means that retrying
+    // on another host is disabled.
+    string host_id = 1;
+    // The scheduler decides where to place this node. Refer to the
+    // documentation of the `NodeScheduler` message for more details.
+    NodeScheduler scheduler = 2;
+  }
 }
 
 // A node scheduler controls the way that the node is placed onto an appropriate
