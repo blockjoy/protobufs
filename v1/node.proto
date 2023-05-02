@@ -337,7 +337,7 @@ message UpdateNodeRequest {
   // A list of ip addresses denied all access to any ports on this node.
   repeated FilteredIpAddr deny_ips = 8;
   // Whether or not the node software should update itself, with the specific policy
-  optional SelfUpgrade self_upgrade = 5;
+  optional SelfUpgrade self_upgrade = 9;
 }
 
 message UpdateNodeResponse {
