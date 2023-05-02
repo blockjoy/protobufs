@@ -126,7 +126,8 @@ message Node {
   ContainerStatus container_status = 12;
   optional StakingStatus staking_status = 19;
   string ip_gateway = 20;
-  bool self_update = 21;
+  // Changing self_update to special type
+  //bool self_update = 21;
   string network = 22;
   optional string blockchain_name = 23;
   // The id of the user that created this node. For the earliest nodes we
@@ -142,7 +143,27 @@ message Node {
   repeated FilteredIpAddr deny_ips = 28;
   // Logic with regards to where the node should placed.
   NodePlacement placement = 29;
+  // Whether or not the node should upgrade itself.
+  SelfUpgrade self_upgrade = 30;
 }
+
+// Self Upgrade is a message that is sent to the node to tell it to upgrade
+// automatically or not, and take the appropriate action based on the version that is being upgraded to.
+// For example if there is a major version upgrade the user would need to confirm the upgrade.
+message SelfUpgrade {
+  // Whether or not the node should upgrade itself.
+  bool enabled = 1;
+  // The type of upgrade that is being performed.
+  Policy policy = 2;
+  // The type of upgrade that is being performed.
+  enum Policy {
+    // Force Upgrade all versions no matter what
+    UPGRADE_ALL = 0;
+    // Upgrade all versions except major versions.
+    NOT_UPGRADE_ON_MAJOR = 1;
+  }
+}
+
 
 service Nodes {
   /* Get single blockchain node */
@@ -305,7 +326,7 @@ message UpdateNodeRequest {
   // The version of the blockchain software that should now be ran on the node.
   optional string version = 2;
   // Whether or not the node software should update itself.
-  optional bool self_update = 4;
+  //optional bool self_update = 4;
   // Set the container status field to this value.
   optional Node.ContainerStatus container_status = 5;
   // Update the P2P address of the blockchain node.
@@ -314,6 +335,8 @@ message UpdateNodeRequest {
   repeated FilteredIpAddr allow_ips = 7;
   // A list of ip addresses denied all access to any ports on this node.
   repeated FilteredIpAddr deny_ips = 8;
+  // Whether or not the node software should update itself, with the specific policy
+  optional SelfUpgrade self_upgrade = 5;
 }
 
 message UpdateNodeResponse {
