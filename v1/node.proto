@@ -158,9 +158,9 @@ message SelfUpgrade {
   // The type of upgrade that is being performed.
   enum Policy {
     // Force Upgrade all versions no matter what
-    UPGRADE_ALL = 0;
+    POLICY_UPGRADE_ALL = 0;
     // Upgrade all versions except major versions.
-    NOT_UPGRADE_ON_MAJOR = 1;
+    POLICY_NOT_UPGRADE_ON_MAJOR = 1;
   }
 }
 
