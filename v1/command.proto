@@ -154,7 +154,8 @@ message NodeUpgrade {
 }
 
 message NodeUpdate {
-  optional bool self_update = 1;
+  // not needed anymore
+  //optional bool self_update = 1;
   repeated Rule rules = 2;
 }
 
