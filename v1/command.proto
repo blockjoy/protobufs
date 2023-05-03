@@ -169,7 +169,8 @@ message NodeCreate {
   Node.NodeType node_type = 4;
   string ip = 5;
   string gateway = 6;
-  bool self_update = 7;
+  // Remove self update
+  //bool self_update = 7;
   repeated Parameter properties = 8;
   repeated Rule rules = 9;
 }
