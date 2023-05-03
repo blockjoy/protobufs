@@ -156,13 +156,13 @@ message SelfUpgrade {
   // Whether or not the node should upgrade itself.
   bool enabled = 1;
   // The type of upgrade that is being performed.
-  Policy policy = 2;
+  UpgradePolicy policy = 2;
   // The type of upgrade that is being performed.
-  enum Policy {
+  enum UpgradePolicy {
     // Force Upgrade all versions no matter what
-    POLICY_UPGRADE_UNSPECIFIED = 0;
+    UPGRADE_POLICY_UNSPECIFIED = 0;
     // Upgrade all versions except major versions.
-    POLICY_NOT_UPGRADE_ON_MAJOR = 1;
+    UPGRADE_POLICY_NOT_MAJOR = 1;
   }
 }
 
