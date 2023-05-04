@@ -6,7 +6,6 @@ syntax = "proto3";
 
 package blockjoy.v1;
 
-import "blockjoy/v1/cookbook.proto";
 import "blockjoy/v1/host.proto";
 import "blockjoy/v1/node.proto";
 import "blockjoy/v1/org.proto";
