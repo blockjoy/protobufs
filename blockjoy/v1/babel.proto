@@ -5,6 +5,8 @@ syntax = "proto3";
 
 package blockjoy.v1;
 
+import "google/protobuf/empty.proto";
+
 // Message to send when a new configuration in cookbook is created
 message BabelConfig{
   /* snake_cased name of the blockchain */
@@ -13,16 +15,6 @@ message BabelConfig{
   string node_type = 2;
   /* semantic version string of the node type version */
   string node_version = 3;
-  /* Does defined tuple have the requested tag assigned */
-  StatusConfig status = 4;
-
-  /* Define staging status */
-  enum StatusConfig {
-    STATUS_CONFIG_UNSPECIFIED = 0;
-    STATUS_CONFIG_DEVELOPMENT = 1;
-    STATUS_CONFIG_UNSTABLE = 2;
-    STATUS_CONFIG_STABLE = 3;
-  }
 }
 
 // Message to send when a new version of node image is released
@@ -33,13 +25,10 @@ message BabelNewVersionRequest {
   BabelConfig config = 2;
 }
 
-message BabelNewVersionResponse {
-}
-
 // Babel related service.
 service BabelService {
   // Notify about a new version of node image
-  rpc Notify(BabelNewVersionRequest) returns (BabelNewVersionResponse);
+  rpc Notify(BabelNewVersionRequest) returns (google.protobuf.Empty);
 }
 
 
