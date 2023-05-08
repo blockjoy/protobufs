@@ -5,8 +5,6 @@ syntax = "proto3";
 
 package blockjoy.v1;
 
-import "google/protobuf/empty.proto";
-
 // Message to send when a new configuration in cookbook is created
 message BabelConfig{
   /* snake_cased name of the blockchain */
@@ -25,10 +23,14 @@ message BabelNewVersionRequest {
   BabelConfig config = 2;
 }
 
+message BabelNewVersionResponse {
+  repeated string nodes_ids = 1;
+}
+
 // Babel related service.
 service BabelService {
   // Notify about a new version of node image
-  rpc Notify(BabelNewVersionRequest) returns (google.protobuf.Empty);
+  rpc Notify(BabelNewVersionRequest) returns (BabelNewVersionResponse);
 }
 
 
