@@ -28,14 +28,36 @@ message AuthServiceLoginRequest {
 }
 
 message AuthServiceLoginResponse {
+  // This is the auth token that you will include with each request. It is a
+  // Json Web Token, and therefore it may be decoded and inspected by the client
+  // to seen the allowed permissions.
   string token = 1;
+  // The `refresh token` is used to obtain a new token without having to provide
+  // the email and password again. Note that if you are a browser client, this
+  // field can be ignored, because we also include a HTTP-Only, Set-Cookie
+  // header. This means that this token does not have to be stored in
+  // localStorage.
+  string refresh = 2;
 }
 
 message AuthServiceRefreshRequest {
+  // This is your old token. It is allowed that this token is expired.
+  string token = 1;
+  // This is the refresh token that was sent to you on login. It is optional
+  // here, because if it is not provided, the value from the metadata is used as
+  // a fallback. This means that if you are a browser client, you do not have to
+  // provide this field, as it was set by the call to AuthService/Login, or by
+  // the previous call to this endpoint.
+  optional string refresh = 2;
 }
 
 message AuthServiceRefreshResponse {
+  // A newly minted Json Web Token.
   string token = 1;
+  // The new refresh token. Just as with the call to AuthService/Login, this
+  // value is duplicated in the metadata, so a cookie can be set for the browser
+  // client.
+  string refresh = 2;
 }
 
 message AuthServiceResetPasswordRequest {
@@ -50,7 +72,6 @@ message AuthServiceUpdatePasswordRequest {
 }
 
 message AuthServiceUpdatePasswordResponse {
-  string token = 1;
 }
 
 message AuthServiceUpdateUIPasswordRequest {
@@ -59,14 +80,12 @@ message AuthServiceUpdateUIPasswordRequest {
 }
 
 message AuthServiceUpdateUIPasswordResponse {
-  string token = 1;
 }
 
 message AuthServiceConfirmRequest {
 }
 
 message AuthServiceConfirmResponse {
-  string token = 1;
 }
 
 message AuthServiceSwitchOrgRequest {

@@ -56,8 +56,8 @@ message UserServiceUpdateResponse {
   User user = 1;
 }
 
-// Users can only delete themselves, so no need for any further params
 message UserServiceDeleteRequest {
+  string id = 1;
 }
 
 message UserServiceDeleteResponse {
