@@ -75,8 +75,9 @@ message AuthServiceUpdatePasswordResponse {
 }
 
 message AuthServiceUpdateUIPasswordRequest {
-  string old_password = 1;
-  string new_password = 2;
+  string user_id = 1;
+  string old_password = 2;
+  string new_password = 3;
 }
 
 message AuthServiceUpdateUIPasswordResponse {
@@ -86,6 +87,8 @@ message AuthServiceConfirmRequest {
 }
 
 message AuthServiceConfirmResponse {
+  string token = 1;
+  string refresh = 2;
 }
 
 message AuthServiceSwitchOrgRequest {

@@ -136,6 +136,7 @@ enum HostConnectionStatus {
 message HostServiceProvisionResponse {
   string host_id = 1;
   string token = 2;
+  string refresh = 3;
 }
 
 // Possible states the container is described with
