@@ -1,6 +1,6 @@
 // This file contains messages that are being sent over our message queue, MQTT.
 // Not all messages that are sent over MQTT are included here, but some of the
-// messages need special 
+// messages need special
 
 syntax = "proto3";
 
@@ -102,3 +102,5 @@ message HostDeleted {
   string deleted_by_name = 3;
   string deleted_by_email = 4;
 }
+
+
