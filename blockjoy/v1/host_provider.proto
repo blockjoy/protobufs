@@ -1,0 +1,306 @@
+syntax = "proto3";
+
+package blockjoy.v1;
+
+import "blockjoy/v1/node.proto";
+import "google/protobuf/timestamp.proto";
+
+// TODO move this service to private repository (together with cookbook protos)
+// Service providing commands invoked by the UI
+service HostProviderService {
+  // This endpoint creates a new host from an already created host provision.
+  rpc Provision(HostServiceProvisionRequest) returns
+      (HostServiceProvisionResponse);
+  // Update a single host
+  rpc Update(HostServiceUpdateRequest) returns (HostServiceUpdateResponse);
+  // Retrieve a single command
+  rpc GetCommand(CommandServiceGetRequest) returns (CommandServiceGetResponse);
+  // Update a single command status
+  rpc UpdateCommand(CommandServiceUpdateRequest) returns
+      (CommandServiceUpdateResponse);
+  // Get pending commands for host. Pending is means that their execution has
+  // not completed, be that successfully or unsuccessfully. This is defined as
+  // commands that do not have an `exit_code`. To mark a command as no longer
+  // pending, use the `Update` method and provide an `exit_code`.
+  rpc PendingCommands(CommandServicePendingRequest) returns
+      (CommandServicePendingResponse);
+
+  // Overwrite the metrics for the given nodes.
+  rpc NodeMetrics(MetricsServiceNodeRequest) returns (MetricsServiceNodeResponse);
+  // Overwrite the metrics for the given hosts.
+  rpc HostMetrics(MetricsServiceHostRequest) returns (MetricsServiceHostResponse);
+
+}
+
+message HostServiceProvisionRequest {
+  string provision_token = 1;
+  HostConnectionStatus status = 2;
+  string name = 3;
+  string version = 4;
+  uint64 cpu_count = 5;
+  // The amount of memory in bytes that the host has.
+  uint64 mem_size_bytes = 6;
+  // The amount of disk space in bytes that the host has.
+  uint64 disk_size_bytes = 7;
+  string os = 8;
+  string os_version = 9;
+  string ip = 10;
+}
+
+enum HostConnectionStatus {
+  HOST_CONNECTION_STATUS_UNSPECIFIED = 0;
+  HOST_CONNECTION_STATUS_ONLINE = 1;
+  HOST_CONNECTION_STATUS_OFFLINE = 2;
+}
+
+message HostServiceProvisionResponse {
+  string host_id = 1;
+  string token = 2;
+}
+
+message HostServiceUpdateRequest {
+  string id = 1;
+  optional string name = 2;
+  optional string version = 3;
+  //optional string location = 4;
+  optional string os = 5;
+  optional string os_version = 6;
+}
+
+message HostServiceUpdateResponse {
+}
+
+message Command {
+  // Each command has a unique id that identifies it.
+  string id = 1;
+  // A command may have an outcome message.
+  optional string response = 2;
+  // A command may have an exit code.
+  optional int32 exit_code = 3;
+  // The rest of the fields are split in two. There are commands that are meant
+  // to instrument hosts, and commands that are meant to instrument nodes. The
+  // reason we have this dichotomy is because the commands that go to a node
+  // typically look different from those that go to a host.
+  oneof command {
+    NodeCommand node = 4;
+    HostCommand host = 5;
+  }
+}
+
+message CommandServiceGetRequest {
+  string id = 1;
+}
+
+message CommandServiceGetResponse {
+  Command command = 1;
+}
+
+message CommandServiceUpdateRequest {
+  string id = 1;
+  optional string response = 2;
+  optional int32 exit_code = 3;
+}
+
+message CommandServiceUpdateResponse {
+  Command command = 1;
+}
+
+message CommandServicePendingRequest {
+  string host_id = 1;
+  optional string filter_type = 2;
+}
+
+message CommandServicePendingResponse {
+  repeated Command commands = 1;
+}
+
+message NodeCommand {
+  string node_id = 1;
+  string host_id = 2;
+  string api_command_id = 3;
+  google.protobuf.Timestamp created_at = 4;
+
+  oneof command {
+    NodeStart start = 5;
+    NodeStop stop = 6;
+    NodeRestart restart = 7;
+    NodeUpgrade upgrade = 8;
+    NodeUpdate update = 9;
+    NodeGet info_get = 10;
+    NodeCreate create = 11;
+    NodeDelete delete = 12;
+  };
+}
+
+message NodeStart {
+}
+
+message NodeStop {
+}
+
+message NodeRestart {
+}
+
+// Updates a node to use a new OS-image
+message NodeUpgrade {
+  ContainerImage image = 1;
+}
+
+message NodeUpdate {
+  // host provider never update node itself, but node updates are managed by the API
+  //optional bool self_update = 1;
+  repeated Rule rules = 2;
+}
+
+message NodeGet {
+}
+
+message NodeCreate {
+  string name = 1;
+  string blockchain = 2;
+  ContainerImage image = 3;
+  // below looks to be duplicate of ContainerImage::node_type
+  //NodeType node_type = 4;
+  string ip = 5;
+  string gateway = 6;
+  // host provider never update node itself, but node updates are managed by the API
+  //bool self_update = 7;
+  repeated Parameter properties = 8;
+  repeated Rule rules = 9;
+}
+
+message NodeDelete {
+}
+
+message Parameter {
+  string name = 1;
+  string value = 2;
+}
+
+// Define config status
+enum ContainerImageStatus {
+  CONTAINER_IMAGE_STATUS_UNSPECIFIED = 0;
+  CONTAINER_IMAGE_STATUS_DEVELOPMENT = 1;
+  CONTAINER_IMAGE_STATUS_UNSTABLE = 2;
+  CONTAINER_IMAGE_STATUS_STABLE = 3;
+}
+
+message ContainerImage {
+  // snake_cased name of the blockchain
+  string protocol = 1;
+  // snake_cased name of the node type
+  NodeType node_type = 2;
+  // semantic version string of the node type version
+  string node_version = 3;
+  ContainerImageStatus status = 4;
+}
+
+message Rule {
+  string name = 1;
+  Action action = 2;
+  Direction direction = 3;
+  optional Protocol protocol = 4;
+  optional string ips = 5;
+  repeated uint32 ports = 6;
+}
+
+enum Action {
+  ACTION_UNSPECIFIED = 0;
+  ACTION_ALLOW = 1;
+  ACTION_DENY = 2;
+  ACTION_REJECT = 3;
+}
+
+enum Direction {
+  DIRECTION_UNSPECIFIED = 0;
+  DIRECTION_OUT = 1;
+  DIRECTION_IN = 2;
+}
+
+enum Protocol {
+  PROTOCOL_UNSPECIFIED = 0;
+  PROTOCOL_TCP = 1;
+  PROTOCOL_UDP = 2;
+  PROTOCOL_BOTH = 3;
+}
+
+message HostCommand {
+  // We don't do this yet, but it is here for forwards compatibility.
+  string host_id = 1;
+}
+
+// This message is used to store the metrics for a given set of nodes.
+message MetricsServiceNodeRequest {
+  // This field maps the id of the node to the metrics that apply to that node.
+  map<string, NodeMetrics> metrics = 1;
+}
+
+// This message exists only for forward compatibility.
+message MetricsServiceNodeResponse {
+}
+
+// This message is used to store the metrics for a given set of hosts.
+message MetricsServiceHostRequest {
+  // This field maps the id of the host to the metrics that apply to that host.
+  map<string, HostMetrics> metrics = 1;
+}
+
+// This message exists only for forward compatibility.
+message MetricsServiceHostResponse {
+}
+
+// The metrics for a single `Node`. Note that there is no node id in this
+// message, because it is embedded in the `MetricsServiceNodeRequest`, where the
+// key of the map already is the id of the node.
+message NodeMetrics {
+  // This is the current height of the blockchain.
+  optional uint64 height = 1;
+  // This is the age of the most recent block, measured in seconds.
+  optional uint64 block_age = 2;
+  // This is the current staking status of the node.
+  optional StakingStatus staking_status = 3;
+  // Iff the blockchain is in consensus, this field is `true`.
+  optional bool consensus = 4;
+  // This field represents the current status of the blockchain node
+  // application.
+  optional NodeStatus application_status = 5;
+  // The status of the node with respect to the rest of the network, i.e.
+  // whether it is in sync with the other nodes.
+  optional SyncStatus sync_status = 6;
+}
+
+// The metrics for a single `Host`. Note that there is no host id in this
+// message, because it is embedded in the `MetricsServiceHostRequest`, where the
+// key of the map already is the id of the host.
+message HostMetrics {
+  // The amount of CPU that is currently in use. This is given as the sum of
+  // percentages of each core that is used. Example: if there are 4 cores, and
+  // each is at 78% usage, the number sent will be 312.
+  optional uint32 used_cpu = 1;
+  // This is the amount of memory used, given in bytes.
+  optional uint64 used_memory = 2;
+  // This is the amount of disk used, given in bytes.
+  optional uint64 used_disk_space = 3;
+  // This is the load during the last minute, given as a percentage. Example: if
+  // the load given by top is `2.73, 2.96, 2.53`, then the value sent here will
+  // be 2.73.
+  optional double load_one = 4;
+  // This is the load during the last five minutes, given as a percentage.
+  // Example: if the load given by top is `2.73, 2.96, 2.53`, then the value
+  // sent here will be 2.96.
+  optional double load_five = 5;
+  // This is the load during the last five minutes, given as a percentage.
+  // Example: if the load given by top is `2.73, 2.96, 2.53`, then the value
+  // sent here will be 2.53.
+  optional double load_fifteen = 6;
+  // This is the number of bytes (not bits) received over the network since the
+  // start of the host. This means that this value is going to increase
+  // monotonically when the host starts.
+  optional uint64 network_received = 7;
+  // This is the number of bytes (not bits) sent over the network since the
+  // start of the host. This means that this value is going to increase
+  // monotonically when the host starts.
+  optional uint64 network_sent = 8;
+  // This is the number of seconds that has elapsed since the host has started.
+  optional uint64 uptime = 9;
+}
