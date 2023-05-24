@@ -22,6 +22,8 @@ message Org {
   google.protobuf.Timestamp updated_at = 14;
   // This field contains the users of this organization.
   repeated OrgUser members = 15;
+  // The number of nodes that this organization has.
+  uint64 node_count = 16;
 }
 
 // Manage organizations
