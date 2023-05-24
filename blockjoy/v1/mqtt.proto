@@ -7,8 +7,10 @@ syntax = "proto3";
 package blockjoy.v1;
 
 import "blockjoy/v1/host.proto";
+import "blockjoy/v1/invitation.proto";
 import "blockjoy/v1/node.proto";
 import "blockjoy/v1/org.proto";
+import "blockjoy/v1/user.proto";
 
 // A message about an event that happened to a node.
 message NodeMessage {
@@ -50,6 +52,12 @@ message OrgMessage {
     OrgCreated created = 1;
     OrgUpdated updated = 2;
     OrgDeleted deleted = 3;
+    // Emitted when a new invitation for this organization has been created.
+    InvitationCreated invitation_created = 4;
+    // Emitted when a new user joins this organization.
+    InvitationAccepted invitation_accepted = 5;
+    // Emitted when a user rejects an invitation for this organization.
+    InvitationDeclined invitation_declined = 6;
   }
 }
 
@@ -72,6 +80,28 @@ message OrgDeleted {
   string deleted_by = 2;
   string deleted_by_name = 3;
   string deleted_by_email = 4;
+}
+
+// This message signals that an invitation has been created to invite someone
+// into the organization specified by `org_id`.
+message InvitationCreated {
+  string org_id = 1;
+  Invitation invitation = 2;
+}
+
+// This message signals that an invitation has been accepted for the current
+// organization, and a new user has joined this org.
+message InvitationAccepted {
+  string org_id = 1;
+  Invitation invitation = 2;
+  User user = 3;
+}
+
+// This message signals that an invitation has been declined for the current
+// organization.
+message InvitationDeclined {
+  string org_id = 1;
+  Invitation invitation = 2;
 }
 
 message HostMessage {
