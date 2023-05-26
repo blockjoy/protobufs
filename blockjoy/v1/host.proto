@@ -11,10 +11,8 @@ message Host {
   string name = 2;
   // The version of the blockjoy control software running on the host.
   string version = 3;
-
-  // location = 4 has been deleted. Dont use number '4' for any other field.
-
-  // The number of logical cores the machine has.
+  // The number of logical cores the machine has, _not_ the number of physical
+  // cores.
   optional uint64 cpu_count = 5;
   // The amount of physical memory the machine has.
   optional uint64 mem_size_bytes = 6;
@@ -41,7 +39,7 @@ message Host {
   optional string org_id = 16;
 }
 
-// Manage hosts
+// Manage hosts.
 service HostService {
   // Create a single host
   rpc Create(HostServiceCreateRequest) returns (HostServiceCreateResponse);
@@ -51,30 +49,40 @@ service HostService {
   rpc Update(HostServiceUpdateRequest) returns (HostServiceUpdateResponse);
   // Delete a single host
   rpc Delete(HostServiceDeleteRequest) returns (HostServiceDeleteResponse);
-  // This endpoint creates a new host from an already created host provision.
-  rpc Provision(HostServiceProvisionRequest) returns
-    (HostServiceProvisionResponse);
 }
 
 message HostServiceCreateRequest {
-  string name = 1;
-  string version = 2;
-  //optional string location = 3;
+  // Each user has a token within an organization that we use to identify which
+  // user created this organization.
+  string provision_token = 1;
+  // A name to recognise the host by.
+  string name = 2;
+  // The version of the blockvisor software running on the host.
+  string version = 3;
+  // The number of logical cores on this computer, _not_ the number of physical
+  // cores.
   uint64 cpu_count = 4;
+  // The amount of memory that this computer has, in bytes.
   uint64 mem_size_bytes = 5;
+  // The amount of storage that this computer has, in bytes.
   uint64 disk_size_bytes = 6;
+  // The operating system running on this computer.
   string os = 7;
+  // The version of said operating system.
   string os_version = 8;
   string ip_addr = 9;
   string ip_range_from = 10;
   string ip_range_to = 11;
   string ip_gateway = 12;
-  // The organization that this host belongs to.
+  // The organization that this host belongs to. This field _must_ be populated
+  // with the current organization id.
   optional string org_id = 13;
 }
 
 message HostServiceCreateResponse {
   Host host = 1;
+  string token = 2;
+  string refresh = 3;
 }
 
 message HostServiceGetRequest {
@@ -112,31 +120,10 @@ message HostServiceDeleteRequest {
 message HostServiceDeleteResponse {
 }
 
-message HostServiceProvisionRequest {
-  string provision_token = 1;
-  HostConnectionStatus status = 2;
-  string name = 3;
-  string version = 4;
-  uint64 cpu_count = 5;
-  // The amount of memory in bytes that the host has.
-  uint64 mem_size_bytes = 6;
-  // The amount of disk space in bytes that the host has.
-  uint64 disk_size_bytes = 7;
-  string os = 8;
-  string os_version = 9;
-  string ip = 10;
-}
-
 enum HostConnectionStatus {
   HOST_CONNECTION_STATUS_UNSPECIFIED = 0;
   HOST_CONNECTION_STATUS_ONLINE = 1;
   HOST_CONNECTION_STATUS_OFFLINE = 2;
-}
-
-message HostServiceProvisionResponse {
-  string host_id = 1;
-  string token = 2;
-  string refresh = 3;
 }
 
 // Possible states the container is described with

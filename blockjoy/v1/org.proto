@@ -41,6 +41,13 @@ service OrgService {
   // Remove organization member
   rpc RemoveMember(OrgServiceRemoveMemberRequest) returns
     (OrgServiceRemoveMemberResponse);
+  // Returns the host provision token for the provided user and organization.
+  rpc GetProvisionToken(OrgServiceGetProvisionTokenRequest) returns
+    (OrgServiceGetProvisionTokenResponse);
+  // Regenerates and returns the host provision token for the provided user and
+  // organization.
+  rpc ResetProvisionToken(OrgServiceResetProvisionTokenRequest) returns
+    (OrgServiceResetProvisionTokenResponse);
 }
 
 message OrgServiceGetRequest {
@@ -91,6 +98,24 @@ message OrgServiceRemoveMemberRequest {
 }
 
 message OrgServiceRemoveMemberResponse {
+}
+
+message OrgServiceGetProvisionTokenRequest {
+  string user_id = 1;
+  string org_id = 2;
+}
+
+message OrgServiceGetProvisionTokenResponse {
+  string token = 1;
+}
+
+message OrgServiceResetProvisionTokenRequest {
+  string user_id = 1;
+  string org_id = 2;
+}
+
+message OrgServiceResetProvisionTokenResponse {
+  string token = 1;
 }
 
 message OrgUser {
