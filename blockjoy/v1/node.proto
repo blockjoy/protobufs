@@ -118,6 +118,8 @@ message NodeServiceListRequest {
   // If this list is non-empty, only nodes that run a blockchain identified by
   // any of these blockchain ids will be returned.
   repeated string blockchain_ids = 6;
+  // If this value is provided, only nodes running on this host are provided.
+  optional string host_id = 7;
 }
 
 // This response will contain all the filtered nodes.
