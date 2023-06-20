@@ -1,0 +1,208 @@
+// UNSTABLE
+// It is likely that these services will be modified / merged with other
+// services.
+
+syntax = "proto3";
+
+package blockjoy.api.v1.babel;
+
+// ----------------------------- Cookbook Service -----------------------------
+
+// Babel cookbook service.
+service CookbookService {
+  // Retrieve plugin for specific version and state.
+  rpc RetrievePlugin(CookbookServiceRetrievePluginRequest) returns
+    (CookbookServiceRetrievePluginResponse);
+  // Retrieve image for specific version and state.
+  rpc RetrieveImage(CookbookServiceRetrieveImageRequest) returns
+    (CookbookServiceRetrieveImageResponse);
+  // Retrieve kernel file for specific version and state.
+  rpc RetrieveKernel(CookbookServiceRetrieveKernelRequest) returns
+    (CookbookServiceRetrieveKernelResponse);
+  // Retrieve hardware requirements for given identifier.
+  rpc Requirements(CookbookServiceRequirementsRequest) returns
+    (CookbookServiceRequirementsResponse);
+  // Retrieve net configurations for given chain.
+  rpc NetConfigurations(CookbookServiceNetConfigurationsRequest) returns
+    (CookbookServiceNetConfigurationsResponse);
+  // List all available babel versions.
+  rpc ListBabelVersions(CookbookServiceListBabelVersionsRequest) returns
+    (CookbookServiceListBabelVersionsResponse);
+  // Promote/Demote plugin/image to the desired state.
+  rpc AddStage(CookbookServiceAddStageRequest) returns
+    (CookbookServiceAddStageResponse);
+  // Disable plugin in the desired state.
+  rpc RemoveStage(CookbookServiceRemoveStageRequest) returns
+    (CookbookServiceRemoveStageResponse);
+  // Delete plugin/image from storage.
+  rpc Delete(CookbookServiceDeleteRequest) returns
+    (CookbookServiceDeleteResponse);
+}
+
+message CookbookServiceRetrievePluginRequest {
+  ConfigIdentifier id = 1;
+}
+
+message CookbookServiceRetrievePluginResponse {
+  Plugin plugin = 1;
+}
+
+message CookbookServiceRetrieveImageRequest {
+  ConfigIdentifier id = 1;
+}
+
+message CookbookServiceRetrieveImageResponse {
+  ArchiveLocation location = 1;
+}
+
+message CookbookServiceRetrieveKernelRequest {
+  ConfigIdentifier id = 1;
+}
+
+message CookbookServiceRetrieveKernelResponse {
+  ArchiveLocation location = 1;
+}
+
+message CookbookServiceRequirementsRequest {
+  ConfigIdentifier id = 1;
+}
+
+message CookbookServiceRequirementsResponse {
+  // The number of logical cores.
+  uint64 cpu_count = 1;
+  uint64 mem_size_bytes = 2;
+  uint64 disk_size_bytes = 3;
+}
+
+message CookbookServiceNetConfigurationsRequest {
+  ConfigIdentifier id = 1;
+}
+
+message CookbookServiceNetConfigurationsResponse {
+  repeated NetworkConfiguration configurations = 1;
+}
+
+message CookbookServiceListBabelVersionsRequest {
+  string protocol = 1;
+  string node_type = 2;
+  StatusName status = 3;
+}
+
+message CookbookServiceListBabelVersionsResponse {
+  repeated ConfigIdentifier identifiers = 1;
+}
+
+message CookbookServiceAddStageRequest {
+  ConfigIdentifier id = 1;
+}
+
+message CookbookServiceAddStageResponse {
+}
+
+message CookbookServiceRemoveStageRequest {
+  ConfigIdentifier id = 1;
+}
+
+message CookbookServiceRemoveStageResponse {
+}
+
+message CookbookServiceDeleteRequest {
+  ConfigIdentifier id = 1;
+}
+
+message CookbookServiceDeleteResponse {
+}
+
+// ------------------------------ Bundle Service ------------------------------
+
+// Retrieve manage BVD bundles.
+service BundleService {
+  // Retrieve image for specific version and state.
+  rpc Retrieve(BundleServiceRetrieveRequest) returns
+    (BundleServiceRetrieveResponse);
+  // List all available bundle versions.
+  rpc ListBundleVersions(BundleServiceListBundleVersionsRequest) returns
+    (BundleServiceListBundleVersionsResponse);
+  // Delete bundle from storage.
+  rpc Delete(BundleServiceDeleteRequest) returns
+    (BundleServiceDeleteResponse);
+}
+
+message BundleServiceRetrieveRequest {
+  BundleIdentifier id = 1;
+}
+
+message BundleServiceRetrieveResponse {
+  ArchiveLocation location = 1;
+}
+
+message BundleServiceListBundleVersionsRequest {
+  StatusName status = 1;
+}
+
+message BundleServiceListBundleVersionsResponse {
+  repeated BundleIdentifier identifiers = 1;
+}
+
+message BundleServiceDeleteRequest {
+  BundleIdentifier id = 1;
+}
+
+message BundleServiceDeleteResponse {
+}
+
+// ---------------------------- Common Definitions ----------------------------  
+
+// Define staging status.
+enum StatusName {
+  UndefinedStatusName = 0;
+  Development = 1;
+  Unstable = 2;
+  Stable = 3;
+}
+
+// Message type used for identifying a specific plugin.
+message ConfigIdentifier {
+  // snake_cased name of the blockchain.
+  string protocol = 1;
+  // snake_cased name of the node type.
+  string node_type = 2;
+  // semantic version string of the node type version.
+  string node_version = 3;
+  // Does defined tuple have the requested tag assigned.
+  StatusName status = 4;
+}
+
+message BundleIdentifier {
+  // semantic version string of the bundle version.
+  string version = 1;
+}
+
+message Plugin {
+  ConfigIdentifier identifier = 1;
+  // Plugin script contents.
+  bytes rhai_content = 2;
+}
+
+message ArchiveLocation {
+  string url = 1;
+}
+
+message Parameter {
+  string name = 1;
+  string value = 2;
+}
+
+message NetworkConfiguration {
+  enum NetType {
+    UndefinedNetType = 0;
+    Dev = 1;
+    Test = 2;
+    Main = 3;
+  }
+
+  string name = 1;
+  string url = 2;
+  NetType net_type = 3;
+  repeated Parameter meta = 4;
+}
