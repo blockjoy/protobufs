@@ -9,16 +9,15 @@ message Blockchain {
   string id = 1;
   string name = 2;
   string description = 3;
-  BlockchainStatus status = 4;
-  optional string project_url = 5;
-  optional string repo_url = 6;
-  optional string version = 7;
-  google.protobuf.Timestamp created_at = 8;
-  optional google.protobuf.Timestamp updated_at = 9;
+  optional string project_url = 4;
+  optional string repo_url = 5;
+  optional string version = 6;
+  google.protobuf.Timestamp created_at = 7;
+  optional google.protobuf.Timestamp updated_at = 8;
   // This list contains all the possible node types that can be created for this
   // kind of blockchain.
-  repeated SupportedNodeType nodes_types = 10;
-  repeated BlockchainNetwork networks = 11;
+  repeated SupportedNodeType nodes_types = 9;
+  repeated BlockchainNetwork networks = 10;
 }
 
 // Blockchain related service.
@@ -43,15 +42,6 @@ message BlockchainServiceListRequest {
 
 message BlockchainServiceListResponse {
   repeated Blockchain blockchains = 1;
-}
-
-enum BlockchainStatus {
-  BLOCKCHAIN_STATUS_UNSPECIFIED = 0;
-  BLOCKCHAIN_STATUS_DEVELOPMENT = 1;
-  BLOCKCHAIN_STATUS_ALPHA = 2;
-  BLOCKCHAIN_STATUS_BETA = 3;
-  BLOCKCHAIN_STATUS_PRODUCTION = 4;
-  BLOCKCHAIN_STATUS_DELETED = 5;
 }
 
 message SupportedNodeType {
