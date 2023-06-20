@@ -142,7 +142,7 @@ message NodeCreate {
   bool self_update = 7;
   repeated Parameter properties = 8;
   repeated Rule rules = 9;
-  BlockchainNetworkType blockchain_net_type = 10;
+  string network = 10;
 }
 
 message NodeDelete {
