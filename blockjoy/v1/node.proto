@@ -8,28 +8,29 @@ import "google/protobuf/timestamp.proto";
 message Node {
   string id = 1;
   string org_id = 2;
-  string host_id = 3;
-  string host_name = 4;
-  string blockchain_id = 5;
-  string name = 6;
+  string org_name = 3;
+  string host_id = 4;
+  string host_name = 5;
+  string blockchain_id = 6;
+  string blockchain_name = 7;
+  string name = 8;
   // The P2P address of the node on the blockchain. This field is only set as
   // the node is started, so therefore it is optional.
-  optional string address = 7;
-  string version = 8;
-  optional string ip = 9;
-  NodeType node_type = 10;
-  repeated NodeProperty properties = 11;
-  optional uint64 block_height = 13;
+  optional string address = 9;
+  string version = 10;
+  optional string ip = 11;
+  NodeType node_type = 12;
+  repeated NodeProperty properties = 13;
+  optional uint64 block_height = 14;
   google.protobuf.Timestamp created_at = 15;
   google.protobuf.Timestamp updated_at = 16;
   NodeStatus status = 17;
   SyncStatus sync_status = 18;
-  ContainerStatus container_status = 12;
-  optional StakingStatus staking_status = 19;
-  string ip_gateway = 20;
-  bool self_update = 21;
-  string network = 22;
-  optional string blockchain_name = 23;
+  ContainerStatus container_status = 19;
+  optional StakingStatus staking_status = 20;
+  string ip_gateway = 21;
+  bool self_update = 22;
+  string network = 23;
   // The id of the user that created this node. For the earliest nodes we
   // created, this field was not tracked and is therefore not populated.
   optional string created_by = 24;
