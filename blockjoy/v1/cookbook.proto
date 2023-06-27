@@ -120,14 +120,14 @@ message BundleServiceDeleteRequest {
 message BundleServiceDeleteResponse {
 }
 
-// ---------------------------- Common Definitions ----------------------------  
+// ---------------------------- Common Definitions ----------------------------
 
 // Define staging status.
 enum StatusName {
-  UndefinedStatusName = 0;
-  Development = 1;
-  Unstable = 2;
-  Stable = 3;
+  STATUS_NAME_UNSPECIFIED = 0;
+  STATUS_NAME_DEVELOPMENT = 1;
+  STATUS_NAME_UNSTABLE = 2;
+  STATUS_NAME_STABLE = 3;
 }
 
 // Message type used for identifying a specific plugin.
@@ -157,14 +157,14 @@ message ArchiveLocation {
   string url = 1;
 }
 
-message NetworkConfiguration {
-  enum NetType {
-    UndefinedNetType = 0;
-    Dev = 1;
-    Test = 2;
-    Main = 3;
-  }
+enum NetType {
+  NET_TYPE_UNSPECIFIED = 0;
+  NET_TYPE_DEV = 1;
+  NET_TYPE_TEST = 2;
+  NET_TYPE_MAIN = 3;
+}
 
+message NetworkConfiguration {
   string name = 1;
   string url = 2;
   NetType net_type = 3;
