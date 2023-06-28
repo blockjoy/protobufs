@@ -13,13 +13,16 @@ message Command {
   optional string response = 2;
   // A command may have an exit code.
   optional int32 exit_code = 3;
+  // A client may acknowledge that they have received a command, even if they
+  // have not finished processing it.
+  optional google.protobuf.Timestamp acked_at = 4;
   // The rest of the fields are split in two. There are commands that are meant
   // to instrument hosts, and commands that are meant to instrument nodes. The
   // reason we have this dichotomy is because the commands that go to a node
   // typically look different from those that go to a host.
   oneof command {
-    NodeCommand node = 4;
-    HostCommand host = 5;
+    NodeCommand node = 5;
+    HostCommand host = 6;
   }
 }
 
@@ -77,6 +80,7 @@ message CommandServiceUpdateRequest {
   string id = 1;
   optional string response = 2;
   optional int32 exit_code = 3;
+  optional google.protobuf.Timestamp acked_at = 4;
 }
 
 message CommandServiceUpdateResponse {
