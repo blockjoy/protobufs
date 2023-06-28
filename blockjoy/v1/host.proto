@@ -39,6 +39,8 @@ message Host {
   optional string org_id = 16;
   // The number of nodes on this host.
   uint64 node_count = 17;
+  // The name of the organization that this host belongs to.
+  optional string org_name = 18;
 }
 
 // Manage hosts.

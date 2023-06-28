@@ -15,6 +15,6 @@ message DiscoveryServiceServicesRequest {
 // All relevant service URLs
 message DiscoveryServiceServicesResponse {
   string key_service_url = 1;
-  string registry_url = 2;
+  // This is the address of the MQTT server.
   string notification_url = 3;
 }

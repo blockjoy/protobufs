@@ -6,3 +6,4 @@ blockjoy/.DS_Store
 package-lock.json
 node_modules
 generated
+.DS_STORE
