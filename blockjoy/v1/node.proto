@@ -19,7 +19,7 @@ message Node {
   // the node is started, so therefore it is optional.
   optional string address = 10;
   string version = 11;
-  optional string ip = 12;
+  string ip = 12;
   NodeType node_type = 13;
   repeated NodeProperty properties = 14;
   optional uint64 block_height = 15;

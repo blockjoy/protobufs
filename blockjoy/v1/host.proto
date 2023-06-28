@@ -13,11 +13,11 @@ message Host {
   string version = 3;
   // The number of logical cores the machine has, _not_ the number of physical
   // cores.
-  optional uint64 cpu_count = 5;
+  uint64 cpu_count = 5;
   // The amount of physical memory the machine has.
-  optional uint64 mem_size_bytes = 6;
+  uint64 mem_size_bytes = 6;
   // The size of the physical disks the machine has.
-  optional uint64 disk_size_bytes = 7;
+  uint64 disk_size_bytes = 7;
   // The operating system running on the machine, i.e. "BSD" or "Linux".
   string os = 8;
   // The version of said operating system running on the host.
@@ -30,17 +30,17 @@ message Host {
   // host_provision was
   google.protobuf.Timestamp created_at = 12;
   // The lowest ip address that this host may assign to a node.
-  optional string ip_range_from = 13;
+  string ip_range_from = 13;
   // The highest ip address that this host may assign to a node.
-  optional string ip_range_to = 14;
+  string ip_range_to = 14;
   // The ip gateway of this host.
-  optional string ip_gateway = 15;
+  string ip_gateway = 15;
   // The organization that this host belongs to.
-  optional string org_id = 16;
+  string org_id = 16;
   // The number of nodes on this host.
   uint64 node_count = 17;
   // The name of the organization that this host belongs to.
-  optional string org_name = 18;
+  string org_name = 18;
 }
 
 // Manage hosts.
