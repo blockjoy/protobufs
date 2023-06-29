@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package blockjoy.v1;
 
-import "blockjoy/v1/blockchain.proto";
 import "blockjoy/v1/node.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -37,6 +36,9 @@ service CommandService {
   // Update a single command status
   rpc Update(CommandServiceUpdateRequest) returns
     (CommandServiceUpdateResponse);
+  // Use this method to acknowledge that you have received an command and either
+  // already started processing it, or will soon start processing it.
+  rpc Ack(CommandServiceAckRequest) returns (CommandServiceAckResponse);
   // Get pending commands for host. Pending is means that their execution has
   // not completed, be that successfully or unsuccessfully. This is defined as
   // commands that do not have an `exit_code`. To mark a command as no longer
@@ -80,11 +82,17 @@ message CommandServiceUpdateRequest {
   string id = 1;
   optional string response = 2;
   optional int32 exit_code = 3;
-  optional google.protobuf.Timestamp acked_at = 4;
 }
 
 message CommandServiceUpdateResponse {
   Command command = 1;
+}
+
+message CommandServiceAckRequest {
+  string id = 1;
+}
+
+message CommandServiceAckResponse {
 }
 
 message CommandServicePendingRequest {
