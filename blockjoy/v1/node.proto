@@ -140,6 +140,8 @@ message NodeServiceListRequest {
 message NodeServiceListResponse {
   // The nodes that match the filter will be placed in this field.
   repeated Node nodes = 1;
+  // The total number of nodes matching your query.
+  uint64 node_count = 2;
 }
 
 // This request is used for updating a node configuration.
