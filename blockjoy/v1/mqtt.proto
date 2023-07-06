@@ -32,9 +32,9 @@ message NodeCreated {
 message NodeUpdated {
   Node node = 1;
   // The id of the person that updated the node
-  string updated_by = 2;
-  string updated_by_name = 3;
-  string updated_by_email = 4;
+  optional string updated_by = 2;
+  optional string updated_by_name = 3;
+  optional string updated_by_email = 4;
 }
 
 message NodeDeleted {
@@ -121,9 +121,9 @@ message HostCreated {
 
 message HostUpdated {
   Host host = 1;
-  string updated_by = 2;
-  string updated_by_name = 3;
-  string updated_by_email = 4;
+  optional string updated_by = 2;
+  optional string updated_by_name = 3;
+  optional string updated_by_email = 4;
 }
 
 message HostDeleted {
