@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package blockjoy.v1;
+
+message Subscription {
+  string id = 1;
+  string org_id = 2;
+  string user_id = 3;
+  string external_id = 4;
+}
+
+service SubscriptionService {
+  rpc Create(SubscriptionServiceCreateRequest)
+      returns (SubscriptionServiceCreateResponse);
+  rpc Get(SubscriptionServiceGetRequest)
+      returns (SubscriptionServiceGetResponse);
+  rpc List(SubscriptionServiceListRequest)
+      returns (SubscriptionServiceListResponse);
+  rpc Delete(SubscriptionServiceDeleteRequest)
+      returns (SubscriptionServiceDeleteResponse);
+}
+
+message SubscriptionServiceCreateRequest {
+  string org_id = 1;
+  string user_id = 2;
+  string external_id = 3;
+}
+
+message SubscriptionServiceCreateResponse {
+  optional Subscription subscription = 1;
+}
+
+message SubscriptionServiceGetRequest {
+  string org_id = 1;
+}
+
+message SubscriptionServiceGetResponse {
+  optional Subscription subscription = 1;
+}
+
+message SubscriptionServiceListRequest {
+  optional string user_id = 1;
+}
+
+message SubscriptionServiceListResponse {
+  repeated Subscription subscriptions = 1;
+}
+
+message SubscriptionServiceDeleteRequest {
+  string id = 1;
+}
+
+message SubscriptionServiceDeleteResponse {
+}
