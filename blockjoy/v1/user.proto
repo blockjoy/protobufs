@@ -12,7 +12,6 @@ message User {
   string last_name = 4;
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp updated_at = 6;
-  optional string billing_id = 7;
 }
 
 // User related services.
@@ -25,6 +24,15 @@ service UserService {
   rpc Update(UserServiceUpdateRequest) returns (UserServiceUpdateResponse);
   // Delete a single user.
   rpc Delete(UserServiceDeleteRequest) returns (UserServiceDeleteResponse);
+  // Retrieve the billing details of this user.
+  rpc GetBilling(UserServiceGetBillingRequest) returns
+    (UserServiceGetBillingResponse);
+  // Overwrite the billing details of this user.
+  rpc UpdateBilling(UserServiceUpdateBillingRequest) returns
+    (UserServiceUpdateBillingResponse);
+  // Remove the billing details of this user.
+  rpc DeleteBilling(UserServiceDeleteBillingRequest) returns
+    (UserServiceDeleteBillingResponse);
 }
 
 message UserServiceGetRequest {
@@ -51,7 +59,6 @@ message UserServiceUpdateRequest {
   string id = 1;
   optional string first_name = 2;
   optional string last_name = 3;
-  optional string billing_id = 4;
 }
 
 message UserServiceUpdateResponse {
@@ -63,4 +70,28 @@ message UserServiceDeleteRequest {
 }
 
 message UserServiceDeleteResponse {
+}
+
+message UserServiceGetBillingRequest {
+  string user_id = 1;
+}
+
+message UserServiceGetBillingResponse {
+  optional string billing_id = 1;
+}
+
+message UserServiceUpdateBillingRequest {
+  string user_id = 1;
+  optional string billing_id = 2;
+}
+
+message UserServiceUpdateBillingResponse {
+  optional string billing_id = 1;
+}
+
+message UserServiceDeleteBillingRequest {
+  string user_id = 1;
+}
+
+message UserServiceDeleteBillingResponse {
 }
