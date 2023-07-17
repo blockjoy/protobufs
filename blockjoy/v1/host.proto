@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package blockjoy.v1;
 
+import "blockjoy/v1/node.proto";
 import "google/protobuf/timestamp.proto";
 
 message Host {
@@ -39,6 +40,8 @@ message Host {
   uint64 node_count = 17;
   // The name of the organization that this host belongs to.
   string org_name = 18;
+  // The region of the host.
+  optional string region = 19;
 }
 
 // Manage hosts.
@@ -50,14 +53,18 @@ service HostService {
   // Update a single host
   // This shall be used only by Host.
   rpc Update(HostServiceUpdateRequest) returns (HostServiceUpdateResponse);
+  // Delete a single host
+  rpc Delete(HostServiceDeleteRequest) returns (HostServiceDeleteResponse);
+  
   // Start a single host
   rpc Start(HostServiceStartRequest) returns (HostServiceStartResponse);
   // Stop a single host
   rpc Stop(HostServiceStopRequest) returns (HostServiceStopResponse);
   // Restart a single host
   rpc Restart(HostServiceRestartRequest) returns (HostServiceRestartResponse);
-  // Delete a single host
-  rpc Delete(HostServiceDeleteRequest) returns (HostServiceDeleteResponse);
+
+  // Returns a list of regions where there are hosts available
+  rpc Regions(HostServiceRegionsRequest) returns (HostServiceRegionsResponse);
 }
 
 message HostServiceCreateRequest {
@@ -86,6 +93,8 @@ message HostServiceCreateRequest {
   // The organization that this host belongs to. This field _must_ be populated
   // with the current organization id.
   optional string org_id = 13;
+  // The region of the host
+  optional string region = 14;
 }
 
 message HostServiceCreateResponse {
@@ -123,6 +132,8 @@ message HostServiceUpdateRequest {
   optional string version = 3;
   optional string os = 5;
   optional string os_version = 6;
+  // The region of the host.
+  optional string region = 4;
 }
 
 message HostServiceUpdateResponse {
@@ -156,8 +167,28 @@ message HostServiceDeleteRequest {
 message HostServiceDeleteResponse {
 }
 
-enum HostConnectionStatus {
-  HOST_CONNECTION_STATUS_UNSPECIFIED = 0;
-  HOST_CONNECTION_STATUS_ONLINE = 1;
-  HOST_CONNECTION_STATUS_OFFLINE = 2;
+// Used to produce a list of regions that are available to deploy nodes to.
+message HostServiceRegionsRequest {
+  // The org for which to produce the list.
+  string org_id = 1;
+  // The type of host to include in this list.
+  optional HostType host_type = 2;
+  // The id of the blockchain that should be ran inside the node.
+  string blockchain_id = 3;
+  // The version of the node software that is ran.
+  string version = 4;
+  // The type of node that you want to create.
+  NodeType node_type = 5;
+}
+
+message HostServiceRegionsResponse {
+  repeated string regions = 1;
+}
+
+enum HostType {
+  HOST_TYPE_UNSPECIFIED = 0;
+  // This host is a host on the blockjoy cloud platform.
+  HOST_TYPE_CLOUD = 1;
+  // This host is a private host that can only be used by the org that owns it.
+  HOST_TYPE_PRIVATE = 2;
 }

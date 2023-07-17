@@ -76,7 +76,7 @@ service NodeService {
 message NodeServiceCreateRequest {
   // The id of the organization for which the node should be created.
   string org_id = 2;
-  // The id of the blockchain that shoudl be ran inside the node.
+  // The id of the blockchain that should be ran inside the node.
   string blockchain_id = 3;
   // The version of the node software that is ran.
   string version = 4;
@@ -217,10 +217,10 @@ message NodePlacement {
 
 // A node scheduler controls the way that the node is placed onto an appropriate
 // host. There are two fields, each representing a possible method of selecting
-// a host for this node to be scheduled on. They are sorted by priority, meaning
-// that `similarity` takes precedence over `resource`. The final field is
-// required, in order to make sure that the way we schedule a node is always
-// defined.
+// a host for this node to be scheduled on. They are sorted by priority in
+// descending order, meaning that `similarity` takes precedence over `resource`.
+// The first field is required, in order to make sure that the way we schedule a
+// node is always defined.
 message NodeScheduler {
   // Controls whether or not nodes of a similar type will be placed on the same
   // host or, conversely, be spread out over many hosts. "Similar" is defined
@@ -252,9 +252,11 @@ message NodeScheduler {
     RESOURCE_AFFINITY_LEAST_RESOURCES = 2;
   }
   // The way we want the node to react to similar nodes being on a host.
-  optional SimilarNodeAffinity similarity = 1;
-  // The way we want the node to react to hosts being full or empty.
-  ResourceAffinity resource = 2;
+  ResourceAffinity resource = 1;
+  // The way we want the node to react to similar nodes being on a host.
+  optional SimilarNodeAffinity similarity = 2;
+  // The region where the node should be ran.
+  string region = 3;
 }
 
 // IP Addresses used to filter access.
