@@ -272,7 +272,8 @@ message FilteredIpAddr {
 // node's states as seen by the blockchain
 enum NodeStatus {
   NODE_STATUS_UNSPECIFIED = 0;
-  // General chain states
+  // General chain states 
+  //TODO: we should deprecate some of these node status in the future. They are redundant to container status. 
   NODE_STATUS_PROVISIONING = 1;
   NODE_STATUS_BROADCASTING = 2;
   NODE_STATUS_CANCELLED = 3;
@@ -283,13 +284,18 @@ enum NodeStatus {
   NODE_STATUS_ELECTING = 8;
   NODE_STATUS_ELECTED = 9;
   NODE_STATUS_EXPORTED = 10;
-  NODE_STATUS_INGESTING = 11;
-  NODE_STATUS_MINING = 12;
-  NODE_STATUS_MINTING = 13;
-  NODE_STATUS_PROCESSING = 14;
+  NODE_STATUS_INGESTING = 11; 
+  NODE_STATUS_MINING = 12; 
+  NODE_STATUS_MINTING = 13; 
+  NODE_STATUS_PROCESSING = 14; 
   NODE_STATUS_RELAYING = 15;
-  NODE_STATUS_REMOVED = 16;
-  NODE_STATUS_REMOVING = 17;
+  NODE_STATUS_REMOVED = 16;  
+  NODE_STATUS_REMOVING = 17; 
+
+  //primarily reported by the BLOCKVISOR-VMM
+  NODE_STATUS_WARNING = 18; //use when there may be something wrong with the blockchain
+  NODE_STATUS_FAILING = 19; //use when there is something wrong with the blockchain
+  NODE_STATUS_HEALTHY = 20;  //use when things look healthy when running application_status in RHAI. 
 }
 
 // Possible states the container is described with
