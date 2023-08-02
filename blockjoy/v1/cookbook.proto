@@ -119,6 +119,33 @@ message BundleServiceDeleteRequest {
 message BundleServiceDeleteResponse {
 }
 
+// ------------------------------ Kernel Service ------------------------------
+
+// Manage VM kernels.
+service KernelService {
+  // Retrieve kernel for specific version.
+  rpc Retrieve(KernelServiceRetrieveRequest) returns
+    (KernelServiceRetrieveResponse);
+  // List all available kernel versions.
+  rpc ListKernelVersions(KernelServiceListKernelVersionsRequest) returns
+    (KernelServiceListKernelVersionsResponse);
+}
+
+message KernelServiceRetrieveRequest {
+  KernelIdentifier id = 1;
+}
+
+message KernelServiceRetrieveResponse {
+  ArchiveLocation location = 1;
+}
+
+message KernelServiceListKernelVersionsRequest {
+}
+
+message KernelServiceListKernelVersionsResponse {
+  repeated KernelIdentifier identifiers = 1;
+}
+
 // ----------------------------- Manifest Service -----------------------------
 
 // Retrieve manage download manifests, mainly for blockchain data archives.
@@ -244,6 +271,11 @@ message ConfigIdentifier {
 
 message BundleIdentifier {
   // semantic version string of the bundle version.
+  string version = 1;
+}
+
+message KernelIdentifier {
+  // semantic version string of the kernel version.
   string version = 1;
 }
 
