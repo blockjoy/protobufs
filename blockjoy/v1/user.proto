@@ -10,6 +10,11 @@ message User {
   string email = 2;
   string first_name = 3;
   string last_name = 4;
+  // Each users has a specific role within an organization, but they may also
+  // posses a global role. For most users this will be `Unprivileged`, but there
+  // are accounts that have the settings `Blockjoy Staff`. This means that  they
+  // are allowed to do administrative tasks for other users.
+  UserRole role = 7;
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp updated_at = 6;
 }
@@ -59,6 +64,7 @@ message UserServiceUpdateRequest {
   string id = 1;
   optional string first_name = 2;
   optional string last_name = 3;
+  optional UserRole role = 4;
 }
 
 message UserServiceUpdateResponse {
@@ -94,4 +100,13 @@ message UserServiceDeleteBillingRequest {
 }
 
 message UserServiceDeleteBillingResponse {
+}
+
+enum UserRole {
+  USER_ROLE_UNSPECIFICED = 0;
+  // This user has normal privileges.
+  USER_ROLE_UNPRIVILEGED = 1;
+  // This user is allowed to administer organizations that they are not a member
+  // of.
+  USER_ROLE_BLOCKJOY_ADMIN = 2;
 }
