@@ -31,7 +31,7 @@ message NodeCreated {
 
 message NodeUpdated {
   Node node = 1;
-  // The id of the person that updated the node
+  // The id of the person that updated the node, if there is one.
   optional string updated_by = 2;
   optional string updated_by_name = 3;
   optional string updated_by_email = 4;

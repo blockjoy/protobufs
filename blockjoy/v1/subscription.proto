@@ -10,14 +10,10 @@ message Subscription {
 }
 
 service SubscriptionService {
-  rpc Create(SubscriptionServiceCreateRequest)
-      returns (SubscriptionServiceCreateResponse);
-  rpc Get(SubscriptionServiceGetRequest)
-      returns (SubscriptionServiceGetResponse);
-  rpc List(SubscriptionServiceListRequest)
-      returns (SubscriptionServiceListResponse);
-  rpc Delete(SubscriptionServiceDeleteRequest)
-      returns (SubscriptionServiceDeleteResponse);
+  rpc Create(SubscriptionServiceCreateRequest) returns (SubscriptionServiceCreateResponse);
+  rpc Get(SubscriptionServiceGetRequest) returns (SubscriptionServiceGetResponse);
+  rpc List(SubscriptionServiceListRequest) returns (SubscriptionServiceListResponse);
+  rpc Delete(SubscriptionServiceDeleteRequest) returns (SubscriptionServiceDeleteResponse);
 }
 
 message SubscriptionServiceCreateRequest {
@@ -50,5 +46,4 @@ message SubscriptionServiceDeleteRequest {
   string id = 1;
 }
 
-message SubscriptionServiceDeleteResponse {
-}
+message SubscriptionServiceDeleteResponse {}

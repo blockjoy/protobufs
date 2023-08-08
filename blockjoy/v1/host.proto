@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package blockjoy.v1;
 
+import "blockjoy/common/v1/currency.proto";
 import "blockjoy/v1/node.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -42,6 +43,8 @@ message Host {
   string org_name = 18;
   // The region of the host.
   optional string region = 19;
+  // The optional billing amount for this host.
+  optional blockjoy.common.v1.BillingAmount billing_amount = 20;
 }
 
 // Manage hosts.
@@ -55,7 +58,7 @@ service HostService {
   rpc Update(HostServiceUpdateRequest) returns (HostServiceUpdateResponse);
   // Delete a single host
   rpc Delete(HostServiceDeleteRequest) returns (HostServiceDeleteResponse);
-  
+
   // Start a single host
   rpc Start(HostServiceStartRequest) returns (HostServiceStartResponse);
   // Stop a single host
@@ -95,6 +98,8 @@ message HostServiceCreateRequest {
   optional string org_id = 13;
   // The region of the host
   optional string region = 14;
+  // Optionally set a billing amount for this host.
+  optional blockjoy.common.v1.BillingAmount billing_amount = 15;
 }
 
 message HostServiceCreateResponse {
@@ -134,6 +139,8 @@ message HostServiceUpdateRequest {
   optional string os_version = 6;
   // The region of the host.
   optional string region = 4;
+  // Optionally set a billing amount for this host.
+  optional blockjoy.common.v1.BillingAmount billing_amount = 7;
 }
 
 message HostServiceUpdateResponse {

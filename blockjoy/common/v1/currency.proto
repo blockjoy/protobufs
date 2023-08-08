@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package blockjoy.common.v1;
+
+// An `Amount` is the `value` of some `currency` at the minor units level.
+//
+// For example, with `CURRENCY_USD` the minor units are to 2 decimal places (as
+// defined by ISO 4217), meaning a `value` of `123` is equal to `$1.23`.
+message Amount {
+  // The `Currency` type of this `Amount`.
+  Currency currency = 1;
+  // The minor units value for the `currency` (as defined by ISO 4217).
+  int64 value = 2;
+}
+
+// The currency code of some `Amount`.
+enum Currency {
+  CURRENCY_UNSPECIFIED = 0;
+  CURRENCY_USD = 1;
+}
+
+// A `BillingAmount` combines an `Amount` with a recurring `Period`.
+message BillingAmount {
+  Amount amount = 1;
+  Period period = 2;
+}
+
+// The recurring periodic frequency (e.g. for billing cycles).
+enum Period {
+  PERIOD_UNSPECIFIED = 0;
+  PERIOD_MONTHLY = 1;
+}
