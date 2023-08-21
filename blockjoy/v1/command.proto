@@ -118,6 +118,8 @@ message NodeCreate {
   repeated Parameter properties = 7;
   repeated Rule rules = 8;
   string network = 9;
+  // The mac address represented as a string. Example: `CA:92:34:01:23:45`.
+  string mac_address = 10;
 }
 
 message NodeDelete {
