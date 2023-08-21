@@ -16,9 +16,6 @@ service CookbookService {
   // Retrieve image for specific version and state.
   rpc RetrieveImage(CookbookServiceRetrieveImageRequest) returns
     (CookbookServiceRetrieveImageResponse);
-  // Retrieve kernel file for specific version and state.
-  rpc RetrieveKernel(CookbookServiceRetrieveKernelRequest) returns
-    (CookbookServiceRetrieveKernelResponse);
   // Retrieve hardware requirements for given identifier.
   rpc Requirements(CookbookServiceRequirementsRequest) returns
     (CookbookServiceRequirementsResponse);
@@ -43,14 +40,6 @@ message CookbookServiceRetrieveImageRequest {
 }
 
 message CookbookServiceRetrieveImageResponse {
-  ArchiveLocation location = 1;
-}
-
-message CookbookServiceRetrieveKernelRequest {
-  ConfigIdentifier id = 1;
-}
-
-message CookbookServiceRetrieveKernelResponse {
   ArchiveLocation location = 1;
 }
 
