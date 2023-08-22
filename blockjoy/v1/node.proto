@@ -345,9 +345,15 @@ enum NodeType {
 
 enum UiType {
   UI_TYPE_UNSPECIFIED = 0;
+  // Either "true" or "false" must be returned. The property should be rendered
+  // as a checkbox.
   UI_TYPE_SWITCH = 1;
+  // This field should be treated as a password field, i.e. a text field whose
+  // content is hidden.
   UI_TYPE_PASSWORD = 2;
+  // This field should be treated as a text field.
   UI_TYPE_TEXT = 3;
+  // This field should let the user upload string from a file.
   UI_TYPE_FILE_UPLOAD = 4;
 }
 

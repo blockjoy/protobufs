@@ -6,6 +6,8 @@ syntax = "proto3";
 
 package blockjoy.v1;
 
+import "blockjoy/v1/node.proto";
+
 // ----------------------------- Cookbook Service -----------------------------
 
 // Babel cookbook service.
@@ -75,7 +77,7 @@ message CookbookServiceNetConfigurationsResponse {
 
 message CookbookServiceListBabelVersionsRequest {
   string protocol = 1;
-  string node_type = 2;
+  NodeType node_type = 2;
 }
 
 message CookbookServiceListBabelVersionsResponse {
@@ -264,7 +266,7 @@ message ConfigIdentifier {
   // snake_cased name of the blockchain.
   string protocol = 1;
   // snake_cased name of the node type.
-  string node_type = 2;
+  NodeType node_type = 2;
   // semantic version string of the node type version.
   string node_version = 3;
 }

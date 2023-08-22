@@ -8,16 +8,14 @@ import "google/protobuf/timestamp.proto";
 message Blockchain {
   string id = 1;
   string name = 2;
-  string description = 3;
-  optional string project_url = 4;
-  optional string repo_url = 5;
-  optional string version = 6;
-  google.protobuf.Timestamp created_at = 7;
-  optional google.protobuf.Timestamp updated_at = 8;
+  optional string description = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+  optional string project_url = 6;
+  optional string repo_url = 7;
   // This list contains all the possible node types that can be created for this
   // kind of blockchain.
-  repeated SupportedNodeType nodes_types = 9;
-  repeated BlockchainNetwork networks = 10;
+  repeated BlockchainNodeType node_types = 8;
 }
 
 // Blockchain related service.
@@ -44,18 +42,53 @@ message BlockchainServiceListResponse {
   repeated Blockchain blockchains = 1;
 }
 
-message SupportedNodeType {
-  NodeType node_type = 1;
-  string version = 2;
-  repeated SupportedNodeProperty properties = 3;
+message BlockchainNodeType {
+  string id = 1;
+  NodeType node_type = 2;
+  optional string description = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+  repeated BlockchainVersion versions = 6;
 }
 
-message SupportedNodeProperty {
+message BlockchainVersion {
+  string id = 1;
+  string version = 2;
+  optional string description = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+  repeated BlockchainNetwork networks = 6;
+  repeated BlockchainProperty properties = 7;
+}
+
+// A property that is supported by a node of a particular:
+// 1. blockchain type,
+// 2. node type,
+// 3. version.
+// When a blockchain node is created, a list of properties must be submitted by
+// the caller. The properties that are required / allowed are defined by these
+// properties here.
+message BlockchainProperty {
+  // The name of this property, i.e. `validator-key`.
   string name = 1;
-  optional string default = 2;
-  UiType ui_type = 3;
-  bool disabled = 4;
+  // A nice looking name that can be used for display purposes.
+  string display_name = 2;
+  // If there is one, this field contains the default value that should be
+  // used if the user supplies no value.
+  optional string default = 3;
+  // The way this field should be displayed when a node with this property is
+  // created.
+  UiType ui_type = 4;
+  // If this is true then the property _must_ be supplied when a node of this
+  // type and version is created. If this is false, then the property is treated
+  // as optional and may be omitted.
   bool required = 5;
+}
+
+message BlockchainNetwork {
+  string name = 1;
+  string url = 2;
+  BlockchainNetworkType net_type = 3;
 }
 
 enum BlockchainNetworkType {
@@ -63,10 +96,4 @@ enum BlockchainNetworkType {
   BLOCKCHAIN_NETWORK_TYPE_DEV = 1;
   BLOCKCHAIN_NETWORK_TYPE_TEST = 2;
   BLOCKCHAIN_NETWORK_TYPE_MAIN = 3;
-}
-
-message BlockchainNetwork {
-  string name = 1;
-  string url = 2;
-  BlockchainNetworkType net_type = 3;
 }
