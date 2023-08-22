@@ -45,6 +45,8 @@ message Host {
   optional string region = 19;
   // The optional billing amount for this host.
   optional blockjoy.common.v1.BillingAmount billing_amount = 20;
+  // The place where the net data directory should be mounted on the host.
+  optional string data_directory_mountpoint = 21;
 }
 
 // Manage hosts.
@@ -99,6 +101,8 @@ message HostServiceCreateRequest {
   optional string region = 14;
   // Optionally set a billing amount for this host.
   optional blockjoy.common.v1.BillingAmount billing_amount = 15;
+  // The place where the net data directory should be mounted on the host.
+  optional string data_directory_mountpoint = 16;
 }
 
 message HostServiceCreateResponse {
