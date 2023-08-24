@@ -359,6 +359,7 @@ enum UiType {
 
 message NodeProperty {
   string name = 1;
+  optional string display_name = 6;
   UiType ui_type = 2;
   bool disabled = 3;
   bool required = 4;
