@@ -46,7 +46,7 @@ message Node {
   // Logic with regards to where the node should placed.
   NodePlacement placement = 30;
   // The place where the net data directory should be mounted on the host.
-  optional string data_directory_mountpoint = 31;
+  optional string netdata_directory_mointpoint = 31;
 }
 
 service NodeService {

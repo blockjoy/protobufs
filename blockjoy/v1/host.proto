@@ -102,7 +102,7 @@ message HostServiceCreateRequest {
   // Optionally set a billing amount for this host.
   optional blockjoy.common.v1.BillingAmount billing_amount = 15;
   // The place where the net data directory should be mounted on the host.
-  optional string data_directory_mountpoint = 16;
+  optional string netdata_directory_mointpoint = 16;
 }
 
 message HostServiceCreateResponse {
