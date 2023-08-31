@@ -55,7 +55,9 @@ message UserServiceFilterRequest {
   // have access to the entire system (i.e. blockjoy's admins).
   optional string org_id = 1;
   // Return only users whose email has the provided pattern as a substring. Note
-  // that this search is not case sensitive.
+  // that this search is not case sensitive. The wildcard symbol here is `'%'`.
+  // For example, a query for all users whose email starts with `baremetal`
+  // would look like `"baremetal%"`.
   optional string email_like = 2;
 }
 
