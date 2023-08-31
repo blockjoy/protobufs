@@ -23,6 +23,8 @@ message User {
 service UserService {
   // Retrieve a single user.
   rpc Get(UserServiceGetRequest) returns (UserServiceGetResponse);
+  // Retrieve multiple users my means of a filter.
+  rpc Filter(UserServiceFilterRequest) returns (UserServiceFilterResponse);
   // Create a single user.
   rpc Create(UserServiceCreateRequest) returns (UserServiceCreateResponse);
   // Update a single user.
@@ -46,6 +48,19 @@ message UserServiceGetRequest {
 
 message UserServiceGetResponse {
   User user = 1;
+}
+
+message UserServiceFilterRequest {
+  // Return only users from this org. This is required for users that do not
+  // have access to the entire system (i.e. blockjoy's admins).
+  optional string org_id = 1;
+  // Return only users whose email has the provided pattern as a substring. Note
+  // that this search is not case sensitive.
+  optional string email_like = 2;
+}
+
+message UserServiceFilterResponse {
+  repeated User users = 1;
 }
 
 message UserServiceCreateRequest {
