@@ -49,6 +49,12 @@ message NodeMetrics {
   // The status of the node with respect to the rest of the network, i.e.
   // whether it is in sync with the other nodes.
   optional SyncStatus sync_status = 6;
+  // The progress of node data sync operation: total units to sync
+  optional uint32 data_sync_progress_total = 7;
+  // The progress of node data sync operation: units currently synced
+  optional uint32 data_sync_progress_current = 8;
+  // The progress of node data sync operation: message to display to user
+  optional string data_sync_progress_message = 9;
 }
 
 // The metrics for a single `Host`. Note that there is no host id in this
