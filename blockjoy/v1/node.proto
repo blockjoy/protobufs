@@ -48,6 +48,7 @@ message Node {
   // The place where the blockchain data directory should be mounted on the
   // host.
   optional string data_directory_mountpoint = 31;
+  optional DataSyncProgress data_sync_progress = 32;
 }
 
 service NodeService {
@@ -367,4 +368,13 @@ message NodeProperty {
   bool disabled = 3;
   bool required = 4;
   string value = 5;
+}
+
+message DataSyncProgress {
+  // The progress of node data sync operation: total units to sync.
+  optional uint32 data_sync_progress_total = 32;
+  // The progress of node data sync operation: units currently synced.
+  optional uint32 data_sync_progress_current = 33;
+  // The progress of node data sync operation: message to display to user.
+  optional string data_sync_progress_message = 34;
 }
