@@ -372,9 +372,9 @@ message NodeProperty {
 
 message DataSyncProgress {
   // The progress of node data sync operation: total units to sync.
-  optional uint32 data_sync_progress_total = 32;
+  optional uint32 total = 32;
   // The progress of node data sync operation: units currently synced.
-  optional uint32 data_sync_progress_current = 33;
+  optional uint32 current = 33;
   // The progress of node data sync operation: message to display to user.
-  optional string data_sync_progress_message = 34;
+  optional string message = 34;
 }
