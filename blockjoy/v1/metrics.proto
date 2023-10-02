@@ -55,6 +55,8 @@ message NodeMetrics {
   optional uint32 data_sync_progress_current = 8;
   // The progress of node data sync operation: message to display to user
   optional string data_sync_progress_message = 9;
+  // A list of the jobs that this node consists of.
+  repeated Job jobs = 10;
 }
 
 // The metrics for a single `Host`. Note that there is no host id in this

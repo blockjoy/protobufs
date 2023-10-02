@@ -48,7 +48,9 @@ message Node {
   // The place where the blockchain data directory should be mounted on the
   // host.
   optional string data_directory_mountpoint = 31;
-  optional DataSyncProgress data_sync_progress = 32;
+  // The running node on the host will consist of a couple of processes. These
+  // may individually start, stop and fail.
+  repeated Job jobs = 33;
 }
 
 service NodeService {
@@ -370,11 +372,35 @@ message NodeProperty {
   string value = 5;
 }
 
-message DataSyncProgress {
-  // The progress of node data sync operation: total units to sync.
-  optional uint32 total = 32;
-  // The progress of node data sync operation: units currently synced.
-  optional uint32 current = 33;
-  // The progress of node data sync operation: message to display to user.
-  optional string message = 34;
+// A job is a process running on the host that is necessary for the operation of
+// a node. Examples here are downloading the chain data or running the
+// blockchain node process.
+message Job {
+  string name = 1;
+  JobStatus status = 2;
+  repeated string logs = 3;
+  uint64 restarts = 4;
+  optional JobProgress progress = 5;
+}
+
+// Flags whether a job is in an ok, failed or finished state.
+enum JobStatus {
+  JOB_STATUS_UNSPECIFIED = 0;
+  JOB_STATUS_OK = 1;
+  JOB_STATUS_FAILED = 2;
+  JOB_STATUS_FINISHED = 3;
+}
+
+// This message indicates the amount of progress a job has made towards its
+// completion. Note that it is possible for a job to report an amount of
+// progress without it also providing a total.
+message JobProgress {
+  // The total units of progress that need to be made in order to complete this
+  // job.
+  optional uint32 total = 1;
+  // The amount of units of progress that have been made towards the completion
+  // of this job.
+  optional uint32 current = 2;
+  // Any sort of message that is included with this job, 
+  optional string message = 3;
 }
