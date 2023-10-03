@@ -391,7 +391,7 @@ message Job {
   // This field contains the number of restarts that as happened since the last
   // cut-off. This is _not_ guaranteed to be the number of restarts that has
   // happened since the creation of this node. Rather, this number may be reset
-  // to zero periodically, or whenever the job triggers the state `OK`.
+  // to zero periodically, or whenever the job triggers the state `FINISHED`.
   uint64 restarts = 6;
   // This message contains a couple of fields that together denote the progress
   // towards completion of this job.
