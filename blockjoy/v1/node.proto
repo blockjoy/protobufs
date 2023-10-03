@@ -398,7 +398,7 @@ message Job {
   optional NodeJobProgress progress = 7;
 }
 
-// Flags whether a job is in an ok, failed or finished state.
+// Flags describing a job possible states.
 enum NodeJobStatus {
   JOB_STATUS_UNSPECIFIED = 0;
   // The job has not started yet.
