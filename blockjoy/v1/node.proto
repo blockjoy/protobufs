@@ -376,25 +376,47 @@ message NodeProperty {
 // a node. Examples here are downloading the chain data or running the
 // blockchain node process.
 message Job {
+  // A name to identify this job by.
   string name = 1;
-  JobStatus status = 2;
-  repeated string logs = 3;
-  uint64 restarts = 4;
-  optional JobProgress progress = 5;
+  // The status this job is currently in.
+  NodeJobStatus status = 2;
+  // If the process exited, then this field holds the unix-style exit code.
+  optional uint32 exit_code = 3;
+  // A displayable message that the user might be able to read in order to
+  // further identify the current status of the job. For example, if the job has
+  // failed, an error message might be place here.
+  optional string message = 4;
+  // A list of log lines with information about the current job.
+  repeated string logs = 5;
+  // This field contains the number of restarts that as happened since the last
+  // cut-off. This is _not_ guaranteed to be the number of restarts that has
+  // happened since the creation of this node. Rather, this number may be reset
+  // to zero periodically, or whenever the job triggers the state `OK`.
+  uint64 restarts = 6;
+  // This message contains a couple of fields that together denote the progress
+  // towards completion of this job.
+  optional NodeJobProgress progress = 7;
 }
 
 // Flags whether a job is in an ok, failed or finished state.
-enum JobStatus {
+enum NodeJobStatus {
   JOB_STATUS_UNSPECIFIED = 0;
-  JOB_STATUS_OK = 1;
-  JOB_STATUS_FAILED = 2;
+  // The job has not started yet.
+  JOB_STATUS_PENDING = 1;
+  // The job is current being executed.
+  JOB_STATUS_RUNNING = 2;
+  // The job has successfully finished.
   JOB_STATUS_FINISHED = 3;
+  // The job has unsuccessfully finished.
+  JOB_STATUS_FAILED = 4;
+  // The job was interrupted.
+  JOB_STATUS_STOPPED = 5;
 }
 
 // This message indicates the amount of progress a job has made towards its
 // completion. Note that it is possible for a job to report an amount of
 // progress without it also providing a total.
-message JobProgress {
+message NodeJobProgress {
   // The total units of progress that need to be made in order to complete this
   // job.
   optional uint32 total = 1;
