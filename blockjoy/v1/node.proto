@@ -381,7 +381,7 @@ message Job {
   // The status this job is currently in.
   NodeJobStatus status = 2;
   // If the process exited, then this field holds the unix-style exit code.
-  optional uint32 exit_code = 3;
+  optional int32 exit_code = 3;
   // A displayable message that the user might be able to read in order to
   // further identify the current status of the job. For example, if the job has
   // failed, an error message might be place here.
