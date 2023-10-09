@@ -48,7 +48,9 @@ message Node {
   // The place where the blockchain data directory should be mounted on the
   // host.
   optional string data_directory_mountpoint = 31;
-  optional DataSyncProgress data_sync_progress = 32;
+  // The running node on the host will consist of a couple of processes. These
+  // may individually start, stop and fail.
+  repeated NodeJob jobs = 33;
 }
 
 service NodeService {
@@ -370,11 +372,57 @@ message NodeProperty {
   string value = 5;
 }
 
-message DataSyncProgress {
-  // The progress of node data sync operation: total units to sync.
-  optional uint32 total = 32;
-  // The progress of node data sync operation: units currently synced.
-  optional uint32 current = 33;
-  // The progress of node data sync operation: message to display to user.
-  optional string message = 34;
+// A job is a process running on the host that is necessary for the operation of
+// a node. Examples here are downloading the chain data or running the
+// blockchain node process.
+message NodeJob {
+  // A name to identify this job by.
+  string name = 1;
+  // The status this job is currently in.
+  NodeJobStatus status = 2;
+  // If the process exited, then this field holds the unix-style exit code.
+  optional int32 exit_code = 3;
+  // A displayable message that the user might be able to read in order to
+  // further identify the current status of the job. For example, if the job has
+  // failed, an error message might be place here.
+  optional string message = 4;
+  // A list of log lines with information about the current job.
+  repeated string logs = 5;
+  // This field contains the number of restarts that as happened since the last
+  // cut-off. This is _not_ guaranteed to be the number of restarts that has
+  // happened since the creation of this node. Rather, this number may be reset
+  // to zero periodically, or whenever the job triggers the state `FINISHED`.
+  uint64 restarts = 6;
+  // This message contains a couple of fields that together denote the progress
+  // towards completion of this job.
+  optional NodeJobProgress progress = 7;
+}
+
+// Flags describing a job possible states.
+enum NodeJobStatus {
+  NODE_JOB_STATUS_UNSPECIFIED = 0;
+  // The job has not started yet.
+  NODE_JOB_STATUS_PENDING = 1;
+  // The job is current being executed.
+  NODE_JOB_STATUS_RUNNING = 2;
+  // The job has successfully finished.
+  NODE_JOB_STATUS_FINISHED = 3;
+  // The job has unsuccessfully finished.
+  NODE_JOB_STATUS_FAILED = 4;
+  // The job was interrupted.
+  NODE_JOB_STATUS_STOPPED = 5;
+}
+
+// This message indicates the amount of progress a job has made towards its
+// completion. Note that it is possible for a job to report an amount of
+// progress without it also providing a total.
+message NodeJobProgress {
+  // The total units of progress that need to be made in order to complete this
+  // job.
+  optional uint32 total = 1;
+  // The amount of units of progress that have been made towards the completion
+  // of this job.
+  optional uint32 current = 2;
+  // Any sort of message that is included with this job, 
+  optional string message = 3;
 }
