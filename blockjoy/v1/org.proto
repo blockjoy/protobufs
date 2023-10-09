@@ -60,10 +60,17 @@ message OrgServiceGetResponse {
 
 message OrgServiceListRequest {
   optional string member_id = 1;
+  // The number of items to be skipped over.
+  uint64 offset = 2;
+  // The number of items that will be returned. Together with offset, you can
+  // use this to get pagination.
+  uint64 limit = 3;
 }
 
 message OrgServiceListResponse {
   repeated Org orgs = 1;
+  // The total number of orgs matching your query.
+  uint64 org_count = 2;
 }
 
 message OrgServiceCreateRequest {

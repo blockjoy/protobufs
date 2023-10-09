@@ -16,6 +16,11 @@ message Blockchain {
   // This list contains all the possible node types that can be created for this
   // kind of blockchain.
   repeated BlockchainNodeType node_types = 8;
+  uint64 node_count = 9;
+  uint64 node_count_active = 10;
+  uint64 node_count_syncing = 11;
+  uint64 node_count_provisioning = 12; 
+  uint64 node_count_failed = 14;
 }
 
 // Blockchain related service.
@@ -29,6 +34,7 @@ service BlockchainService {
 
 message BlockchainServiceGetRequest {
   string id = 1;
+  optional string org_id = 2;
 }
 
 message BlockchainServiceGetResponse {
@@ -36,6 +42,7 @@ message BlockchainServiceGetResponse {
 }
 
 message BlockchainServiceListRequest {
+  optional string org_id = 1;
 }
 
 message BlockchainServiceListResponse {

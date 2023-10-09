@@ -19,7 +19,7 @@ service UserService {
   // Retrieve a single user.
   rpc Get(UserServiceGetRequest) returns (UserServiceGetResponse);
   // Retrieve multiple users my means of a filter.
-  rpc Filter(UserServiceFilterRequest) returns (UserServiceFilterResponse);
+  rpc List(UserServiceListRequest) returns (UserServiceListResponse);
   // Create a single user.
   rpc Create(UserServiceCreateRequest) returns (UserServiceCreateResponse);
   // Update a single user.
@@ -45,7 +45,7 @@ message UserServiceGetResponse {
   User user = 1;
 }
 
-message UserServiceFilterRequest {
+message UserServiceListRequest {
   // Return only users from this org. This is required for users that do not
   // have access to the entire system (i.e. blockjoy's admins).
   optional string org_id = 1;
@@ -54,10 +54,17 @@ message UserServiceFilterRequest {
   // For example, a query for all users whose email starts with `baremetal`
   // would look like `"baremetal%"`.
   optional string email_like = 2;
+  // The number of items to be skipped over.
+  uint64 offset = 3;
+  // The number of items that will be returned. Together with offset, you can
+  // use this to get pagination.
+  uint64 limit = 4;
 }
 
-message UserServiceFilterResponse {
+message UserServiceListResponse {
   repeated User users = 1;
+  // The total number of users matching your query.
+  uint64 user_count = 2;
 }
 
 message UserServiceCreateRequest {
