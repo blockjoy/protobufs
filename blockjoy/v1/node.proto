@@ -169,7 +169,7 @@ message NodeServiceUpdateConfigResponse {
 message NodeServiceUpdateStatusRequest {
   // The UUID of the node that you want to update.
   string id = 1;
-  // The version of the blockchain software that should now be ran on the node.
+  // The version of the node image that is currently used.
   optional string version = 2;
   // Set the container status field to this value.
   optional ContainerStatus container_status = 3;
