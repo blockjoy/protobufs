@@ -201,7 +201,7 @@ message HostServiceRegionsResponse {
 
 message Region {
   optional string name = 1;
-  // We currently regions in the following pricing tiers:
+  // We currently have regions in the following pricing tiers:
   // NA1: North america
   // EU1: Europe
   // AP1: Asia-Pacific
