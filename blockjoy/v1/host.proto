@@ -196,7 +196,16 @@ message HostServiceRegionsRequest {
 }
 
 message HostServiceRegionsResponse {
-  repeated string regions = 1;
+  repeated Region regions = 1;
+}
+
+message Region {
+  optional string name = 1;
+  // We currently regions in the following pricing tiers:
+  // NA1: North america
+  // EU1: Europe
+  // AP1: Asia-Pacific
+  optional string pricing_tier = 2;
 }
 
 enum HostType {
