@@ -124,7 +124,7 @@ message HostServiceGetResponse {
 }
 
 message HostServiceListRequest {
-  string org_id = 1;
+  optional string org_id = 1;
   // The number of items to be skipped over.
   uint64 offset = 2;
   // The number of items that will be returned. Together with offset, you can
