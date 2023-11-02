@@ -60,7 +60,13 @@ message OrgServiceGetResponse {
 }
 
 message OrgServiceListRequest {
+  // If this is set to a user id, only orgs that that user is a member of will
+  // be returned
   optional string member_id = 1;
+  // If this is true, only personal orgs are returned. If this is false, no
+  // personal orgs are returned.
+  optional bool personal = 4;
+
   // The number of items to be skipped over.
   uint64 offset = 2;
   // The number of items that will be returned. Together with offset, you can
