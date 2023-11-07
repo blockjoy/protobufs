@@ -47,30 +47,34 @@ message Node {
   // The running node on the host will consist of a couple of processes. These
   // may individually start, stop and fail.
   repeated NodeJob jobs = 33;
+  // A list of reports that have been created for this node.
+  repeated NodeReport reports = 34;
 }
 
 service NodeService {
-  /* Create a single blockchain node */
+  // Create a single blockchain node
   rpc Create(NodeServiceCreateRequest) returns (NodeServiceCreateResponse);
-  /* Get single blockchain node */
+  // Get single blockchain node
   rpc Get(NodeServiceGetRequest) returns (NodeServiceGetResponse);
-  /* Get nodes belonging to org */
+  // Get nodes belonging to org
   rpc List(NodeServiceListRequest) returns (NodeServiceListResponse);
-  /* Update a single blockchain node configuration */
+  // Update a single blockchain node configuration
   rpc UpdateConfig(NodeServiceUpdateConfigRequest) returns
       (NodeServiceUpdateConfigResponse);
-  /* Update a single blockchain node status.
-     This shall be used only by Host running the Node.
-   */
+  // Update a single blockchain node status. This shall only be used by host
+  // running the node.
   rpc UpdateStatus(NodeServiceUpdateStatusRequest) returns
       (NodeServiceUpdateStatusResponse);
-  /* Start a single node */
+  // Create an error report about this host.
+  rpc Report(NodeServiceReportRequest) returns (NodeServiceReportResponse);
+
+  // Start a single node
   rpc Start(NodeServiceStartRequest) returns (NodeServiceStartResponse);
-  /* Stop a single node */
+  // Stop a single node
   rpc Stop(NodeServiceStopRequest) returns (NodeServiceStopResponse);
-  /* Restart a single node */
+  // Restart a single node
   rpc Restart(NodeServiceRestartRequest) returns (NodeServiceRestartResponse);
-  /* Delete a single node */
+  // Delete a single node
   rpc Delete(NodeServiceDeleteRequest) returns (NodeServiceDeleteResponse);
 }
 
@@ -189,6 +193,19 @@ message NodeServiceUpdateStatusRequest {
 }
 
 message NodeServiceUpdateStatusResponse {
+}
+
+message NodeServiceReportRequest {
+  // The id of the user that created the report.
+  string user_id = 1;
+  // The id of the node that this report pertains to.
+  string node_id = 2;
+  // An error description of the problem.
+  string message = 3;
+}
+
+message NodeServiceReportResponse {
+  string id = 1;
 }
 
 message NodeServiceStartRequest {
@@ -437,4 +454,14 @@ message NodeJobProgress {
   optional uint32 current = 2;
   // Any sort of message that is included with this job, 
   optional string message = 3;
+}
+
+message NodeReport {
+  string id = 1;
+  // The problem description.
+  string message = 2;
+  // The entity that created the report.
+  blockjoy.common.v1.EntityUpdate created_by = 3;
+  // The moment the issue was raised.
+  google.protobuf.Timestamp created_at = 4;
 }
