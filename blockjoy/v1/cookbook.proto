@@ -141,18 +141,36 @@ message KernelServiceListKernelVersionsResponse {
 
 // Retrieve manage download manifests, mainly for blockchain data archives.
 service ManifestService {
-  // Retrieve image for specific version and state.
+  // Retrieve download manifest for specific image and blockchain network.
   rpc RetrieveDownloadManifest(ManifestServiceRetrieveDownloadManifestRequest)
+      returns (ManifestServiceRetrieveDownloadManifestResponse);
+  // Retrieve upload manifest for specific image and blockchain network, with requested number of slots.
+  rpc RetrieveUploadManifest(ManifestServiceRetrieveDownloadManifestRequest)
       returns (ManifestServiceRetrieveDownloadManifestResponse);
 }
 
 message ManifestServiceRetrieveDownloadManifestRequest {
+  // Node image identifier
   ConfigIdentifier id = 1;
+  // Blockchain network name
   string network = 2;
 }
 
 message ManifestServiceRetrieveDownloadManifestResponse {
   DownloadManifest manifest = 1;
+}
+
+message ManifestServiceRetrieveUploadManifestRequest {
+  // Node image identifier
+  ConfigIdentifier id = 1;
+  // Blockchain network name
+  string network = 2;
+  // Requested number of slots
+  uint32 slots = 3;
+}
+
+message ManifestServiceRetrieveUploadManifestResponse {
+  UploadManifest manifest = 1;
 }
 
 // Type of compression used on chunk data.
@@ -169,6 +187,26 @@ enum ChecksumType {
   CHECKSUM_TYPE_SHA1 = 1;
   CHECKSUM_TYPE_SHA256 = 2;
   CHECKSUM_TYPE_BLAKE3 = 3;
+}
+
+// Slot represents destination for chunk to be uploaded.
+// This is just placeholder that MAY be used to upload chunk.
+message Slot {
+  // Persistent slot/chunk key
+  string key = 1;
+  // Pre-signed upload url (may be temporary)
+  string url = 2;
+}
+
+// Upload manifest is a list of slots, which consists
+// of pre-signed upload urls for each chunk to be uploaded.
+// And extra slot for manifest file.
+// This is just placeholder that MAY be used to upload data represented then by `DownloadManifest`.
+message UploadManifest {
+  // Slot dedicated for Download Manifest file
+  Slot manifest_slot = 1;
+  // List of slots to be used for uploading blockchain archive chunks
+  repeated Slot slots = 2;
 }
 
 // Download manifest, describing a cloud to disk mapping.
