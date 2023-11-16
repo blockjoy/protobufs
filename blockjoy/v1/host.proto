@@ -50,6 +50,8 @@ message Host {
   // i.e. config data, secrets, vm mountpoints. Usually this will be
   // `/var/lib/blockvisor`.
   optional string vmm_mountpoint = 21;
+  // A list of ip addresses available for this host.
+  repeated HostIpAddress ip_addresses = 22;
 }
 
 // Manage hosts.
@@ -246,4 +248,11 @@ enum HostConnectionStatus {
   HOST_CONNECTION_STATUS_UNSPECIFIED = 0;
   HOST_CONNECTION_STATUS_ONLINE = 1;
   HOST_CONNECTION_STATUS_OFFLINE = 2;
+}
+
+message HostIpAddress {
+  // The ip address as a string.
+  string ip = 1;
+  // Whether or not the ip address is currently in use by a node.
+  bool assigned = 2;
 }
