@@ -8,20 +8,22 @@ import "google/protobuf/timestamp.proto";
 message Command {
   // Each command has a unique id that identifies it.
   string id = 1;
-  // A command may have an outcome message.
-  optional string response = 2;
   // A command may have an exit code.
-  optional int32 exit_code = 3;
+  optional CommandExitCode exit_code = 2;
+  // A command may have an outcome message.
+  optional string exit_message = 3;
+  // Command may exit with error and retry hint.
+  optional uint64 retry_hint_seconds = 4;
   // A client may acknowledge that they have received a command, even if they
   // have not finished processing it.
-  optional google.protobuf.Timestamp acked_at = 4;
+  optional google.protobuf.Timestamp acked_at = 5;
   // The rest of the fields are split in two. There are commands that are meant
   // to instrument hosts, and commands that are meant to instrument nodes. The
   // reason we have this dichotomy is because the commands that go to a node
   // typically look different from those that go to a host.
   oneof command {
-    NodeCommand node = 5;
-    HostCommand host = 6;
+    NodeCommand node = 6;
+    HostCommand host = 7;
   }
 }
 
@@ -178,4 +180,7 @@ enum CommandExitCode {
   COMMAND_EXIT_CODE_INTERNAL_ERROR = 2;
   COMMAND_EXIT_CODE_NODE_NOT_FOUND = 3;
   COMMAND_EXIT_CODE_BLOCKING_JOB_RUNNING = 4;
+  COMMAND_EXIT_CODE_SERVICE_NOT_READY = 5;
+  COMMAND_EXIT_CODE_SERVICE_BROKEN = 6;
+  COMMAND_EXIT_CODE_NOT_SUPPORTED = 7;
 }
