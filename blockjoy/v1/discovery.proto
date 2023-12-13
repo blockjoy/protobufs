@@ -2,19 +2,15 @@ syntax = "proto3";
 
 package blockjoy.v1;
 
+// Service discovery endpoints.
 service DiscoveryService {
-  /* Return relevant service URLs */
-  rpc Services(DiscoveryServiceServicesRequest) returns
-    (DiscoveryServiceServicesResponse);
+  // List available services.
+  rpc Services(DiscoveryServiceServicesRequest) returns (DiscoveryServiceServicesResponse);
 }
 
-message DiscoveryServiceServicesRequest {
-  // This is here for forwards compatibility.
-}
+message DiscoveryServiceServicesRequest {}
 
-// All relevant service URLs
 message DiscoveryServiceServicesResponse {
-  string key_service_url = 1;
-  // This is the address of the MQTT server.
-  string notification_url = 3;
+  // The address of the MQTT server.
+  string notification_url = 1;
 }

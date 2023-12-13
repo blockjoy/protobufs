@@ -3,8 +3,8 @@ syntax = "proto3";
 package blockjoy.v1;
 
 import "blockjoy/common/v1/currency.proto";
+import "blockjoy/common/v1/node.proto";
 import "blockjoy/common/v1/search.proto";
-import "blockjoy/v1/node.proto";
 import "google/protobuf/timestamp.proto";
 
 message Host {
@@ -50,26 +50,28 @@ message Host {
   // i.e. config data, secrets, vm mountpoints. Usually this will be
   // `/var/lib/blockvisor`.
   optional string vmm_mountpoint = 21;
+  // A list of ip addresses available for this host.
+  repeated HostIpAddress ip_addresses = 22;
 }
 
 // Manage hosts.
 service HostService {
-  // Create a single host
+  // Create a single host.
   rpc Create(HostServiceCreateRequest) returns (HostServiceCreateResponse);
+  // Get info for a single host.
   rpc Get(HostServiceGetRequest) returns (HostServiceGetResponse);
+  // List all hosts matching some criteria.
   rpc List(HostServiceListRequest) returns (HostServiceListResponse);
-  // Update a single host
-  // This shall be used only by Host.
+  // Update a single host.
   rpc Update(HostServiceUpdateRequest) returns (HostServiceUpdateResponse);
-  // Delete a single host
+  // Delete a single host.
   rpc Delete(HostServiceDeleteRequest) returns (HostServiceDeleteResponse);
-  // Start a single host
+  // Start a single host.
   rpc Start(HostServiceStartRequest) returns (HostServiceStartResponse);
-  // Stop a single host
+  // Stop a single host.
   rpc Stop(HostServiceStopRequest) returns (HostServiceStopResponse);
-  // Restart a single host
+  // Restart a single host.
   rpc Restart(HostServiceRestartRequest) returns (HostServiceRestartResponse);
-
   // Returns a list of regions where there are hosts available
   rpc Regions(HostServiceRegionsRequest) returns (HostServiceRegionsResponse);
 }
@@ -133,6 +135,8 @@ message HostServiceListRequest {
   uint64 limit = 3;
   // Search params.
   optional HostSearch search = 4;
+  // The field sorting order of results.
+  repeated HostSort sort = 5;
 }
 
 message HostSearch {
@@ -148,6 +152,23 @@ message HostSearch {
   optional string os = 5;
   // Search only for the ip address.
   optional string ip = 6;
+}
+
+message HostSort {
+  HostSortField field = 1;
+  blockjoy.common.v1.SortOrder order = 2;
+}
+
+enum HostSortField {
+  HOST_SORT_FIELD_UNSPECIFIED = 0;
+  HOST_SORT_FIELD_HOST_NAME = 1;
+  HOST_SORT_FIELD_CREATED_AT = 2;
+  HOST_SORT_FIELD_VERSION = 3;
+  HOST_SORT_FIELD_OS = 4;
+  HOST_SORT_FIELD_OS_VERSION = 5;
+  HOST_SORT_FIELD_CPU_COUNT = 6;
+  HOST_SORT_FIELD_MEM_SIZE_BYTES = 7;
+  HOST_SORT_FIELD_DISK_SIZE_BYTES = 8;
 }
 
 message HostServiceListResponse {
@@ -166,38 +187,35 @@ message HostServiceUpdateRequest {
   optional string region = 4;
   // Optionally set a billing amount for this host.
   optional blockjoy.common.v1.BillingAmount billing_amount = 7;
+  // This is total disk space installed on host, given in bytes.
+  optional uint64 total_disk_space = 8;
 }
 
-message HostServiceUpdateResponse {
-}
+message HostServiceUpdateResponse {}
 
 message HostServiceStartRequest {
   string id = 1;
 }
 
-message HostServiceStartResponse {
-}
+message HostServiceStartResponse {}
 
 message HostServiceStopRequest {
   string id = 1;
 }
 
-message HostServiceStopResponse {
-}
+message HostServiceStopResponse {}
 
 message HostServiceRestartRequest {
   string id = 1;
 }
 
-message HostServiceRestartResponse {
-}
+message HostServiceRestartResponse {}
 
 message HostServiceDeleteRequest {
   string id = 1;
 }
 
-message HostServiceDeleteResponse {
-}
+message HostServiceDeleteResponse {}
 
 // Used to produce a list of regions that are available to deploy nodes to.
 message HostServiceRegionsRequest {
@@ -210,7 +228,7 @@ message HostServiceRegionsRequest {
   // The version of the node software that is ran.
   string version = 4;
   // The type of node that you want to create.
-  NodeType node_type = 5;
+  blockjoy.common.v1.NodeType node_type = 5;
 }
 
 message HostServiceRegionsResponse {
@@ -226,10 +244,31 @@ message Region {
   optional string pricing_tier = 2;
 }
 
+// The environment of host.
 enum HostType {
   HOST_TYPE_UNSPECIFIED = 0;
   // This host is a host on the blockjoy cloud platform.
   HOST_TYPE_CLOUD = 1;
   // This host is a private host that can only be used by the org that owns it.
   HOST_TYPE_PRIVATE = 2;
+}
+
+message HostIpAddress {
+  // The ip address as a string.
+  string ip = 1;
+  // Whether or not the ip address is currently in use by a node.
+  bool assigned = 2;
+}
+
+// Used to indicate a change in the host status.
+message HostStatus {
+  string host_id = 1;
+  optional HostConnectionStatus connection_status = 2;
+}
+
+// The connection status of a host.
+enum HostConnectionStatus {
+  HOST_CONNECTION_STATUS_UNSPECIFIED = 0;
+  HOST_CONNECTION_STATUS_ONLINE = 1;
+  HOST_CONNECTION_STATUS_OFFLINE = 2;
 }

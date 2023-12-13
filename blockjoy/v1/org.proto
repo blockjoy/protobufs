@@ -11,44 +11,40 @@ message Org {
   string id = 1;
   // The name of this organization.
   string name = 2;
-  // If this field is set to true, this organization is a personal
-  // organization. A personal organization is the default organzation for a
-  // user that contains only them.
+  // A personal organization is the default for a single user.
   bool personal = 3;
-  // The number of users in this organization.
-  uint64 member_count = 4;
   // The moment which this organization was created.
-  google.protobuf.Timestamp created_at = 13;
+  google.protobuf.Timestamp created_at = 4;
   // The moment which this organization was last updated.
-  google.protobuf.Timestamp updated_at = 14;
+  google.protobuf.Timestamp updated_at = 5;
   // This field contains the users of this organization.
-  repeated OrgUser members = 15;
+  repeated OrgUser members = 6;
+  // The number of users in this organization.
+  uint64 member_count = 7;
   // The number of nodes that this organization has.
-  uint64 node_count = 16;
+  uint64 host_count = 8;
+  // The number of nodes that this organization has.
+  uint64 node_count = 9;
 }
 
-// Manage organizations
+// Service for managing organizations.
 service OrgService {
-  // Get all the organizations for a user. All users automatically get a private
-  // (internal) organization. 
+  // Get all the organizations for a user.
   rpc Get(OrgServiceGetRequest) returns (OrgServiceGetResponse);
+  // List all members of orgs matching a set of criteria.
   rpc List(OrgServiceListRequest) returns (OrgServiceListResponse);
-  // Create a single organization
+  // Create a new organization.
   rpc Create(OrgServiceCreateRequest) returns (OrgServiceCreateResponse);
-  // Update a single organization
+  // Update an existing organization.
   rpc Update(OrgServiceUpdateRequest) returns (OrgServiceUpdateResponse);
-  // Mark a single organization as deleted
+  // Mark an organization as deleted.
   rpc Delete(OrgServiceDeleteRequest) returns (OrgServiceDeleteResponse);
-  // Remove organization member
-  rpc RemoveMember(OrgServiceRemoveMemberRequest) returns
-    (OrgServiceRemoveMemberResponse);
-  // Returns the host provision token for the provided user and organization.
-  rpc GetProvisionToken(OrgServiceGetProvisionTokenRequest) returns
-    (OrgServiceGetProvisionTokenResponse);
-  // Regenerates and returns the host provision token for the provided user and
-  // organization.
-  rpc ResetProvisionToken(OrgServiceResetProvisionTokenRequest) returns
-    (OrgServiceResetProvisionTokenResponse);
+  // Remove a member from an organization.
+  rpc RemoveMember(OrgServiceRemoveMemberRequest) returns (OrgServiceRemoveMemberResponse);
+  // Get the host provision token for a user and organization.
+  rpc GetProvisionToken(OrgServiceGetProvisionTokenRequest) returns (OrgServiceGetProvisionTokenResponse);
+  // Regenerates the host provision token for a user and organization.
+  rpc ResetProvisionToken(OrgServiceResetProvisionTokenRequest) returns (OrgServiceResetProvisionTokenResponse);
 }
 
 message OrgServiceGetRequest {
@@ -65,15 +61,16 @@ message OrgServiceListRequest {
   optional string member_id = 1;
   // If this is true, only personal orgs are returned. If this is false, no
   // personal orgs are returned.
-  optional bool personal = 4;
-
+  optional bool personal = 2;
   // The number of items to be skipped over.
-  uint64 offset = 2;
+  uint64 offset = 3;
   // The number of items that will be returned. Together with offset, you can
   // use this to get pagination.
-  uint64 limit = 3;
+  uint64 limit = 4;
   // Search params.
-  optional OrgSearch search = 8;
+  optional OrgSearch search = 5;
+  // The field sorting order of results.
+  repeated OrgSort sort = 6;
 }
 
 // This message contains fields used to search organizations as opposed to just
@@ -85,6 +82,18 @@ message OrgSearch {
   optional string id = 2;
   // Search only the name.
   optional string name = 3;
+}
+
+message OrgSort {
+  OrgSortField field = 1;
+  blockjoy.common.v1.SortOrder order = 2;
+}
+
+enum OrgSortField {
+  ORG_SORT_FIELD_UNSPECIFIED = 0;
+  ORG_SORT_FIELD_NAME = 1;
+  ORG_SORT_FIELD_CREATED_AT = 2;
+  ORG_SORT_FIELD_UPDATED_AT = 3;
 }
 
 message OrgServiceListResponse {
@@ -109,23 +118,20 @@ message OrgServiceUpdateRequest {
   optional string name = 2;
 }
 
-message OrgServiceUpdateResponse {
-}
+message OrgServiceUpdateResponse {}
 
 message OrgServiceDeleteRequest {
   string id = 1;
 }
 
-message OrgServiceDeleteResponse {
-}
+message OrgServiceDeleteResponse {}
 
 message OrgServiceRemoveMemberRequest {
   string user_id = 1;
   string org_id = 2;
 }
 
-message OrgServiceRemoveMemberResponse {
-}
+message OrgServiceRemoveMemberResponse {}
 
 message OrgServiceGetProvisionTokenRequest {
   string user_id = 1;

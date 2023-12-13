@@ -1,0 +1,7 @@
+version: v1
+lint:
+  use:
+    - DEFAULT
+    - COMMENT_RPC
+    - COMMENT_SERVICE
+    - PACKAGE_NO_IMPORT_CYCLE

@@ -9,17 +9,18 @@ message Subscription {
   string external_id = 4;
 }
 
+// Service for managing third-party subscriptions.
 service SubscriptionService {
-  rpc Create(SubscriptionServiceCreateRequest)
-    returns (SubscriptionServiceCreateResponse);
-  rpc Get(SubscriptionServiceGetRequest)
-    returns (SubscriptionServiceGetResponse);
-  rpc List(SubscriptionServiceListRequest)
-    returns (SubscriptionServiceListResponse);
-  rpc Update(SubscriptionServiceUpdateRequest)
-    returns (SubscriptionServiceUpdateResponse);
-  rpc Delete(SubscriptionServiceDeleteRequest)
-    returns (SubscriptionServiceDeleteResponse);
+  // Create a new third-party subscription.
+  rpc Create(SubscriptionServiceCreateRequest) returns (SubscriptionServiceCreateResponse);
+  // Get details for a single subscription.
+  rpc Get(SubscriptionServiceGetRequest) returns (SubscriptionServiceGetResponse);
+  // List details of subscriptions matching some criteria.
+  rpc List(SubscriptionServiceListRequest) returns (SubscriptionServiceListResponse);
+  // Update an existing third-party subscription.
+  rpc Update(SubscriptionServiceUpdateRequest) returns (SubscriptionServiceUpdateResponse);
+  // Delete an existing third-party subscription.
+  rpc Delete(SubscriptionServiceDeleteRequest) returns (SubscriptionServiceDeleteResponse);
 }
 
 message SubscriptionServiceCreateRequest {
@@ -52,12 +53,10 @@ message SubscriptionServiceUpdateRequest {
   optional string org_id = 1;
 }
 
-message SubscriptionServiceUpdateResponse {
-}
+message SubscriptionServiceUpdateResponse {}
 
 message SubscriptionServiceDeleteRequest {
   string id = 1;
 }
 
-message SubscriptionServiceDeleteResponse {
-}
+message SubscriptionServiceDeleteResponse {}

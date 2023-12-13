@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package blockjoy.v1;
+
+import "blockjoy/common/v1/image.proto";
+
+// Retrieve and manage BVD bundles.
+service BundleService {
+  // Retrieve image for specific version and state.
+  rpc Retrieve(BundleServiceRetrieveRequest) returns (BundleServiceRetrieveResponse);
+  // List all available bundle versions.
+  rpc ListBundleVersions(BundleServiceListBundleVersionsRequest) returns (BundleServiceListBundleVersionsResponse);
+  // Delete bundle from storage.
+  rpc Delete(BundleServiceDeleteRequest) returns (BundleServiceDeleteResponse);
+}
+
+message BundleServiceRetrieveRequest {
+  BundleIdentifier id = 1;
+}
+
+message BundleServiceRetrieveResponse {
+  blockjoy.common.v1.ArchiveLocation location = 1;
+}
+
+message BundleServiceListBundleVersionsRequest {}
+
+message BundleServiceListBundleVersionsResponse {
+  repeated BundleIdentifier identifiers = 1;
+}
+
+message BundleServiceDeleteRequest {
+  BundleIdentifier id = 1;
+}
+
+message BundleServiceDeleteResponse {}
+
+message BundleIdentifier {
+  // The semantic version of the bundle version.
+  string version = 1;
+}

@@ -1,4 +1,4 @@
-name: Lint Code Base
+name: CI
 
 on:
   push:
@@ -8,16 +8,26 @@ on:
 
 jobs:
   build:
-    name: Lint Code Base
+    name: Buf Checks
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Lint Code Base
-        uses: github/super-linter/slim@v4
-        env:
-          VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup buf cli
+        uses: bufbuild/buf-setup-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run buf lint checks
+        uses: bufbuild/buf-lint-action@v1
+
+      - name: Run buf format checks
+        run: buf format --diff --exit-code
+
+      # TODO: enable at public beta
+      #- name: Run buf breaking change detector
+      #  uses: bufbuild/buf-breaking-action@v1
+      #  with:
+      #    against: "https://github.com/${GITHUB_REPOSITORY}.git#branch=main"

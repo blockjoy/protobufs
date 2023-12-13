@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package blockjoy.common.v1;
+
+import "blockjoy/common/v1/node.proto";
+
+// A blockchain image identifier.
+message ImageIdentifier {
+  // The snake_case name of the blockchain.
+  string protocol = 1;
+  // The image node type.
+  NodeType node_type = 2;
+  // The semantic version of the node type.
+  string node_version = 3;
+}
+
+// A URL pointing to archive data.
+message ArchiveLocation {
+  string url = 1;
+}
+
+// An RHAI script plugin.
+message RhaiPlugin {
+  ImageIdentifier identifier = 1;
+  // RHAI script contents.
+  bytes rhai_content = 2;
+}

@@ -7,11 +7,15 @@ import "google/protobuf/timestamp.proto";
 
 // API key service functionality.
 service ApiKeyService {
+  // Create a new api key.
   rpc Create(ApiKeyServiceCreateRequest) returns (ApiKeyServiceCreateResponse);
+  // List existing api keys.
   rpc List(ApiKeyServiceListRequest) returns (ApiKeyServiceListResponse);
+  // Update an existing api key.
   rpc Update(ApiKeyServiceUpdateRequest) returns (ApiKeyServiceUpdateResponse);
-  rpc Regenerate(ApiKeyServiceRegenerateRequest)
-    returns (ApiKeyServiceRegenerateResponse);
+  // Regenerate an existing api key token.
+  rpc Regenerate(ApiKeyServiceRegenerateRequest) returns (ApiKeyServiceRegenerateResponse);
+  // Delete an existing api key.
   rpc Delete(ApiKeyServiceDeleteRequest) returns (ApiKeyServiceDeleteResponse);
 }
 
@@ -29,8 +33,7 @@ message ApiKeyServiceCreateResponse {
   google.protobuf.Timestamp created_at = 2;
 }
 
-message ApiKeyServiceListRequest {
-}
+message ApiKeyServiceListRequest {}
 
 message ApiKeyServiceListResponse {
   // A list of the api keys.
@@ -81,8 +84,7 @@ message ApiKeyServiceDeleteRequest {
   string id = 1;
 }
 
-message ApiKeyServiceDeleteResponse {
-}
+message ApiKeyServiceDeleteResponse {}
 
 message ApiKeyScope {
   // The resource scope of this api key.

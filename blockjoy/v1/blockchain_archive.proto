@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+package blockjoy.v1;
+
+import "blockjoy/common/v1/image.proto";
+
+// Manage blockchain data archives.
+service BlockchainArchiveService {
+  // Get the download manifest for a specific image and blockchain network.
+  rpc GetDownloadManifest(BlockchainArchiveServiceGetDownloadManifestRequest) returns (BlockchainArchiveServiceGetDownloadManifestResponse);
+  // Get an upload manifest for a specific image and blockchain network.
+  rpc GetUploadManifest(BlockchainArchiveServiceGetUploadManifestRequest) returns (BlockchainArchiveServiceGetUploadManifestResponse);
+  // Put a new download manifest for retrieval with `GetDownloadManifest`.
+  rpc PutDownloadManifest(BlockchainArchiveServicePutDownloadManifestRequest) returns (BlockchainArchiveServicePutDownloadManifestResponse);
+}
+
+message BlockchainArchiveServiceGetDownloadManifestRequest {
+  // The archive image identifier.
+  blockjoy.common.v1.ImageIdentifier id = 1;
+  // The network name (e.g. "main", "testnet").
+  string network = 2;
+}
+
+message BlockchainArchiveServiceGetDownloadManifestResponse {
+  DownloadManifest manifest = 1;
+}
+
+// Pre-signed upload URL slots for the blockchain archive data chunks.
+message BlockchainArchiveServiceGetUploadManifestRequest {
+  // The archive image identifier.
+  blockjoy.common.v1.ImageIdentifier id = 1;
+  // The network name (e.g. "main", "testnet").
+  string network = 2;
+  // The data version. If not set, will increment the last data version.
+  optional uint64 data_version = 3;
+  // Requested number of upload URL slots.
+  uint32 slots = 4;
+  // Expiry duration of an upload URL (in seconds).
+  optional uint32 url_expires = 5;
+}
+
+message BlockchainArchiveServiceGetUploadManifestResponse {
+  UploadManifest manifest = 1;
+}
+
+message BlockchainArchiveServicePutDownloadManifestRequest {
+  // The archive image identifier.
+  blockjoy.common.v1.ImageIdentifier id = 1;
+  // The network name (e.g. "main", "testnet").
+  string network = 2;
+  // The download manifest to store.
+  DownloadManifest manifest = 3;
+}
+
+message BlockchainArchiveServicePutDownloadManifestResponse {}
+
+// Download manifest with metadata and pointers to archive data chunks.
+message DownloadManifest {
+  // Total size of uncompressed data
+  uint64 total_size = 1;
+  // Chunk compression type or none
+  optional Compression compression = 2;
+  // Full list of chunks
+  repeated ArchiveChunk chunks = 3;
+}
+
+// Metadata describing an archive chunk URL and file mapping.
+message ArchiveChunk {
+  // The persistent chunk key.
+  string key = 1;
+  // A temporary pre-signed download url (or none for a blueprint).
+  optional string url = 2;
+  // The checksum of the chunk data.
+  Checksum checksum = 3;
+  // The chunk data size (in bytes).
+  uint64 size = 4;
+  // Mappings from chunks to file paths.
+  repeated ChunkTarget destinations = 5;
+}
+
+// The target file for a decompressed data chunk.
+message ChunkTarget {
+  // The relative file path.
+  string path = 1;
+  // The start position of the data bytes in the target file.
+  uint64 position_bytes = 2;
+  // The size of the uncompressed chunk data.
+  uint64 size_bytes = 3;
+}
+
+// A checksum consisting of a type and value.
+message Checksum {
+  // The checksum type of the chunk data.
+  ChecksumType checksum_type = 3;
+  // The checksum value of the chunk data.
+  bytes checksum = 4;
+}
+
+// The checksum type of a chunk of data.
+enum ChecksumType {
+  CHECKSUM_TYPE_UNSPECIFIED = 0;
+  CHECKSUM_TYPE_SHA1 = 1;
+  CHECKSUM_TYPE_SHA256 = 2;
+  CHECKSUM_TYPE_BLAKE3 = 3;
+}
+
+// Type of compression used on chunk data.
+message Compression {
+  oneof compression {
+    // ZStandard compression, where the value is the compression level.
+    int32 zstd = 1;
+  }
+}
+
+// Upload manifest with slots for uploading archive data chunks.
+message UploadManifest {
+  // A list of slots for uploading archive chunks.
+  repeated UploadSlot slots = 1;
+}
+
+// An upload slot for a chunk of data.
+message UploadSlot {
+  // The persistent key to an archive chunk.
+  string key = 1;
+  // A temporary, pre-signed upload url for the data.
+  string url = 2;
+}

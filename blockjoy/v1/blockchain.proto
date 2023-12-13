@@ -2,7 +2,9 @@ syntax = "proto3";
 
 package blockjoy.v1;
 
-import "blockjoy/v1/node.proto";
+import "blockjoy/common/v1/blockchain.proto";
+import "blockjoy/common/v1/image.proto";
+import "blockjoy/common/v1/node.proto";
 import "google/protobuf/timestamp.proto";
 
 message Blockchain {
@@ -19,27 +21,24 @@ message Blockchain {
   BlockchainStats stats = 9;
 }
 
-message BlockchainStats {
-  optional uint64 node_count = 1;
-  optional uint64 node_count_active = 2;
-  optional uint64 node_count_syncing = 3;
-  optional uint64 node_count_provisioning = 4;
-  optional uint64 node_count_failed = 5;
-}
-
-// Blockchain related service.
+// Service for blockchain-specific requests.
 service BlockchainService {
-  // Returns a single blockchain as identified by its id.
+  // Get a single blockchain's info from its id.
   rpc Get(BlockchainServiceGetRequest) returns (BlockchainServiceGetResponse);
+  // Get an image archive location for some image identifier.
+  rpc GetImage(BlockchainServiceGetImageRequest) returns (BlockchainServiceGetImageResponse);
+  // Get a blockchain plugin for some image identifier.
+  rpc GetPlugin(BlockchainServiceGetPluginRequest) returns (BlockchainServiceGetPluginResponse);
+  // Get hardware requirements for some image identifier.
+  rpc GetRequirements(BlockchainServiceGetRequirementsRequest) returns (BlockchainServiceGetRequirementsResponse);
   // Returns a list of all blockchains.
-  rpc List(BlockchainServiceListRequest)
-    returns (BlockchainServiceListResponse);
+  rpc List(BlockchainServiceListRequest) returns (BlockchainServiceListResponse);
+  // List node versions for some protocol and node type.
+  rpc ListImageVersions(BlockchainServiceListImageVersionsRequest) returns (BlockchainServiceListImageVersionsResponse);
   // Add a new supported blockchain `node_type`.
-  rpc AddNodeType(BlockchainServiceAddNodeTypeRequest)
-    returns (BlockchainServiceAddNodeTypeResponse);
+  rpc AddNodeType(BlockchainServiceAddNodeTypeRequest) returns (BlockchainServiceAddNodeTypeResponse);
   // Add a new blockchain version.
-  rpc AddVersion(BlockchainServiceAddVersionRequest)
-    returns (BlockchainServiceAddVersionResponse);
+  rpc AddVersion(BlockchainServiceAddVersionRequest) returns (BlockchainServiceAddVersionResponse);
 }
 
 message BlockchainServiceGetRequest {
@@ -51,6 +50,40 @@ message BlockchainServiceGetResponse {
   Blockchain blockchain = 1;
 }
 
+message BlockchainServiceGetImageRequest {
+  blockjoy.common.v1.ImageIdentifier id = 1;
+}
+
+message BlockchainServiceGetImageResponse {
+  blockjoy.common.v1.ArchiveLocation location = 1;
+}
+
+message BlockchainServiceGetNetworksRequest {
+  blockjoy.common.v1.ImageIdentifier id = 1;
+}
+
+message BlockchainServiceGetNetworksResponse {
+  repeated blockjoy.common.v1.NetworkConfig networks = 1;
+}
+
+message BlockchainServiceGetPluginRequest {
+  blockjoy.common.v1.ImageIdentifier id = 1;
+}
+
+message BlockchainServiceGetPluginResponse {
+  blockjoy.common.v1.RhaiPlugin plugin = 1;
+}
+
+message BlockchainServiceGetRequirementsRequest {
+  blockjoy.common.v1.ImageIdentifier id = 1;
+}
+
+message BlockchainServiceGetRequirementsResponse {
+  uint32 vcpu_count = 1;
+  uint64 mem_size_bytes = 2;
+  uint64 disk_size_bytes = 3;
+}
+
 message BlockchainServiceListRequest {
   optional string org_id = 1;
 }
@@ -59,9 +92,18 @@ message BlockchainServiceListResponse {
   repeated Blockchain blockchains = 1;
 }
 
+message BlockchainServiceListImageVersionsRequest {
+  string protocol = 1;
+  blockjoy.common.v1.NodeType node_type = 2;
+}
+
+message BlockchainServiceListImageVersionsResponse {
+  repeated blockjoy.common.v1.ImageIdentifier identifiers = 1;
+}
+
 message BlockchainNodeType {
   string id = 1;
-  NodeType node_type = 2;
+  blockjoy.common.v1.NodeType node_type = 2;
   optional string description = 3;
   google.protobuf.Timestamp created_at = 4;
   google.protobuf.Timestamp updated_at = 5;
@@ -74,7 +116,7 @@ message BlockchainVersion {
   optional string description = 3;
   google.protobuf.Timestamp created_at = 4;
   google.protobuf.Timestamp updated_at = 5;
-  repeated BlockchainNetwork networks = 6;
+  repeated blockjoy.common.v1.NetworkConfig networks = 6;
   repeated BlockchainProperty properties = 7;
 }
 
@@ -82,13 +124,12 @@ message BlockchainServiceAddNodeTypeRequest {
   // The blockchain UUID for the new `node_type`.
   string id = 1;
   // The new `node_type` supported by the blockchain.
-  NodeType node_type = 2;
+  blockjoy.common.v1.NodeType node_type = 2;
   // A readable description of this new `node_type`.
   optional string description = 3;
 }
 
-message BlockchainServiceAddNodeTypeResponse {
-}
+message BlockchainServiceAddNodeTypeResponse {}
 
 message BlockchainServiceAddVersionRequest {
   // The blockchain UUID to add the new version to.
@@ -97,8 +138,8 @@ message BlockchainServiceAddVersionRequest {
   string version = 2;
   // A readable description of the new version.
   optional string description = 3;
-  // The node type of the new version (with cookbook metadata available).
-  NodeType node_type = 4;
+  // The node type of the new version.
+  blockjoy.common.v1.NodeType node_type = 4;
   // The properties applicable to this `version` and `node_type`.
   repeated BlockchainProperty properties = 5;
 }
@@ -124,22 +165,17 @@ message BlockchainProperty {
   optional string default = 3;
   // The way this field should be displayed when a node with this property is
   // created.
-  UiType ui_type = 4;
+  blockjoy.common.v1.UiType ui_type = 4;
   // If this is true then the property _must_ be supplied when a node of this
   // type and version is created. If this is false, then the property is treated
   // as optional and may be omitted.
   bool required = 5;
 }
 
-message BlockchainNetwork {
-  string name = 1;
-  string url = 2;
-  BlockchainNetworkType net_type = 3;
-}
-
-enum BlockchainNetworkType {
-  BLOCKCHAIN_NETWORK_TYPE_UNSPECIFIED = 0;
-  BLOCKCHAIN_NETWORK_TYPE_DEV = 1;
-  BLOCKCHAIN_NETWORK_TYPE_TEST = 2;
-  BLOCKCHAIN_NETWORK_TYPE_MAIN = 3;
+message BlockchainStats {
+  optional uint64 node_count = 1;
+  optional uint64 node_count_active = 2;
+  optional uint64 node_count_syncing = 3;
+  optional uint64 node_count_provisioning = 4;
+  optional uint64 node_count_failed = 5;
 }

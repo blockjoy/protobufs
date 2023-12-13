@@ -12,7 +12,6 @@ message User {
   string first_name = 3;
   string last_name = 4;
   google.protobuf.Timestamp created_at = 5;
-  google.protobuf.Timestamp updated_at = 6;
 }
 
 // User related services.
@@ -28,14 +27,11 @@ service UserService {
   // Delete a single user.
   rpc Delete(UserServiceDeleteRequest) returns (UserServiceDeleteResponse);
   // Retrieve the billing details of this user.
-  rpc GetBilling(UserServiceGetBillingRequest) returns
-    (UserServiceGetBillingResponse);
+  rpc GetBilling(UserServiceGetBillingRequest) returns (UserServiceGetBillingResponse);
   // Overwrite the billing details of this user.
-  rpc UpdateBilling(UserServiceUpdateBillingRequest) returns
-    (UserServiceUpdateBillingResponse);
+  rpc UpdateBilling(UserServiceUpdateBillingRequest) returns (UserServiceUpdateBillingResponse);
   // Remove the billing details of this user.
-  rpc DeleteBilling(UserServiceDeleteBillingRequest) returns
-    (UserServiceDeleteBillingResponse);
+  rpc DeleteBilling(UserServiceDeleteBillingRequest) returns (UserServiceDeleteBillingResponse);
 }
 
 message UserServiceGetRequest {
@@ -57,6 +53,8 @@ message UserServiceListRequest {
   uint64 limit = 4;
   // Search params.
   optional UserSearch search = 5;
+  // The field sorting order of results.
+  repeated UserSort sort = 6;
 }
 
 // This message contains fields used to search organizations as opposed to just
@@ -73,6 +71,19 @@ message UserSearch {
   optional string email = 3;
   // Search only the full name.
   optional string name = 4;
+}
+
+message UserSort {
+  UserSortField field = 1;
+  blockjoy.common.v1.SortOrder order = 2;
+}
+
+enum UserSortField {
+  USER_SORT_FIELD_UNSPECIFIED = 0;
+  USER_SORT_FIELD_EMAIL = 1;
+  USER_SORT_FIELD_FIRST_NAME = 2;
+  USER_SORT_FIELD_LAST_NAME = 3;
+  USER_SORT_FIELD_CREATED_AT = 4;
 }
 
 message UserServiceListResponse {
@@ -107,8 +118,7 @@ message UserServiceDeleteRequest {
   string id = 1;
 }
 
-message UserServiceDeleteResponse {
-}
+message UserServiceDeleteResponse {}
 
 message UserServiceGetBillingRequest {
   string user_id = 1;
@@ -131,5 +141,4 @@ message UserServiceDeleteBillingRequest {
   string user_id = 1;
 }
 
-message UserServiceDeleteBillingResponse {
-}
+message UserServiceDeleteBillingResponse {}

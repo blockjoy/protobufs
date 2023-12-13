@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package blockjoy.common.v1;
+
+// Firewall configuration applied on node start.
+message FirewallConfig {
+  // Fallback action for inbound traffic not matching any rule.
+  FirewallAction default_in = 1;
+  // Fallback action for outbound traffic not matching any rule.
+  FirewallAction default_out = 2;
+  // Set of firewall rules to be applied.
+  repeated FirewallRule rules = 3;
+}
+
+// A single firewall rule.
+message FirewallRule {
+  // The name of this firewall rule.
+  string name = 1;
+  // Action applied on packets that match this rule.
+  FirewallAction action = 2;
+  // The direction of traffic for which this rule applies.
+  FirewallDirection direction = 3;
+  // The protocol type (or `FIREWALL_PROTOCOL_BOTH` by default).
+  optional FirewallProtocol protocol = 4;
+  // Applicable IPs (in CIDR notation).
+  optional string ips = 5;
+  // Applicable ports (or empty for all).
+  repeated uint32 ports = 6;
+}
+
+// The firewall action to apply to matching packets.
+enum FirewallAction {
+  FIREWALL_ACTION_UNSPECIFIED = 0;
+  // Allow matching packets.
+  FIREWALL_ACTION_ALLOW = 1;
+  // Deny matching packets without a response.
+  FIREWALL_ACTION_DENY = 2;
+  // Reject matching packets with a response.
+  FIREWALL_ACTION_REJECT = 3;
+}
+
+// The direction of packets for firewall rules.
+enum FirewallDirection {
+  FIREWALL_DIRECTION_UNSPECIFIED = 0;
+  FIREWALL_DIRECTION_OUTBOUND = 1;
+  FIREWALL_DIRECTION_INBOUND = 2;
+}
+
+// The packet protocol type for firewall rules.
+enum FirewallProtocol {
+  FIREWALL_PROTOCOL_UNSPECIFIED = 0;
+  FIREWALL_PROTOCOL_TCP = 1;
+  FIREWALL_PROTOCOL_UDP = 2;
+  FIREWALL_PROTOCOL_BOTH = 3;
+}

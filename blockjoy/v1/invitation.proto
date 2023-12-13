@@ -5,7 +5,7 @@ package blockjoy.v1;
 import "blockjoy/common/v1/resource.proto";
 import "google/protobuf/timestamp.proto";
 
-// The invitation resource. This invites users into organization 
+// An invitation for a user to some organization.
 message Invitation {
   // A uuid that uniquely determines the invitation.
   string id = 1;
@@ -36,20 +36,15 @@ message Invitation {
 // Manage invitations
 service InvitationService {
   // Invite a user into an organization.
-  rpc Create(InvitationServiceCreateRequest) returns
-    (InvitationServiceCreateResponse);
+  rpc Create(InvitationServiceCreateRequest) returns (InvitationServiceCreateResponse);
   // List pending invitations for given org.
-  rpc List(InvitationServiceListRequest) returns
-    (InvitationServiceListResponse);
+  rpc List(InvitationServiceListRequest) returns (InvitationServiceListResponse);
   // Accept an invitation and become member of specified organization.
-  rpc Accept(InvitationServiceAcceptRequest) returns
-    (InvitationServiceAcceptResponse);
+  rpc Accept(InvitationServiceAcceptRequest) returns (InvitationServiceAcceptResponse);
   // Decline an invitation.
-  rpc Decline(InvitationServiceDeclineRequest) returns
-    (InvitationServiceDeclineResponse);
+  rpc Decline(InvitationServiceDeclineRequest) returns (InvitationServiceDeclineResponse);
   // Revoke a pending invitation.
-  rpc Revoke(InvitationServiceRevokeRequest) returns
-    (InvitationServiceRevokeResponse);
+  rpc Revoke(InvitationServiceRevokeRequest) returns (InvitationServiceRevokeResponse);
 }
 
 // The status of an invitation.
@@ -95,19 +90,16 @@ message InvitationServiceAcceptRequest {
   string invitation_id = 1;
 }
 
-message InvitationServiceAcceptResponse {
-}
+message InvitationServiceAcceptResponse {}
 
 message InvitationServiceDeclineRequest {
   string invitation_id = 1;
 }
 
-message InvitationServiceDeclineResponse {
-}
+message InvitationServiceDeclineResponse {}
 
 message InvitationServiceRevokeRequest {
   string invitation_id = 1;
 }
 
-message InvitationServiceRevokeResponse {
-}
+message InvitationServiceRevokeResponse {}

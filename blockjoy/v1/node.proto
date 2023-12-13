@@ -2,11 +2,12 @@ syntax = "proto3";
 
 package blockjoy.v1;
 
+import "blockjoy/common/v1/node.proto";
 import "blockjoy/common/v1/resource.proto";
 import "blockjoy/common/v1/search.proto";
 import "google/protobuf/timestamp.proto";
 
-/* Blockchain node representation */
+// Blockchain node representation
 message Node {
   string id = 1;
   string org_id = 2;
@@ -22,15 +23,15 @@ message Node {
   optional string address = 10;
   string version = 11;
   string ip = 12;
-  NodeType node_type = 13;
+  blockjoy.common.v1.NodeType node_type = 13;
   repeated NodeProperty properties = 14;
   optional uint64 block_height = 15;
   google.protobuf.Timestamp created_at = 16;
   google.protobuf.Timestamp updated_at = 17;
-  NodeStatus status = 18;
-  SyncStatus sync_status = 19;
-  ContainerStatus container_status = 20;
-  optional StakingStatus staking_status = 21;
+  blockjoy.common.v1.NodeStatus status = 18;
+  blockjoy.common.v1.SyncStatus sync_status = 19;
+  blockjoy.common.v1.ContainerStatus container_status = 20;
+  optional blockjoy.common.v1.StakingStatus staking_status = 21;
   string ip_gateway = 22;
   bool self_update = 23;
   string network = 24;
@@ -51,31 +52,28 @@ message Node {
   repeated NodeReport reports = 34;
 }
 
+// Service for interacting with a node.
 service NodeService {
-  // Create a single blockchain node
+  // Create a single blockchain node.
   rpc Create(NodeServiceCreateRequest) returns (NodeServiceCreateResponse);
-  // Get single blockchain node
+  // Get single blockchain node.
   rpc Get(NodeServiceGetRequest) returns (NodeServiceGetResponse);
-  // Get nodes belonging to org
+  // Get nodes belonging to org.
   rpc List(NodeServiceListRequest) returns (NodeServiceListResponse);
-  // Update a single blockchain node configuration
-  rpc UpdateConfig(NodeServiceUpdateConfigRequest) returns
-      (NodeServiceUpdateConfigResponse);
-  // Update a single blockchain node status. This shall only be used by host
-  // running the node.
-  rpc UpdateStatus(NodeServiceUpdateStatusRequest) returns
-      (NodeServiceUpdateStatusResponse);
+  // Update a single blockchain node configuration.
+  rpc UpdateConfig(NodeServiceUpdateConfigRequest) returns (NodeServiceUpdateConfigResponse);
+  // Update a single blockchain node status.
+  rpc UpdateStatus(NodeServiceUpdateStatusRequest) returns (NodeServiceUpdateStatusResponse);
+  // Start a single node.
+  rpc Start(NodeServiceStartRequest) returns (NodeServiceStartResponse);
+  // Stop a single node.
+  rpc Stop(NodeServiceStopRequest) returns (NodeServiceStopResponse);
+  // Restart a single node.
+  rpc Restart(NodeServiceRestartRequest) returns (NodeServiceRestartResponse);
+  // Delete a single node.
+  rpc Delete(NodeServiceDeleteRequest) returns (NodeServiceDeleteResponse);
   // Create an error report about this host.
   rpc Report(NodeServiceReportRequest) returns (NodeServiceReportResponse);
-
-  // Start a single node
-  rpc Start(NodeServiceStartRequest) returns (NodeServiceStartResponse);
-  // Stop a single node
-  rpc Stop(NodeServiceStopRequest) returns (NodeServiceStopResponse);
-  // Restart a single node
-  rpc Restart(NodeServiceRestartRequest) returns (NodeServiceRestartResponse);
-  // Delete a single node
-  rpc Delete(NodeServiceDeleteRequest) returns (NodeServiceDeleteResponse);
 }
 
 // This message is used to create a new node.
@@ -87,7 +85,7 @@ message NodeServiceCreateRequest {
   // The version of the node software that is ran.
   string version = 4;
   // The type of node that you want to create.
-  NodeType node_type = 5;
+  blockjoy.common.v1.NodeType node_type = 5;
   // A list of properties.
   repeated NodeProperty properties = 6;
   // The network that the blockchain will be a part of. Many blockchains have a
@@ -131,10 +129,10 @@ message NodeServiceListRequest {
   uint64 limit = 3;
   // If this list is non-empty, only nodes that are any of these states will be
   // returned.
-  repeated NodeStatus statuses = 4;
+  repeated blockjoy.common.v1.NodeStatus statuses = 4;
   // If this list is non-empty, only nodes of any of these types will be
   // returned.
-  repeated NodeType node_types = 5;
+  repeated blockjoy.common.v1.NodeType node_types = 5;
   // If this list is non-empty, only nodes that run a blockchain identified by
   // any of these blockchain ids will be returned.
   repeated string blockchain_ids = 6;
@@ -142,6 +140,8 @@ message NodeServiceListRequest {
   optional string host_id = 7;
   // Search params.
   optional NodeSearch search = 8;
+  // The field sorting order of results.
+  repeated NodeSort sort = 9;
 }
 
 // This message contains fields used to search nodes as opposed to just
@@ -155,6 +155,24 @@ message NodeSearch {
   optional string name = 3;
   // Search only the ip address.
   optional string ip = 4;
+}
+
+message NodeSort {
+  NodeSortField field = 1;
+  blockjoy.common.v1.SortOrder order = 2;
+}
+
+enum NodeSortField {
+  NODE_SORT_FIELD_UNSPECIFIED = 0;
+  NODE_SORT_FIELD_HOST_NAME = 1;
+  NODE_SORT_FIELD_NODE_NAME = 2;
+  NODE_SORT_FIELD_NODE_TYPE = 3;
+  NODE_SORT_FIELD_CREATED_AT = 4;
+  NODE_SORT_FIELD_UPDATED_AT = 5;
+  NODE_SORT_FIELD_NODE_STATUS = 6;
+  NODE_SORT_FIELD_SYNC_STATUS = 7;
+  NODE_SORT_FIELD_CONTAINER_STATUS = 8;
+  NODE_SORT_FIELD_STAKING_STATUS = 9;
 }
 
 // This response will contain all the filtered nodes.
@@ -177,8 +195,7 @@ message NodeServiceUpdateConfigRequest {
   repeated FilteredIpAddr deny_ips = 4;
 }
 
-message NodeServiceUpdateConfigResponse {
-}
+message NodeServiceUpdateConfigResponse {}
 
 // This request is used for updating a node status.
 message NodeServiceUpdateStatusRequest {
@@ -187,13 +204,12 @@ message NodeServiceUpdateStatusRequest {
   // The version of the node image that is currently used.
   optional string version = 2;
   // Set the container status field to this value.
-  optional ContainerStatus container_status = 3;
+  optional blockjoy.common.v1.ContainerStatus container_status = 3;
   // Update the P2P address of the blockchain node.
   optional string address = 4;
 }
 
-message NodeServiceUpdateStatusResponse {
-}
+message NodeServiceUpdateStatusResponse {}
 
 message NodeServiceReportRequest {
   // The id of the user that created the report.
@@ -212,29 +228,25 @@ message NodeServiceStartRequest {
   string id = 1;
 }
 
-message NodeServiceStartResponse {
-}
+message NodeServiceStartResponse {}
 
 message NodeServiceStopRequest {
   string id = 1;
 }
 
-message NodeServiceStopResponse {
-}
+message NodeServiceStopResponse {}
 
 message NodeServiceRestartRequest {
   string id = 1;
 }
 
-message NodeServiceRestartResponse {
-}
+message NodeServiceRestartResponse {}
 
 message NodeServiceDeleteRequest {
   string id = 1;
 }
 
-message NodeServiceDeleteResponse {
-}
+message NodeServiceDeleteResponse {}
 
 // This message contains the two possible ways in which the location of a node
 // may be determined.
@@ -301,101 +313,10 @@ message FilteredIpAddr {
   optional string description = 2;
 }
 
-// Describe the node's chain related status
-// Generic, NOT chain specific states. These states are used to describe the
-// node's states as seen by the blockchain
-enum NodeStatus {
-  NODE_STATUS_UNSPECIFIED = 0;
-  // General chain states
-  NODE_STATUS_PROVISIONING = 1;
-  NODE_STATUS_BROADCASTING = 2;
-  NODE_STATUS_CANCELLED = 3;
-  NODE_STATUS_DELEGATING = 4;
-  NODE_STATUS_DELINQUENT = 5;
-  NODE_STATUS_DISABLED = 6;
-  NODE_STATUS_EARNING = 7;
-  NODE_STATUS_ELECTING = 8;
-  NODE_STATUS_ELECTED = 9;
-  NODE_STATUS_EXPORTED = 10;
-  NODE_STATUS_INGESTING = 11;
-  NODE_STATUS_MINING = 12;
-  NODE_STATUS_MINTING = 13;
-  NODE_STATUS_PROCESSING = 14;
-  NODE_STATUS_RELAYING = 15;
-  NODE_STATUS_REMOVED = 16;
-  NODE_STATUS_REMOVING = 17;
-}
-
-// Possible states the container is described with
-enum ContainerStatus {
-  CONTAINER_STATUS_UNSPECIFIED = 0;
-  CONTAINER_STATUS_CREATING = 1;
-  CONTAINER_STATUS_RUNNING = 2;
-  CONTAINER_STATUS_STARTING = 3;
-  CONTAINER_STATUS_STOPPING = 4;
-  CONTAINER_STATUS_STOPPED = 5;
-  CONTAINER_STATUS_UPGRADING = 6;
-  CONTAINER_STATUS_UPGRADED = 7;
-  CONTAINER_STATUS_DELETING = 8;
-  CONTAINER_STATUS_DELETED = 9;
-  CONTAINER_STATUS_INSTALLING = 10;
-  CONTAINER_STATUS_SNAPSHOTTING = 11;
-  CONTAINER_STATUS_FAILED = 12;
-  CONTAINER_STATUS_BUSY = 13;
-}
-
-// Describe the node's syncing status
-enum SyncStatus {
-  SYNC_STATUS_UNSPECIFIED = 0;
-  SYNC_STATUS_SYNCING = 1;
-  SYNC_STATUS_SYNCED = 2;
-}
-
-// Describe the node's staking status
-enum StakingStatus {
-  STAKING_STATUS_UNSPECIFIED = 0;
-  STAKING_STATUS_FOLLOWER = 1;
-  STAKING_STATUS_STAKED = 2;
-  STAKING_STATUS_STAKING = 3;
-  STAKING_STATUS_VALIDATING = 4;
-  STAKING_STATUS_CONSENSUS = 5;
-  STAKING_STATUS_UNSTAKED = 6;
-}
-
-enum NodeType {
-  NODE_TYPE_UNSPECIFIED = 0;
-  NODE_TYPE_MINER = 1;
-  NODE_TYPE_ETL = 2;
-  NODE_TYPE_VALIDATOR = 3;
-  NODE_TYPE_API = 4;
-  NODE_TYPE_ORACLE = 5;
-  NODE_TYPE_RELAY = 6;
-  NODE_TYPE_EXECUTION = 7;
-  NODE_TYPE_BEACON = 8;
-  NODE_TYPE_MEVBOOST = 9;
-  NODE_TYPE_NODE = 10;
-  NODE_TYPE_FULLNODE = 11;
-  NODE_TYPE_LIGHTNODE = 12;
-}
-
-enum UiType {
-  UI_TYPE_UNSPECIFIED = 0;
-  // Either "true" or "false" must be returned. The property should be rendered
-  // as a checkbox.
-  UI_TYPE_SWITCH = 1;
-  // This field should be treated as a password field, i.e. a text field whose
-  // content is hidden.
-  UI_TYPE_PASSWORD = 2;
-  // This field should be treated as a text field.
-  UI_TYPE_TEXT = 3;
-  // This field should let the user upload string from a file.
-  UI_TYPE_FILE_UPLOAD = 4;
-}
-
 message NodeProperty {
   string name = 1;
   string display_name = 6;
-  UiType ui_type = 2;
+  blockjoy.common.v1.UiType ui_type = 2;
   bool disabled = 3;
   bool required = 4;
   string value = 5;
@@ -452,7 +373,7 @@ message NodeJobProgress {
   // The amount of units of progress that have been made towards the completion
   // of this job.
   optional uint32 current = 2;
-  // Any sort of message that is included with this job, 
+  // Any sort of message that is included with this job,
   optional string message = 3;
 }
 

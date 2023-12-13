@@ -2,8 +2,10 @@ syntax = "proto3";
 
 package blockjoy.v1;
 
+import "blockjoy/common/v1/node.proto";
 import "blockjoy/v1/node.proto";
 
+// A service for updating host and node metrics.
 service MetricsService {
   // Overwrite the metrics for the given nodes.
   rpc Node(MetricsServiceNodeRequest) returns (MetricsServiceNodeResponse);
@@ -17,9 +19,7 @@ message MetricsServiceNodeRequest {
   map<string, NodeMetrics> metrics = 1;
 }
 
-// This message exists only for forward compatibility.
-message MetricsServiceNodeResponse {
-}
+message MetricsServiceNodeResponse {}
 
 // This message is used to store the metrics for a given set of hosts.
 message MetricsServiceHostRequest {
@@ -27,9 +27,7 @@ message MetricsServiceHostRequest {
   map<string, HostMetrics> metrics = 1;
 }
 
-// This message exists only for forward compatibility.
-message MetricsServiceHostResponse {
-}
+message MetricsServiceHostResponse {}
 
 // The metrics for a single `Node`. Note that there is no node id in this
 // message, because it is embedded in the `MetricsServiceNodeRequest`, where the
@@ -40,15 +38,15 @@ message NodeMetrics {
   // This is the age of the most recent block, measured in seconds.
   optional uint64 block_age = 2;
   // This is the current staking status of the node.
-  optional StakingStatus staking_status = 3;
+  optional blockjoy.common.v1.StakingStatus staking_status = 3;
   // Iff the blockchain is in consensus, this field is `true`.
   optional bool consensus = 4;
   // This field represents the current status of the blockchain node
   // application.
-  optional NodeStatus application_status = 5;
+  optional blockjoy.common.v1.NodeStatus application_status = 5;
   // The status of the node with respect to the rest of the network, i.e.
   // whether it is in sync with the other nodes.
-  optional SyncStatus sync_status = 6;
+  optional blockjoy.common.v1.SyncStatus sync_status = 6;
   // A list of the jobs that this node consists of.
   repeated NodeJob jobs = 10;
 }

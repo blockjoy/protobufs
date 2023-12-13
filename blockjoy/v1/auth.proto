@@ -12,17 +12,13 @@ service AuthService {
   rpc Refresh(AuthServiceRefreshRequest) returns (AuthServiceRefreshResponse);
   // Send the reset password email out to this user. Intentionally returns
   // nothing to hide whether the user was registered or not.
-  rpc ResetPassword(AuthServiceResetPasswordRequest)
-    returns (AuthServiceResetPasswordResponse);
+  rpc ResetPassword(AuthServiceResetPasswordRequest) returns (AuthServiceResetPasswordResponse);
   // Update the user's password to a new value
-  rpc UpdatePassword(AuthServiceUpdatePasswordRequest)
-    returns (AuthServiceUpdatePasswordResponse);
+  rpc UpdatePassword(AuthServiceUpdatePasswordRequest) returns (AuthServiceUpdatePasswordResponse);
   // Update the user's password via profile UI
-  rpc UpdateUIPassword(AuthServiceUpdateUIPasswordRequest)
-    returns (AuthServiceUpdateUIPasswordResponse);
+  rpc UpdateUIPassword(AuthServiceUpdateUIPasswordRequest) returns (AuthServiceUpdateUIPasswordResponse);
   // List the permissions available for a user and org.
-  rpc ListPermissions(AuthServiceListPermissionsRequest)
-    returns (AuthServiceListPermissionsResponse);
+  rpc ListPermissions(AuthServiceListPermissionsRequest) returns (AuthServiceListPermissionsResponse);
 }
 
 message AuthServiceLoginRequest {
@@ -67,15 +63,13 @@ message AuthServiceResetPasswordRequest {
   string email = 1;
 }
 
-message AuthServiceResetPasswordResponse {
-}
+message AuthServiceResetPasswordResponse {}
 
 message AuthServiceUpdatePasswordRequest {
   string password = 1;
 }
 
-message AuthServiceUpdatePasswordResponse {
-}
+message AuthServiceUpdatePasswordResponse {}
 
 message AuthServiceUpdateUIPasswordRequest {
   string user_id = 1;
@@ -83,11 +77,9 @@ message AuthServiceUpdateUIPasswordRequest {
   string new_password = 3;
 }
 
-message AuthServiceUpdateUIPasswordResponse {
-}
+message AuthServiceUpdateUIPasswordResponse {}
 
-message AuthServiceConfirmRequest {
-}
+message AuthServiceConfirmRequest {}
 
 message AuthServiceConfirmResponse {
   string token = 1;
