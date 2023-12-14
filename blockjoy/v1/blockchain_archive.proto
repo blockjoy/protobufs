@@ -90,18 +90,11 @@ message ChunkTarget {
 
 // A checksum consisting of a type and value.
 message Checksum {
-  // The checksum type of the chunk data.
-  ChecksumType checksum_type = 3;
-  // The checksum value of the chunk data.
-  bytes checksum = 4;
-}
-
-// The checksum type of a chunk of data.
-enum ChecksumType {
-  CHECKSUM_TYPE_UNSPECIFIED = 0;
-  CHECKSUM_TYPE_SHA1 = 1;
-  CHECKSUM_TYPE_SHA256 = 2;
-  CHECKSUM_TYPE_BLAKE3 = 3;
+  oneof checksum {
+    bytes sha1 = 1;
+    bytes sha256 = 2;
+    bytes blake3 = 3;
+  }
 }
 
 // Type of compression used on chunk data.
