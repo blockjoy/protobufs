@@ -52,6 +52,8 @@ message Host {
   optional string vmm_mountpoint = 21;
   // A list of ip addresses available for this host.
   repeated HostIpAddress ip_addresses = 22;
+  // The entity that can make decisions on whether to run nodes on this host.
+  ManagedBy managed_by = 23;
 }
 
 // Manage hosts.
@@ -110,6 +112,9 @@ message HostServiceCreateRequest {
   // i.e. config data, secrets, vm mountpoints. Usually this will be
   // `/var/lib/blockvisor`.
   optional string vmm_mountpoint = 16;
+  // The entity that can make decisions on whether to run nodes on this host. By
+  // default this value will be set to `Automatic`.
+  optional ManagedBy managed_by = 17;
 }
 
 message HostServiceCreateResponse {
@@ -189,6 +194,8 @@ message HostServiceUpdateRequest {
   optional blockjoy.common.v1.BillingAmount billing_amount = 7;
   // This is total disk space installed on host, given in bytes.
   optional uint64 total_disk_space = 8;
+  // The entity that can make decisions on whether to run nodes on this host.
+  optional ManagedBy managed_by = 9;
 }
 
 message HostServiceUpdateResponse {}
@@ -271,4 +278,10 @@ enum HostConnectionStatus {
   HOST_CONNECTION_STATUS_UNSPECIFIED = 0;
   HOST_CONNECTION_STATUS_ONLINE = 1;
   HOST_CONNECTION_STATUS_OFFLINE = 2;
+}
+
+enum ManagedBy {
+  MANAGED_BY_UNSPECIFIED = 0;
+  MANAGED_BY_AUTOMATIC = 1;
+  MANAGED_BY_MANUAL = 2;
 }
