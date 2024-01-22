@@ -31,6 +31,8 @@ message Command {
 
 // Commands to be executed on a host.
 service CommandService {
+  // Allows a user to retrieve a list of commands using a set of filter params.
+  rpc List(CommandServiceListRequest) returns (CommandServiceListResponse);
   // Update the status of a command.
   //
   // This method is only used by the host.
@@ -39,6 +41,16 @@ service CommandService {
   rpc Ack(CommandServiceAckRequest) returns (CommandServiceAckResponse);
   // Get a list of unacknowledged commands.
   rpc Pending(CommandServicePendingRequest) returns (CommandServicePendingResponse);
+}
+
+message CommandServiceListRequest {
+  optional string node_id = 1;
+  optional string host_id = 2;
+  optional CommandExitCode exit_code = 3;
+}
+
+message CommandServiceListResponse {
+  repeated Command commands = 1;
 }
 
 message CommandServiceUpdateRequest {
