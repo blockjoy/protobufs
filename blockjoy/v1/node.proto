@@ -193,6 +193,8 @@ message NodeServiceUpdateConfigRequest {
   repeated FilteredIpAddr allow_ips = 3;
   // A list of ip addresses denied all access to any ports on this node.
   repeated FilteredIpAddr deny_ips = 4;
+  // If this field is specified, then the node is moved to this org.
+  optional string org_id = 5;
 }
 
 message NodeServiceUpdateConfigResponse {}
