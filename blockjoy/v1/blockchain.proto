@@ -37,8 +37,12 @@ service BlockchainService {
   rpc List(BlockchainServiceListRequest) returns (BlockchainServiceListResponse);
   // List node versions for some protocol and node type.
   rpc ListImageVersions(BlockchainServiceListImageVersionsRequest) returns (BlockchainServiceListImageVersionsResponse);
+  // Update a blockchain.
+  rpc Update(BlockchainServiceUpdateRequest) returns (BlockchainServiceUpdateResponse);
   // Add a new supported blockchain `node_type`.
   rpc AddNodeType(BlockchainServiceAddNodeTypeRequest) returns (BlockchainServiceAddNodeTypeResponse);
+  // Update a supported node type.
+  rpc UpdateNodeType(BlockchainServiceUpdateNodeTypeRequest) returns (BlockchainServiceUpdateNodeTypeResponse);
   // Add a new blockchain version.
   rpc AddVersion(BlockchainServiceAddVersionRequest) returns (BlockchainServiceAddVersionResponse);
 }
@@ -103,6 +107,15 @@ message BlockchainServiceListImageVersionsResponse {
   repeated blockjoy.common.v1.ImageIdentifier identifiers = 1;
 }
 
+message BlockchainServiceUpdateRequest {
+  string blockchain_id = 1;
+  optional BlockchainVisibility visibility = 2;
+}
+
+message BlockchainServiceUpdateResponse {
+  Blockchain blockchain = 1;
+}
+
 message BlockchainNodeType {
   string id = 1;
   blockjoy.common.v1.NodeType node_type = 2;
@@ -133,6 +146,15 @@ message BlockchainServiceAddNodeTypeRequest {
 }
 
 message BlockchainServiceAddNodeTypeResponse {}
+
+message BlockchainServiceUpdateNodeTypeRequest {
+  string id = 1;
+  optional BlockchainVisibility visibility = 2;
+}
+
+message BlockchainServiceUpdateNodeTypeResponse {
+  BlockchainNodeType blockchain_node_type = 1;
+}
 
 message BlockchainServiceAddVersionRequest {
   // The blockchain UUID to add the new version to.
