@@ -120,8 +120,8 @@ message NodeServiceGetResponse {
 // This request is used to query a set of nodes within an org by the parameters
 // that are specified in the `filter` field.
 message NodeServiceListRequest {
-  // The organization within which we will search for nodes.
-  optional string org_id = 1;
+  // The organizations within which we will search for nodes.
+  repeated string org_ids = 1;
   // The number of items to be skipped over.
   uint64 offset = 2;
   // The number of items that will be returned. Together with offset, you can
@@ -136,8 +136,18 @@ message NodeServiceListRequest {
   // If this list is non-empty, only nodes that run a blockchain identified by
   // any of these blockchain ids will be returned.
   repeated string blockchain_ids = 6;
-  // If this value is provided, only nodes running on this host are provided.
-  optional string host_id = 7;
+  // If this value is provided, only nodes running on these hosts are returned.
+  repeated string host_ids = 7;
+  // If this value is provided, only nodes created by these users are returned.
+  repeated string user_ids = 10;
+  // If this value is provided, only nodes with these ip addresses are returned.
+  repeated string ip_addresses = 11;
+  // If this value is provided, only nodes with these versions are returned.
+  repeated string versions = 12;
+  // If this value is provided, only nodes with these networks are returned.
+  repeated string networks = 13;
+  // If this value is provided, only nodes with these regions are returned.
+  repeated string regions = 14;
   // Search params.
   optional NodeSearch search = 8;
   // The field sorting order of results.
