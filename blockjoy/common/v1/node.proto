@@ -26,19 +26,6 @@ enum NodeStatus {
   // The node is currently being created on the host.
   NODE_STATUS_PROVISIONING = 1;
   NODE_STATUS_BROADCASTING = 2;
-  NODE_STATUS_CANCELLED = 3;
-  NODE_STATUS_DELEGATING = 4;
-  NODE_STATUS_DELINQUENT = 5;
-  NODE_STATUS_DISABLED = 6;
-  NODE_STATUS_EARNING = 7;
-  NODE_STATUS_ELECTING = 8;
-  NODE_STATUS_ELECTED = 9;
-  NODE_STATUS_EXPORTED = 10;
-  NODE_STATUS_INGESTING = 11;
-  NODE_STATUS_MINING = 12;
-  NODE_STATUS_MINTING = 13;
-  NODE_STATUS_PROCESSING = 14;
-  NODE_STATUS_RELAYING = 15;
   // A message to delete has been sent, and as soon as the process is kicked off
   // the node will move to the deleting status.
   NODE_STATUS_DELETE_PENDING = 16;
@@ -51,6 +38,13 @@ enum NodeStatus {
   NODE_STATUS_PROVISIONING_PENDING = 19;
   NODE_STATUS_UPDATE_PENDING = 20;
   NODE_STATUS_UPDATING = 21;
+  // The node has been provisioned, and the corresponding processes are starting
+  // inside the virtual machine.
+  NODE_STATUS_INITIALIZING = 22;
+  // The node is downloading the chain data.
+  NODE_STATUS_DOWNLOADING = 23;
+  // The node is uploading an archive of its chain data.
+  NODE_STATUS_UPLOADING = 24;
 }
 
 // The container status of a node.
