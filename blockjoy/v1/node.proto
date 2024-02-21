@@ -50,7 +50,7 @@ message Node {
   repeated NodeJob jobs = 33;
   // A list of reports that have been created for this node.
   repeated NodeReport reports = 34;
-  // A note you can use to explain what this note is for, or alternatively use
+  // A note you can use to explain what this node is for, or alternatively use
   // as a shopping list.
   optional string note = 35;
 }
@@ -198,7 +198,7 @@ message NodeServiceUpdateConfigRequest {
   repeated FilteredIpAddr deny_ips = 4;
   // If this field is specified, then the node is moved to this org.
   optional string org_id = 5;
-  // A note you can use to explain what this note is for, or alternatively use
+  // A note you can use to explain what this node is for, or alternatively use
   // as a shopping list.
   optional string note = 6;
 }
