@@ -53,6 +53,9 @@ message Node {
   // A note you can use to explain what this node is for, or alternatively use
   // as a shopping list.
   optional string note = 35;
+  // If this is an rpc node, this field contains the url where rpc requests can
+  // be sent to.
+  optional string rpc_url = 36;
 }
 
 // Service for interacting with a node.
