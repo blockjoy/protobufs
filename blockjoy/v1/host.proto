@@ -227,8 +227,9 @@ message HostServiceDeleteResponse {}
 
 // Used to produce a list of regions that are available to deploy nodes to.
 message HostServiceRegionsRequest {
-  // The org for which to produce the list.
-  string org_id = 1;
+  // The org for which to produce the list. This field is required for users
+  // that are not administrators of the whole system.
+  optional string org_id = 1;
   // The type of host to include in this list.
   optional HostType host_type = 2;
   // The id of the blockchain that should be ran inside the node.
