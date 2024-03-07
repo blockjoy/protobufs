@@ -66,6 +66,8 @@ service NodeService {
   rpc Get(NodeServiceGetRequest) returns (NodeServiceGetResponse);
   // Get nodes belonging to org.
   rpc List(NodeServiceListRequest) returns (NodeServiceListResponse);
+  // Upgrade a node to a new version.
+  rpc Upgrade(NodeServiceUpgradeRequest) returns (NodeServiceUpgradeResponse);
   // Update a single blockchain node configuration.
   rpc UpdateConfig(NodeServiceUpdateConfigRequest) returns (NodeServiceUpdateConfigResponse);
   // Update a single blockchain node status.
@@ -198,6 +200,16 @@ message NodeServiceListResponse {
   // The total number of nodes matching your query.
   uint64 node_count = 2;
 }
+
+message NodeServiceUpgradeRequest {
+  // The id of the node that you want to upgrade to a new version.
+  string id = 1;
+  // The version string to update it to. Make sure that this is a valid version
+  // for this <blockchain>/<node_type> combo.
+  string version = 2;
+}
+
+message NodeServiceUpgradeResponse {}
 
 // This request is used for updating a node configuration.
 message NodeServiceUpdateConfigRequest {
