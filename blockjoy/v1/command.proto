@@ -122,6 +122,7 @@ message NodeUpgrade {
 
 message NodeUpdate {
   repeated blockjoy.common.v1.FirewallRule rules = 1;
+  string org_id = 2;
 }
 
 message NodeCreate {
@@ -134,6 +135,7 @@ message NodeCreate {
   repeated Parameter properties = 7;
   repeated blockjoy.common.v1.FirewallRule rules = 8;
   string network = 9;
+  string org_id = 10;
 }
 
 message Parameter {
