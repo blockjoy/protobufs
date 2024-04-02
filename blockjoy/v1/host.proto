@@ -30,10 +30,6 @@ message Host {
   // The moment this host was created. Corresponds to the moment that the
   // host_provision was
   google.protobuf.Timestamp created_at = 12;
-  // The lowest ip address that this host may assign to a node.
-  string ip_range_from = 13;
-  // The highest ip address that this host may assign to a node.
-  string ip_range_to = 14;
   // The ip gateway of this host.
   string ip_gateway = 15;
   // The organization that this host belongs to.
