@@ -98,9 +98,10 @@ message HostServiceCreateRequest {
   // The version of said operating system.
   string os_version = 8;
   string ip_addr = 9;
-  string ip_range_from = 10;
-  string ip_range_to = 11;
   string ip_gateway = 12;
+  // A list of ip addresses that the nodes running on this host will be allowed
+  // to use.
+  repeated string ips = 18;
   // The organization that this host belongs to. This field _must_ be populated
   // with the current organization id.
   optional string org_id = 13;
