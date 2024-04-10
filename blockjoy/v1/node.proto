@@ -191,6 +191,7 @@ enum NodeSortField {
   NODE_SORT_FIELD_SYNC_STATUS = 7;
   NODE_SORT_FIELD_CONTAINER_STATUS = 8;
   NODE_SORT_FIELD_STAKING_STATUS = 9;
+  NODE_SORT_FIELD_BLOCK_HEIGHT = 10;
 }
 
 // This response will contain all the filtered nodes.
