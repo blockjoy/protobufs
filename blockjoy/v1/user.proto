@@ -32,6 +32,16 @@ service UserService {
   rpc UpdateBilling(UserServiceUpdateBillingRequest) returns (UserServiceUpdateBillingResponse);
   // Remove the billing details of this user.
   rpc DeleteBilling(UserServiceDeleteBillingRequest) returns (UserServiceDeleteBillingResponse);
+
+  // Retrieve the `settings` for this user. This is a string -> string map that
+  // may be used by frontends to communicate those settings that are not used by
+  // the backend in between sessions and devices. This field is free-form and
+  // ignored by the backend.
+  rpc GetSettings(UserServiceGetSettingsRequest) returns (UserServiceGetSettingsResponse);
+  // Modify a setting for this user.
+  rpc UpdateSettings(UserServiceUpdateSettingsRequest) returns (UserServiceUpdateSettingsResponse);
+  // Reset delete a setting for this user.
+  rpc DeleteSettings(UserServiceDeleteSettingsRequest) returns (UserServiceDeleteSettingsResponse);
 }
 
 message UserServiceGetRequest {
@@ -142,3 +152,30 @@ message UserServiceDeleteBillingRequest {
 }
 
 message UserServiceDeleteBillingResponse {}
+
+message UserServiceGetSettingsRequest {
+  // The id of the user for which to return the settings.
+  string user_id = 1;
+}
+
+message UserServiceGetSettingsResponse {
+  map<string, string> settings = 1;
+}
+
+message UserServiceUpdateSettingsRequest {
+  string user_id = 1;
+  string key = 2;
+  string value = 3;
+}
+
+message UserServiceUpdateSettingsResponse {
+  string key = 1;
+  string value = 2;
+}
+
+message UserServiceDeleteSettingsRequest {
+  string user_id = 1;
+  string key = 2;
+}
+
+message UserServiceDeleteSettingsResponse {}
