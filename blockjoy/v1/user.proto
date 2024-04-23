@@ -159,18 +159,18 @@ message UserServiceGetSettingsRequest {
 }
 
 message UserServiceGetSettingsResponse {
-  map<string, string> settings = 1;
+  map<string, bytes> settings = 1;
 }
 
 message UserServiceUpdateSettingsRequest {
   string user_id = 1;
   string key = 2;
-  string value = 3;
+  bytes value = 3;
 }
 
 message UserServiceUpdateSettingsResponse {
   string key = 1;
-  string value = 2;
+  bytes value = 2;
 }
 
 message UserServiceDeleteSettingsRequest {
