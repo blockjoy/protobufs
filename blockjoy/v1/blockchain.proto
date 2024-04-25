@@ -25,6 +25,8 @@ message Blockchain {
 
 // Service for blockchain-specific requests.
 service BlockchainService {
+  // Create a new blockchain version for a given blockchain and node type.
+  rpc CreateVersion(BlockchainServiceCreateVersionRequest) returns (BlockchainServiceCreateVersionResponse);
   // Get a single blockchain's info from its id.
   rpc Get(BlockchainServiceGetRequest) returns (BlockchainServiceGetResponse);
   // Get an image archive location for some image identifier.
@@ -41,6 +43,17 @@ service BlockchainService {
   rpc AddNodeType(BlockchainServiceAddNodeTypeRequest) returns (BlockchainServiceAddNodeTypeResponse);
   // Add a new blockchain version.
   rpc AddVersion(BlockchainServiceAddVersionRequest) returns (BlockchainServiceAddVersionResponse);
+}
+
+message BlockchainServiceCreateVersionRequest {
+  string blockchain_node_type_id = 1;
+  string version = 2;
+  optional string description = 3;
+  repeated BlockchainProperty properties = 4;
+}
+
+message BlockchainServiceCreateVersionResponse {
+  BlockchainVersion version = 1;
 }
 
 message BlockchainServiceGetRequest {
