@@ -164,18 +164,18 @@ message UserServiceGetSettingsResponse {
 
 message UserServiceUpdateSettingsRequest {
   string user_id = 1;
-  string key = 2;
+  string name = 2;
   bytes value = 3;
 }
 
 message UserServiceUpdateSettingsResponse {
-  string key = 1;
+  string name = 1;
   bytes value = 2;
 }
 
 message UserServiceDeleteSettingsRequest {
   string user_id = 1;
-  string key = 2;
+  string name = 2;
 }
 
 message UserServiceDeleteSettingsResponse {}
