@@ -25,8 +25,6 @@ message Blockchain {
 
 // Service for blockchain-specific requests.
 service BlockchainService {
-  // Create a new blockchain version for a given blockchain and node type.
-  rpc CreateVersion(BlockchainServiceCreateVersionRequest) returns (BlockchainServiceCreateVersionResponse);
   // Get a single blockchain's info from its id.
   rpc Get(BlockchainServiceGetRequest) returns (BlockchainServiceGetResponse);
   // Get an image archive location for some image identifier.
@@ -41,19 +39,8 @@ service BlockchainService {
   rpc ListImageVersions(BlockchainServiceListImageVersionsRequest) returns (BlockchainServiceListImageVersionsResponse);
   // Add a new supported blockchain `node_type`.
   rpc AddNodeType(BlockchainServiceAddNodeTypeRequest) returns (BlockchainServiceAddNodeTypeResponse);
-  // Add a new blockchain version.
+  // Add a new blockchain version. The default is to not update any nodes.
   rpc AddVersion(BlockchainServiceAddVersionRequest) returns (BlockchainServiceAddVersionResponse);
-}
-
-message BlockchainServiceCreateVersionRequest {
-  string blockchain_node_type_id = 1;
-  string version = 2;
-  optional string description = 3;
-  repeated BlockchainProperty properties = 4;
-}
-
-message BlockchainServiceCreateVersionResponse {
-  BlockchainVersion version = 1;
 }
 
 message BlockchainServiceGetRequest {
@@ -149,7 +136,7 @@ message BlockchainServiceAddNodeTypeResponse {}
 
 message BlockchainServiceAddVersionRequest {
   // The blockchain UUID to add the new version to.
-  string id = 1;
+  string blockchain_id = 1;
   // A semantically parseable representation of the new version.
   string version = 2;
   // A readable description of the new version.
@@ -158,6 +145,8 @@ message BlockchainServiceAddVersionRequest {
   blockjoy.common.v1.NodeType node_type = 4;
   // The properties applicable to this `version` and `node_type`.
   repeated BlockchainProperty properties = 5;
+  // Controls whether or not to upgrade all the nodes to this new version.
+  BlockchainVersionCreateBehaviour upgrade_behaviour = 6;
 }
 
 message BlockchainServiceAddVersionResponse {
@@ -201,4 +190,13 @@ enum BlockchainVisibility {
   BLOCKCHAIN_VISIBILITY_PRIVATE = 1;
   BLOCKCHAIN_VISIBILITY_PUBLIC = 2;
   BLOCKCHAIN_VISIBILITY_DEVELOPMENT = 3;
+}
+
+enum BlockchainVersionCreateBehaviour {
+  BLOCKCHAIN_VERSION_CREATE_BEHAVIOUR_UNSPECIFIED = 0;
+  // Find all nodes that match this version's blockchain_id and node_type, and
+  // upgrade them to the this version.
+  BLOCKCHAIN_VERSION_CREATE_BEHAVIOUR_PERFORM_UPGRADE = 1;
+  // Create the new version of the blockchain, but do not upgrade any nodes.
+  BLOCKCHAIN_VERSION_CREATE_BEHAVIOUR_DO_NOTHING = 2;
 }
