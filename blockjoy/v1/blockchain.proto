@@ -5,6 +5,7 @@ package blockjoy.v1;
 import "blockjoy/common/v1/blockchain.proto";
 import "blockjoy/common/v1/image.proto";
 import "blockjoy/common/v1/node.proto";
+import "blockjoy/common/v1/search.proto";
 import "google/protobuf/timestamp.proto";
 
 message Blockchain {
@@ -87,11 +88,46 @@ message BlockchainServiceGetRequirementsResponse {
 }
 
 message BlockchainServiceListRequest {
-  optional string org_id = 1;
+  repeated string org_ids = 1;
+  // The number of items to be skipped over.
+  uint64 offset = 2;
+  // The number of items that will be returned. Together with offset, you can
+  // use this to get pagination.
+  uint64 limit = 3;
+  // Use these parameters for fuzzy searching (as opposed to the filtering
+  // that the rest of the params of this message provide).
+  optional BlockchainSearch search = 8;
+  // The field sorting order of results.
+  repeated BlockchainSort sort = 9;
+}
+
+// This message contains fields used to search nodes as opposed to just
+// filtering them.
+message BlockchainSearch {
+  // The way the search parameters should be combined.
+  blockjoy.common.v1.SearchOperator operator = 1;
+  // Search by id.
+  optional string id = 2;
+  // Search by name.
+  optional string name = 3;
+}
+
+message BlockchainSort {
+  // Sort by this field.
+  BlockchainSortField field = 1;
+  // Sort ascending or descending.
+  blockjoy.common.v1.SortOrder order = 2;
+}
+
+enum BlockchainSortField {
+  BLOCKCHAIN_SORT_FIELD_UNSPECIFIED = 0;
+  BLOCKCHAIN_SORT_FIELD_NAME = 1;
 }
 
 message BlockchainServiceListResponse {
   repeated Blockchain blockchains = 1;
+  // The total number of blockchains matching your query.
+  uint64 blockchain_count = 2;
 }
 
 message BlockchainServiceListImageVersionsRequest {
