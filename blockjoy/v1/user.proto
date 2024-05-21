@@ -44,7 +44,7 @@ service UserService {
   rpc DeleteSettings(UserServiceDeleteSettingsRequest) returns (UserServiceDeleteSettingsResponse);
 
   // Add a new card to this user.
-    rpc AddCard(UserServiceAddCardRequest) returns (UserServiceAddCardResponse);
+  rpc InitCard(UserServiceInitCardRequest) returns (UserServiceInitCardResponse);
 }
 
 message UserServiceGetRequest {
@@ -183,10 +183,10 @@ message UserServiceDeleteSettingsRequest {
 
 message UserServiceDeleteSettingsResponse {}
 
-message UserServiceAddCardRequest {
+message UserServiceInitCardRequest {
   string user_id = 1;
 }
 
-message UserServiceAddCardResponse {
+message UserServiceInitCardResponse {
   string client_secret = 1;
 }
