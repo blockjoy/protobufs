@@ -42,6 +42,9 @@ service UserService {
   rpc UpdateSettings(UserServiceUpdateSettingsRequest) returns (UserServiceUpdateSettingsResponse);
   // Reset delete a setting for this user.
   rpc DeleteSettings(UserServiceDeleteSettingsRequest) returns (UserServiceDeleteSettingsResponse);
+
+  // Add a new card to this user.
+    rpc AddCard(UserServiceAddCardRequest) returns (UserServiceAddCardResponse);
 }
 
 message UserServiceGetRequest {
@@ -179,3 +182,11 @@ message UserServiceDeleteSettingsRequest {
 }
 
 message UserServiceDeleteSettingsResponse {}
+
+message UserServiceAddCardRequest {
+  string user_id = 1;
+}
+
+message UserServiceAddCardResponse {
+  string client_secret = 1;
+}
