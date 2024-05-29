@@ -7,11 +7,24 @@ import "blockjoy/common/v1/image.proto";
 // Manage blockchain data archives.
 service BlockchainArchiveService {
   // Get the download manifest for a specific image and blockchain network.
+  rpc HasBlockchainArchive(HasBlockchainArchiveRequest) returns (HasBlockchainArchiveResponse);
+  // Get the download manifest for a specific image and blockchain network.
   rpc GetDownloadManifest(BlockchainArchiveServiceGetDownloadManifestRequest) returns (BlockchainArchiveServiceGetDownloadManifestResponse);
   // Get an upload manifest for a specific image and blockchain network.
   rpc GetUploadManifest(BlockchainArchiveServiceGetUploadManifestRequest) returns (BlockchainArchiveServiceGetUploadManifestResponse);
   // Put a new download manifest for retrieval with `GetDownloadManifest`.
   rpc PutDownloadManifest(BlockchainArchiveServicePutDownloadManifestRequest) returns (BlockchainArchiveServicePutDownloadManifestResponse);
+}
+
+message HasBlockchainArchiveRequest {
+  // The archive image identifier.
+  blockjoy.common.v1.ImageIdentifier id = 1;
+  // The network name (e.g. "main", "testnet").
+  string network = 2;
+}
+
+message HasBlockchainArchiveResponse {
+  bool available = 1;
 }
 
 message BlockchainArchiveServiceGetDownloadManifestRequest {
