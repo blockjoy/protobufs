@@ -45,6 +45,8 @@ service UserService {
 
   // Add a new card to this user.
   rpc InitCard(UserServiceInitCardRequest) returns (UserServiceInitCardResponse);
+  // List all payment methods
+  rpc ListPaymentMethods(UserServiceListPaymentMethodsRequest) returns (UserServiceListPaymentMethodsResponse);
 }
 
 message UserServiceGetRequest {
@@ -189,4 +191,49 @@ message UserServiceInitCardRequest {
 
 message UserServiceInitCardResponse {
   string client_secret = 1;
+}
+
+message UserServiceListPaymentMethodsRequest {
+  string user_id = 1;
+}
+
+message UserServiceListPaymentMethodsResponse {
+  repeated PaymentMethod methods = 1;
+}
+
+message PaymentMethod {
+  string id = 1;
+  string user_id = 2;
+  BillingDetails details = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+  oneof method {
+    // This payment method is done through a credit card.
+    Card card = 6;
+  }
+}
+
+// Contains data related to billing for a specific user. Note that we store a separate email address
+// here since the billing email may be different from the user email.
+message BillingDetails {
+  Address address = 1;
+  string email = 2;
+  string name = 3;
+  string phone = 4;
+}
+
+message Address {
+  string city = 1;
+  string country = 2;
+  string line1 = 3;
+  string line2 = 4;
+  string postal_code = 5;
+  string state = 6;
+}
+
+message Card {
+  string brand = 1;
+  string exp_month = 2;
+  string exp_year = 3;
+  string last4 = 4;
 }
