@@ -45,6 +45,11 @@ service OrgService {
   rpc GetProvisionToken(OrgServiceGetProvisionTokenRequest) returns (OrgServiceGetProvisionTokenResponse);
   // Regenerates the host provision token for a user and organization.
   rpc ResetProvisionToken(OrgServiceResetProvisionTokenRequest) returns (OrgServiceResetProvisionTokenResponse);
+
+  // Add a new card to this user.
+  rpc InitCard(OrgServiceInitCardRequest) returns (OrgServiceInitCardResponse);
+  // List all payment methods
+  rpc ListPaymentMethods(OrgServiceListPaymentMethodsRequest) returns (OrgServiceListPaymentMethodsResponse);
 }
 
 message OrgServiceGetRequest {
@@ -165,4 +170,63 @@ message OrgUser {
 
 message OrgRole {
   optional string name = 1;
+}
+
+message OrgServiceInitCardRequest {
+  // The id of the org for which you want to initialise a new card.
+  string org_id = 1;
+  // The user that initiates this card.
+  string user_id = 2;
+}
+
+message OrgServiceInitCardResponse {
+  string client_secret = 1;
+}
+
+message OrgServiceListPaymentMethodsRequest {
+  string org_id = 1;
+}
+
+message OrgServiceListPaymentMethodsResponse {
+  repeated PaymentMethod methods = 1;
+}
+
+message PaymentMethod {
+  optional string id = 1;
+  // The id of the org to which this payment method belongs.
+  optional string org_id = 2;
+  // The id of the user that created this payment method.
+  optional string user_id = 3;
+  BillingDetails details = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+  oneof method {
+    // This payment method is done through a credit card.
+    Card card = 7;
+  }
+}
+
+// Contains data related to billing for a specific user. Note that we store a separate email address
+// here since the billing email may be different from the user email.
+message BillingDetails {
+  optional Address address = 1;
+  optional string email = 2;
+  optional string name = 3;
+  optional string phone = 4;
+}
+
+message Address {
+  optional string city = 1;
+  optional string country = 2;
+  optional string line1 = 3;
+  optional string line2 = 4;
+  optional string postal_code = 5;
+  optional string state = 6;
+}
+
+message Card {
+  string brand = 1;
+  int64 exp_month = 2;
+  int64 exp_year = 3;
+  string last4 = 4;
 }

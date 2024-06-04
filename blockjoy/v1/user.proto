@@ -42,11 +42,6 @@ service UserService {
   rpc UpdateSettings(UserServiceUpdateSettingsRequest) returns (UserServiceUpdateSettingsResponse);
   // Reset delete a setting for this user.
   rpc DeleteSettings(UserServiceDeleteSettingsRequest) returns (UserServiceDeleteSettingsResponse);
-
-  // Add a new card to this user.
-  rpc InitCard(UserServiceInitCardRequest) returns (UserServiceInitCardResponse);
-  // List all payment methods
-  rpc ListPaymentMethods(UserServiceListPaymentMethodsRequest) returns (UserServiceListPaymentMethodsResponse);
 }
 
 message UserServiceGetRequest {
@@ -184,56 +179,3 @@ message UserServiceDeleteSettingsRequest {
 }
 
 message UserServiceDeleteSettingsResponse {}
-
-message UserServiceInitCardRequest {
-  string user_id = 1;
-}
-
-message UserServiceInitCardResponse {
-  string client_secret = 1;
-}
-
-message UserServiceListPaymentMethodsRequest {
-  string user_id = 1;
-}
-
-message UserServiceListPaymentMethodsResponse {
-  repeated PaymentMethod methods = 1;
-}
-
-message PaymentMethod {
-  optional string id = 1;
-  string user_id = 2;
-  BillingDetails details = 3;
-  google.protobuf.Timestamp created_at = 4;
-  google.protobuf.Timestamp updated_at = 5;
-  oneof method {
-    // This payment method is done through a credit card.
-    Card card = 6;
-  }
-}
-
-// Contains data related to billing for a specific user. Note that we store a separate email address
-// here since the billing email may be different from the user email.
-message BillingDetails {
-  optional Address address = 1;
-  optional string email = 2;
-  optional string name = 3;
-  optional string phone = 4;
-}
-
-message Address {
-  optional string city = 1;
-  optional string country = 2;
-  optional string line1 = 3;
-  optional string line2 = 4;
-  optional string postal_code = 5;
-  optional string state = 6;
-}
-
-message Card {
-  string brand = 1;
-  int64 exp_month = 2;
-  int64 exp_year = 3;
-  string last4 = 4;
-}
