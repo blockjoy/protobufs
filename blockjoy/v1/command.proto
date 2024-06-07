@@ -77,6 +77,7 @@ message CommandServicePendingResponse {
 
 message HostCommand {
   string host_id = 1;
+  string host_name = 7;
 
   oneof command {
     HostStart start = 3;
@@ -96,7 +97,9 @@ message HostPending {}
 
 message NodeCommand {
   string node_id = 1;
+  string node_name = 10;
   string host_id = 2;
+  string host_name = 11;
 
   oneof command {
     NodeCreate create = 3;

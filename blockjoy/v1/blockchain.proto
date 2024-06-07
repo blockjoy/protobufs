@@ -11,6 +11,7 @@ import "google/protobuf/timestamp.proto";
 message Blockchain {
   string id = 1;
   string name = 2;
+  string display_name = 12;
   optional string description = 3;
   google.protobuf.Timestamp created_at = 4;
   google.protobuf.Timestamp updated_at = 5;
@@ -110,6 +111,8 @@ message BlockchainSearch {
   optional string id = 2;
   // Search by name.
   optional string name = 3;
+  // Search by display name.
+  optional string display_name = 4;
 }
 
 message BlockchainSort {
@@ -122,6 +125,7 @@ message BlockchainSort {
 enum BlockchainSortField {
   BLOCKCHAIN_SORT_FIELD_UNSPECIFIED = 0;
   BLOCKCHAIN_SORT_FIELD_NAME = 1;
+  BLOCKCHAIN_SORT_FIELD_DISPLAY_NAME = 2;
 }
 
 message BlockchainServiceListResponse {
