@@ -46,10 +46,12 @@ service OrgService {
   // Regenerates the host provision token for a user and organization.
   rpc ResetProvisionToken(OrgServiceResetProvisionTokenRequest) returns (OrgServiceResetProvisionTokenResponse);
 
-  // Add a new card to this user.
+  // Add a new card to this org.
   rpc InitCard(OrgServiceInitCardRequest) returns (OrgServiceInitCardResponse);
-  // List all payment methods
+  // List all payment methods for the current org.
   rpc ListPaymentMethods(OrgServiceListPaymentMethodsRequest) returns (OrgServiceListPaymentMethodsResponse);
+  // Returns details about the billing and billing cycle for this org.
+  rpc BillingDetails(OrgServiceBillingDetailsRequest) returns (OrgServiceBillingDetailsResponse);
 }
 
 message OrgServiceGetRequest {
@@ -229,4 +231,26 @@ message Card {
   int64 exp_month = 2;
   int64 exp_year = 3;
   string last4 = 4;
+}
+
+message OrgServiceBillingDetailsRequest {
+  string org_id = 1;
+}
+
+message OrgServiceBillingDetailsResponse {
+  string currency = 1;
+  google.protobuf.Timestamp current_period_start = 2;
+  google.protobuf.Timestamp current_period_end = 3;
+  optional string default_payment_method = 4;
+  google.protobuf.Timestamp created_at = 5;
+  string status = 7;
+  repeated BillingItem items = 8;
+}
+
+message BillingItem {
+  string name = 1;
+  // In the lowest denomination, e.g. dollar cents or pennies.
+  uint64 unit_amount = 2;
+  // The number of items.
+  uint64 quantity = 3;
 }
