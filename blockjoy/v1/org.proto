@@ -249,7 +249,7 @@ message OrgServiceBillingDetailsResponse {
 message BillingItem {
   optional string name = 1;
   // In the lowest denomination, e.g. dollar cents or pennies.
-  optional uint64 unit_amount = 2;
+  optional int64 unit_amount = 2;
   // The number of items.
   optional uint64 quantity = 3;
 }
