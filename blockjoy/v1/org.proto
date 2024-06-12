@@ -194,7 +194,6 @@ message OrgServiceListPaymentMethodsResponse {
 }
 
 message PaymentMethod {
-  optional string id = 1;
   // The id of the org to which this payment method belongs.
   optional string org_id = 2;
   // The id of the user that created this payment method.
@@ -248,9 +247,9 @@ message OrgServiceBillingDetailsResponse {
 }
 
 message BillingItem {
-  string name = 1;
+  optional string name = 1;
   // In the lowest denomination, e.g. dollar cents or pennies.
-  uint64 unit_amount = 2;
+  optional uint64 unit_amount = 2;
   // The number of items.
-  uint64 quantity = 3;
+  optional uint64 quantity = 3;
 }
