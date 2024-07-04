@@ -17,25 +17,27 @@ message Node {
   string host_org_id = 6;
   string blockchain_id = 7;
   string blockchain_name = 8;
-  string name = 9;
+  string node_name = 9;
+  string dns_name = 10;
+  string display_name = 11;
   // The P2P address of the node on the blockchain. This field is only set as
   // the node is started, so therefore it is optional.
-  optional string address = 10;
-  string version = 11;
-  string ip = 12;
-  blockjoy.common.v1.NodeType node_type = 13;
-  repeated NodeProperty properties = 14;
-  optional uint64 block_height = 15;
-  google.protobuf.Timestamp created_at = 16;
-  google.protobuf.Timestamp updated_at = 17;
-  blockjoy.common.v1.NodeStatus status = 18;
-  blockjoy.common.v1.SyncStatus sync_status = 19;
-  blockjoy.common.v1.ContainerStatus container_status = 20;
-  optional blockjoy.common.v1.StakingStatus staking_status = 21;
-  string ip_gateway = 22;
-  bool self_update = 23;
-  string network = 24;
-  blockjoy.common.v1.EntityUpdate created_by = 25;
+  optional string address = 12;
+  string version = 13;
+  string ip = 14;
+  blockjoy.common.v1.NodeType node_type = 15;
+  repeated NodeProperty properties = 16;
+  optional uint64 block_height = 17;
+  google.protobuf.Timestamp created_at = 18;
+  google.protobuf.Timestamp updated_at = 19;
+  blockjoy.common.v1.NodeStatus status = 20;
+  blockjoy.common.v1.SyncStatus sync_status = 21;
+  blockjoy.common.v1.ContainerStatus container_status = 22;
+  optional blockjoy.common.v1.StakingStatus staking_status = 23;
+  string ip_gateway = 24;
+  bool self_update = 25;
+  string network = 26;
+  blockjoy.common.v1.EntityUpdate created_by = 27;
   // A list of ip addresses allowed to access public ports on this node.
   repeated FilteredIpAddr allow_ips = 28;
   // A list of ip addresses denied all access to any ports on this node.
@@ -109,8 +111,8 @@ message NodeServiceCreateRequest {
 
 // Message returned when a node is created.
 message NodeServiceCreateResponse {
-  // The actual node that was just created.
-  Node node = 1;
+  // All nodes that were created.
+  repeated Node nodes = 1;
 }
 
 // This message is used to read info about a single node. For requests
@@ -173,12 +175,16 @@ message NodeServiceListRequest {
 message NodeSearch {
   // The way the search parameters should be combined.
   blockjoy.common.v1.SearchOperator operator = 1;
-  // Search only the name.
+  // Search for the node id.
   optional string id = 2;
-  // Search only the name.
-  optional string name = 3;
-  // Search only the ip address.
-  optional string ip = 4;
+  // Search for the node ip address.
+  optional string ip = 3;
+  // Search for the node name.
+  optional string node_name = 4;
+  // Search for the DNS name.
+  optional string dns_name = 5;
+  // Search for the display name.
+  optional string display_name = 6;
 }
 
 message NodeSort {
@@ -198,6 +204,8 @@ enum NodeSortField {
   NODE_SORT_FIELD_CONTAINER_STATUS = 8;
   NODE_SORT_FIELD_STAKING_STATUS = 9;
   NODE_SORT_FIELD_BLOCK_HEIGHT = 10;
+  NODE_SORT_FIELD_DNS_NAME = 11;
+  NODE_SORT_FIELD_DISPLAY_NAME = 12;
 }
 
 // This response will contain all the filtered nodes.
@@ -230,9 +238,10 @@ message NodeServiceUpdateConfigRequest {
   repeated FilteredIpAddr deny_ips = 4;
   // If this field is specified, then the node is moved to this org.
   optional string org_id = 5;
-  // A note you can use to explain what this node is for, or alternatively use
-  // as a shopping list.
+  // A note you can use to explain what this node is for.
   optional string note = 6;
+  // Update the frontend display name of this node.
+  optional string display_name = 7;
 }
 
 message NodeServiceUpdateConfigResponse {}
@@ -288,16 +297,15 @@ message NodeServiceDeleteRequest {
 
 message NodeServiceDeleteResponse {}
 
-// This message contains the two possible ways in which the location of a node
-// may be determined.
+// Determines the placement of a new node.
 message NodePlacement {
   oneof placement {
-    // Simply place the node on the provided host id. This means that retrying
-    // on another host is disabled.
-    string host_id = 1;
-    // The scheduler decides where to place this node. Refer to the
-    // documentation of the `NodeScheduler` message for more details.
-    NodeScheduler scheduler = 2;
+    // The scheduler determines placement (see `NodeScheduler`).
+    NodeScheduler scheduler = 1;
+    // Use this host id (retrying on another host is disabled).
+    string host_id = 2;
+    // Batch create multiple nodes on these hosts.
+    MultipleNodes multiple = 3;
   }
 }
 
@@ -343,6 +351,15 @@ message NodeScheduler {
   optional SimilarNodeAffinity similarity = 2;
   // The region where the node should be ran.
   string region = 3;
+}
+
+message MultipleNodes {
+  repeated NodeCount node_counts = 1;
+}
+
+message NodeCount {
+  string host_id = 1;
+  uint32 node_count = 2;
 }
 
 // IP Addresses used to filter access.
