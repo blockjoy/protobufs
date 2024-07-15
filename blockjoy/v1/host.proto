@@ -116,7 +116,7 @@ message HostServiceCreateRequest {
   // default this value will be set to `Automatic`.
   optional ManagedBy managed_by = 17;
   // A list of tags that are attached to this host.
-  repeated blockjoy.common.v1.Tag tags = 18;
+  blockjoy.common.v1.Tags tags = 19;
 }
 
 message HostServiceCreateResponse {
@@ -208,9 +208,9 @@ message HostServiceUpdateRequest {
 message UpdateTags {
   oneof update {
     // A list of tags that are attached to this host.
-    repeated blockjoy.common.v1.Tag overwrite_tags = 1;
+    blockjoy.common.v1.Tags overwrite_tags = 1;
     // A single tag that is added.
-    blockjoy.common.v1.Tag add_tag = 1;
+    blockjoy.common.v1.Tag add_tag = 2;
   }
 }
 
