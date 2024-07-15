@@ -5,6 +5,7 @@ package blockjoy.v1;
 import "blockjoy/common/v1/currency.proto";
 import "blockjoy/common/v1/node.proto";
 import "blockjoy/common/v1/search.proto";
+import "blockjoy/common/v1/tag.proto";
 import "google/protobuf/timestamp.proto";
 
 message Host {
@@ -50,6 +51,8 @@ message Host {
   repeated HostIpAddress ip_addresses = 22;
   // The entity that can make decisions on whether to run nodes on this host.
   ManagedBy managed_by = 23;
+  // A list of tags that are attached to this host.
+  repeated blockjoy.common.v1.Tag tags = 24;
 }
 
 // Manage hosts.
@@ -112,6 +115,8 @@ message HostServiceCreateRequest {
   // The entity that can make decisions on whether to run nodes on this host. By
   // default this value will be set to `Automatic`.
   optional ManagedBy managed_by = 17;
+  // A list of tags that are attached to this host.
+  repeated blockjoy.common.v1.Tag tags = 18;
 }
 
 message HostServiceCreateResponse {
@@ -196,6 +201,13 @@ message HostServiceUpdateRequest {
   optional uint64 total_disk_space = 8;
   // The entity that can make decisions on whether to run nodes on this host.
   optional ManagedBy managed_by = 9;
+  // If this is provided, the tags contained in this will overwrite the existing tags.
+  optional UpdateTags update_tags = 10;
+}
+
+message UpdateTags {
+  // A list of tags that are attached to this host.
+  repeated blockjoy.common.v1.Tag overwrite_tags = 1;
 }
 
 message HostServiceUpdateResponse {}
