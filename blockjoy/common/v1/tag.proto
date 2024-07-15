@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package blockjoy.v1;
+package blockjoy.common.v1;
 
 message Tags {
   repeated Tag tags = 1;

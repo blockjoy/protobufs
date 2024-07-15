@@ -201,7 +201,8 @@ message HostServiceUpdateRequest {
   optional uint64 total_disk_space = 8;
   // The entity that can make decisions on whether to run nodes on this host.
   optional ManagedBy managed_by = 9;
-  // If this is provided, the tags contained in this will overwrite the existing tags.
+  // If this is provided, the tags contained in this will overwrite the existing
+  // tags.
   optional UpdateTags update_tags = 10;
 }
 
