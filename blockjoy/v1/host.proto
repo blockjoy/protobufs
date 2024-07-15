@@ -206,8 +206,12 @@ message HostServiceUpdateRequest {
 }
 
 message UpdateTags {
-  // A list of tags that are attached to this host.
-  repeated blockjoy.common.v1.Tag overwrite_tags = 1;
+  oneof update {
+    // A list of tags that are attached to this host.
+    repeated blockjoy.common.v1.Tag overwrite_tags = 1;
+    // A single tag that is added.
+    blockjoy.common.v1.Tag add_tag = 1;
+  }
 }
 
 message HostServiceUpdateResponse {}
