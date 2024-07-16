@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package blockjoy.v1;
 
+import "blockjoy/common/v1/address.proto";
 import "blockjoy/common/v1/search.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -52,6 +53,13 @@ service OrgService {
   rpc ListPaymentMethods(OrgServiceListPaymentMethodsRequest) returns (OrgServiceListPaymentMethodsResponse);
   // Returns details about the billing and billing cycle for this org.
   rpc BillingDetails(OrgServiceBillingDetailsRequest) returns (OrgServiceBillingDetailsResponse);
+
+  // Returns the address for this organisation if there is one.
+  rpc GetAddress(OrgServiceGetAddressRequest) returns (OrgServiceGetAddressResponse);
+  // Sets the address for this org, overwriting the previous value.
+  rpc SetAddress(OrgServiceSetAddressRequest) returns (OrgServiceSetAddressResponse);
+  // Removes the address set for this org.
+  rpc DeleteAddress(OrgServiceDeleteAddressRequest) returns (OrgServiceDeleteAddressResponse);
 }
 
 message OrgServiceGetRequest {
@@ -210,19 +218,10 @@ message PaymentMethod {
 // Contains data related to billing for a specific user. Note that we store a separate email address
 // here since the billing email may be different from the user email.
 message BillingDetails {
-  optional Address address = 1;
+  optional blockjoy.common.v1.Address address = 1;
   optional string email = 2;
   optional string name = 3;
   optional string phone = 4;
-}
-
-message Address {
-  optional string city = 1;
-  optional string country = 2;
-  optional string line1 = 3;
-  optional string line2 = 4;
-  optional string postal_code = 5;
-  optional string state = 6;
 }
 
 message Card {
@@ -253,3 +252,24 @@ message BillingItem {
   // The number of items.
   optional uint64 quantity = 3;
 }
+
+message OrgServiceGetAddressRequest {
+  string org_id = 1;
+}
+
+message OrgServiceGetAddressResponse {
+  optional blockjoy.common.v1.Address address = 1;
+}
+
+message OrgServiceSetAddressRequest {
+  string org_id = 1;
+  blockjoy.common.v1.Address address = 2;
+}
+
+message OrgServiceSetAddressResponse {}
+
+message OrgServiceDeleteAddressRequest {
+  string org_id = 1;
+}
+
+message OrgServiceDeleteAddressResponse {}

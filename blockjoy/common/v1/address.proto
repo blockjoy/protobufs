@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package blockjoy.common.v1;
+
+message Address {
+  optional string city = 1;
+  optional string country = 2;
+  optional string line1 = 3;
+  optional string line2 = 4;
+  optional string postal_code = 5;
+  optional string state = 6;
+}
