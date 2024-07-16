@@ -52,7 +52,7 @@ message Host {
   // The entity that can make decisions on whether to run nodes on this host.
   ManagedBy managed_by = 23;
   // A list of tags that are attached to this host.
-  repeated blockjoy.common.v1.Tag tags = 24;
+  blockjoy.common.v1.Tags tags = 24;
 }
 
 // Manage hosts.
