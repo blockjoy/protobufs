@@ -43,6 +43,8 @@ service BlockchainService {
   rpc AddNodeType(BlockchainServiceAddNodeTypeRequest) returns (BlockchainServiceAddNodeTypeResponse);
   // Add a new blockchain version.
   rpc AddVersion(BlockchainServiceAddVersionRequest) returns (BlockchainServiceAddVersionResponse);
+  // Returns the pricing for this node config
+  rpc Pricing(BlockchainServicePricingRequest) returns (BlockchainServicePricingResponse);
 }
 
 message BlockchainServiceGetRequest {
@@ -189,6 +191,22 @@ message BlockchainServiceAddVersionRequest {
 
 message BlockchainServiceAddVersionResponse {
   BlockchainVersion version = 1;
+}
+
+message BlockchainServicePricingRequest {
+  string blockchain_id = 1;
+  string version = 2;
+  blockjoy.common.v1.NodeType node_type = 3;
+  string network = 4;
+  string region = 5;
+}
+
+message BlockchainServicePricingResponse {
+  // Price in the lowest denominator (i.e. cents)
+  uint64 price = 1;
+  // The currency in which the price is denominated, for now this is always
+  // "USD".
+  string currency = 2;
 }
 
 // A property that is supported by a node of a particular:
