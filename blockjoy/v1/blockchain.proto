@@ -43,7 +43,7 @@ service BlockchainService {
   rpc AddNodeType(BlockchainServiceAddNodeTypeRequest) returns (BlockchainServiceAddNodeTypeResponse);
   // Add a new blockchain version.
   rpc AddVersion(BlockchainServiceAddVersionRequest) returns (BlockchainServiceAddVersionResponse);
-  // Returns the pricing for this node config
+  // Returns the pricing for this blockchain config
   rpc Pricing(BlockchainServicePricingRequest) returns (BlockchainServicePricingResponse);
 }
 
