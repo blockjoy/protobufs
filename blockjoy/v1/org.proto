@@ -3,6 +3,7 @@ syntax = "proto3";
 package blockjoy.v1;
 
 import "blockjoy/common/v1/address.proto";
+import "blockjoy/common/v1/currency.proto";
 import "blockjoy/common/v1/search.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -239,7 +240,7 @@ message OrgServiceBillingDetailsRequest {
 }
 
 message OrgServiceBillingDetailsResponse {
-  string currency = 1;
+  blockjoy.common.v1.Currency currency = 1;
   google.protobuf.Timestamp current_period_start = 2;
   google.protobuf.Timestamp current_period_end = 3;
   optional string default_payment_method = 4;
@@ -286,26 +287,36 @@ message OrgServiceGetInvoicesResponse {
 }
 
 message Invoice {
-  string id = 1;
-  google.protobuf.Timestamp created_at = 2;
+  // The invoice number is displayed on the invoice.
+  optional string number = 1;
+  optional google.protobuf.Timestamp created_at = 2;
   Discount discount = 3;
-  string pdf_url = 4;
+  optional string pdf_url = 4;
   repeated LineItem line_items = 5;
-  string status = 6;
-  uint64 subtotal = 7;
-  uint64 total = 8;
+  optional InvoiceStatus status = 6;
+  optional uint64 subtotal = 7;
+  optional uint64 total = 8;
 }
 
 message Discount {
-  string name = 1;
+  optional string name = 1;
 }
 
 message LineItem {
   uint64 subtotal = 1;
-  uint64 total = 2;
-  string description = 3;
-  google.protobuf.Timestamp start = 4;
-  google.protobuf.Timestamp end = 5;
-  string plan = 6;
-  bool protation = 7;
+  optional uint64 total = 2;
+  optional string description = 3;
+  optional google.protobuf.Timestamp start = 4;
+  optional google.protobuf.Timestamp end = 5;
+  optional string plan = 6;
+  bool proration = 7;
+}
+
+enum InvoiceStatus {
+  INVOICE_STATUS_UNSPECIFIED = 0;
+  INVOICE_STATUS_DRAFT = 1;
+  INVOICE_STATUS_OPEN = 2;
+  INVOICE_STATUS_PAID = 3;
+  INVOICE_STATUS_UNCOLLECTIBLE = 4;
+  INVOICE_STATUS_VOID = 5;
 }
