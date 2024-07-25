@@ -203,11 +203,7 @@ message BlockchainServicePricingRequest {
 }
 
 message BlockchainServicePricingResponse {
-  // Price in the lowest denominator (i.e. cents)
-  uint64 amount = 1;
-  // The currency in which the price is denominated, for now this is always
-  // "USD".
-  blockjoy.common.v1.Currency currency = 2;
+  blockjoy.common.v1.BillingAmount billing_amount = 1;
 }
 
 // A property that is supported by a node of a particular:
