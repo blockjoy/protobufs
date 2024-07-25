@@ -60,6 +60,9 @@ service OrgService {
   rpc SetAddress(OrgServiceSetAddressRequest) returns (OrgServiceSetAddressResponse);
   // Removes the address set for this org.
   rpc DeleteAddress(OrgServiceDeleteAddressRequest) returns (OrgServiceDeleteAddressResponse);
+
+  // Returns the data
+  rpc GetInvoices(OrgServiceGetInvoicesRequest) returns (OrgServiceGetInvoicesResponse);
 }
 
 message OrgServiceGetRequest {
@@ -273,3 +276,36 @@ message OrgServiceDeleteAddressRequest {
 }
 
 message OrgServiceDeleteAddressResponse {}
+
+message OrgServiceGetInvoicesRequest {
+  string org_id = 1;
+}
+
+message OrgServiceGetInvoicesResponse {
+  repeated Invoice invoices = 1;
+}
+
+message Invoice {
+  string id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  Discount discount = 3;
+  string pdf_url = 4;
+  repeated LineItem line_items = 5;
+  string status = 6;
+  uint64 subtotal = 7;
+  uint64 total = 8;
+}
+
+message Discount {
+  string name = 1;
+}
+
+message LineItem {
+  uint64 subtotal = 1;
+  uint64 total = 2;
+  string description = 3;
+  google.protobuf.Timestamp start = 4;
+  google.protobuf.Timestamp end = 5;
+  string plan = 6;
+  bool protation = 7;
+}
