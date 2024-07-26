@@ -294,8 +294,8 @@ message Invoice {
   optional string pdf_url = 4;
   repeated LineItem line_items = 5;
   optional InvoiceStatus status = 6;
-  optional uint64 subtotal = 7;
-  optional uint64 total = 8;
+  optional int64 subtotal = 7;
+  optional int64 total = 8;
 }
 
 message Discount {
@@ -303,8 +303,8 @@ message Discount {
 }
 
 message LineItem {
-  uint64 subtotal = 1;
-  optional uint64 total = 2;
+  int64 subtotal = 1;
+  optional int64 total = 2;
   optional string description = 3;
   optional google.protobuf.Timestamp start = 4;
   optional google.protobuf.Timestamp end = 5;
