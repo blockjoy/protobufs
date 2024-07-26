@@ -310,6 +310,13 @@ message LineItem {
   optional google.protobuf.Timestamp end = 5;
   optional string plan = 6;
   bool proration = 7;
+  optional uint64 quantity = 8;
+  repeated LineItemDiscount discounts = 9;
+}
+
+message LineItemDiscount {
+  optional string name = 1;
+  optional blockjoy.common.v1.Amount amount = 2;
 }
 
 enum InvoiceStatus {
