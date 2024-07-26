@@ -210,22 +210,12 @@ message PaymentMethod {
   optional string org_id = 2;
   // The id of the user that created this payment method.
   optional string user_id = 3;
-  BillingDetails details = 4;
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp updated_at = 6;
   oneof method {
     // This payment method is done through a credit card.
     Card card = 7;
   }
-}
-
-// Contains data related to billing for a specific user. Note that we store a separate email address
-// here since the billing email may be different from the user email.
-message BillingDetails {
-  optional blockjoy.common.v1.Address address = 1;
-  optional string email = 2;
-  optional string name = 3;
-  optional string phone = 4;
 }
 
 message Card {
