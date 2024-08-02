@@ -295,7 +295,7 @@ message Discount {
 
 message LineItem {
   int64 subtotal = 1;
-  optional int64 total = 2;
+  optional int64 unit_amount = 2;
   optional string description = 3;
   optional google.protobuf.Timestamp start = 4;
   optional google.protobuf.Timestamp end = 5;
