@@ -294,6 +294,7 @@ message Discount {
 }
 
 message LineItem {
+  int64 total = 10;
   int64 subtotal = 1;
   optional int64 total = 2;
   optional string description = 3;
