@@ -10,7 +10,7 @@ message Amount {
   // The `Currency` type of this `Amount`.
   Currency currency = 1;
   // The minor units value for the `currency` (as defined by ISO 4217).
-  int64 value = 2;
+  int64 amount_minor_units = 2;
 }
 
 // The currency code of some `Amount`.

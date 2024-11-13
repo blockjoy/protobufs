@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package blockjoy.v1;
 
+import "blockjoy/common/v1/currency.proto";
 import "blockjoy/common/v1/node.proto";
 import "blockjoy/common/v1/resource.proto";
 import "blockjoy/common/v1/search.proto";
@@ -63,6 +64,8 @@ message Node {
   optional string old_node_id = 37;
   // A list of tags that are attached to this node.
   blockjoy.common.v1.Tags tags = 38;
+  // Monthly cost of this node.
+  optional blockjoy.common.v1.BillingAmount cost = 39;
 }
 
 // Service for interacting with a node.
@@ -249,6 +252,8 @@ message NodeServiceUpdateConfigRequest {
   // If this is provided, the tags contained in this will update the existing
   // tags.
   optional blockjoy.common.v1.UpdateTags update_tags = 10;
+  // The cost of this host.
+  optional blockjoy.common.v1.BillingAmount cost = 11;
 }
 
 message NodeServiceUpdateConfigResponse {}

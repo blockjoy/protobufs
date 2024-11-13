@@ -53,6 +53,8 @@ message Host {
   ManagedBy managed_by = 23;
   // A list of tags that are attached to this host.
   blockjoy.common.v1.Tags tags = 24;
+  // Monthly cost of this host.
+  optional blockjoy.common.v1.BillingAmount cost = 25;
 }
 
 // Manage hosts.
@@ -204,6 +206,8 @@ message HostServiceUpdateRequest {
   // If this is provided, the tags contained in this will update the existing
   // tags.
   optional blockjoy.common.v1.UpdateTags update_tags = 10;
+  // The cost of this host.
+  optional blockjoy.common.v1.BillingAmount cost = 11;
 }
 
 message HostServiceUpdateResponse {}
