@@ -107,56 +107,37 @@ message NodeServiceGetResponse {
   Node node = 1;
 }
 
-// Query a set of nodes within an org.
 message NodeServiceListRequest {
-  // The orgs to list nodes for (or empty for all).
-  repeated string org_ids = 1;
-  // The number of results to skip.
-  uint64 offset = 2;
-  // Limit the number of results.
-  uint64 limit = 3;
-  // Search these parameters.
-  optional NodeSearch search = 4;
-  // Sort the results in this order.
-  repeated NodeSort sort = 5;
+  // Common search parameters.
+  blockjoy.common.v1.Search search = 1;
+  // Sort order of the results.
+  repeated NodeSort sort = 2;
+  // If non-empty, only return nodes in these orgs.
+  repeated string org_ids = 3;
+  // If non-empty, only return nodes running on these hosts.
+  repeated string host_ids = 4;
+  // If non-empty, only return nodes created by these users.
+  repeated string user_ids = 5;
   // If non-empty, only return nodes for these protocol ids.
   repeated string protocol_ids = 6;
-  // If non-empty, only return nodes running on these hosts.
-  repeated string host_ids = 7;
-  // If non-empty, only return nodes created by these user ids.
-  repeated string user_ids = 8;
-  // If non-empty, only return nodes with these ip addresses.
-  repeated string ip_addresses = 9;
   // If non-empty, only return nodes in these states.
-  repeated blockjoy.common.v1.NodeState node_states = 10;
+  repeated blockjoy.common.v1.NodeState node_states = 7;
   // If non-empty, only return nodes with these next states.
-  repeated blockjoy.common.v1.NextState next_states = 11;
-  // If non-empty, only return nodes with these semantic versions.
-  repeated string semantic_versions = 12;
-}
-
-// The fields used to search nodes rather than just filtering them.
-message NodeSearch {
-  // How to combine the parameters.
-  blockjoy.common.v1.SearchOperator operator = 1;
-  // Search for the node id.
-  optional string node_id = 2;
-  // Search for the node name.
-  optional string node_name = 3;
-  // Search for the display name.
-  optional string display_name = 4;
-  // Search for the DNS name.
-  optional string dns_name = 5;
-  // Search for the node state.
-  optional blockjoy.common.v1.NodeState node_state = 6;
-  // Search for the next state.
-  optional blockjoy.common.v1.NextState next_state = 7;
-  // Search for the protocol state.
-  optional string protocol_state = 8;
-  // Search for the protocol health.
-  optional string protocol_health = 9;
-  // Search for the node ip address.
-  optional string ip = 10;
+  repeated blockjoy.common.v1.NextState next_states = 8;
+  // If non-empty, match these protocol states.
+  repeated string protocol_state = 9;
+  // If non-empty, only return these protocol health states.
+  repeated blockjoy.common.v1.NodeHealth protocol_health = 10;
+  // If non-empty, match these node names.
+  optional string node_name = 11;
+  // If non-empty, match these display names.
+  optional string display_name = 12;
+  // If non-empty, match these DNS names.
+  repeated string dns_name = 13;
+  // If non-empty, match these ip addresses.
+  repeated string ip_addresses = 14;
+  // If non-empty, match these semantic versions.
+  repeated string semantic_versions = 15;
 }
 
 message NodeSort {

@@ -2,11 +2,24 @@ syntax = "proto3";
 
 package blockjoy.common.v1;
 
+// Search parameters that are common to all implementations.
+//
+// Each implementation will define their own search fields. Matching on string
+// fields is case-insensitive and `%` may be used as a wildcard operator.
+message Search {
+  // How to combine the parameters.
+  SearchOperator operator = 1;
+  // The number of results to skip.
+  uint64 offset = 2;
+  // Limit the number of results.
+  uint64 limit = 3;
+}
+
 // The search operator for a set of fields.
 enum SearchOperator {
   SEARCH_OPERATOR_UNSPECIFIED = 0;
-  SEARCH_OPERATOR_OR = 1;
-  SEARCH_OPERATOR_AND = 2;
+  SEARCH_OPERATOR_AND = 1;
+  SEARCH_OPERATOR_OR = 2;
 }
 
 // The sort order to return a field by.

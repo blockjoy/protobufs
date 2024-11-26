@@ -1,0 +1,220 @@
+syntax = "proto3";
+
+package blockjoy.v1;
+
+import "blockjoy/common/v1/resource.proto";
+import "blockjoy/common/v1/search.proto";
+import "blockjoy/v1/host.proto";
+import "blockjoy/v1/invitation.proto";
+import "blockjoy/v1/node.proto";
+import "blockjoy/v1/org.proto";
+import "blockjoy/v1/user.proto";
+import "google/protobuf/timestamp.proto";
+
+message Event {
+  // A unique identifier to this event.
+  string event_id = 1;
+  // The event type and associated data.
+  EventType event_type = 2;
+  // Which resource the event is for.
+  blockjoy.common.v1.Resource resource = 3;
+  // Which resource created the event.
+  blockjoy.common.v1.Resource created_by = 4;
+  // When the event was created.
+  google.protobuf.Timestamp created_at = 5;
+  // When a recipient acknowledged receipt of this event.
+  google.protobuf.Timestamp acked_at = 6;
+  // When a recipient responded with the event outcome.
+  google.protobuf.Timestamp finalized_at = 7;
+}
+
+// The type of event that was triggered.
+message EventType {
+  oneof event_type {
+    UserEvent user = 1;
+    OrgEvent org = 2;
+    HostEvent host = 3;
+    NodeEvent node = 4;
+  }
+}
+
+// All user events.
+message UserEvent {
+  oneof event {
+    UserCreated created = 1;
+  }
+}
+
+// A new user was created.
+message UserCreated {
+  User user = 1;
+}
+
+// All org events.
+message OrgEvent {
+  oneof event {
+    OrgCreated created = 1;
+    OrgUpdated updated = 2;
+    OrgDeleted deleted = 3;
+    InvitationCreated invitation_created = 4;
+    InvitationAccepted invitation_accepted = 5;
+    InvitationDeclined invitation_declined = 6;
+  }
+}
+
+// A new org was created.
+message OrgCreated {
+  Org org = 1;
+}
+
+// An existing org was created.
+message OrgUpdated {
+  Org org = 1;
+}
+
+// An org was deleted.
+message OrgDeleted {
+  string org_id = 1;
+}
+
+// An org invitation was created.
+message InvitationCreated {
+  string org_id = 1;
+  Invitation invitation = 2;
+}
+
+// An org invitation was accepted.
+message InvitationAccepted {
+  string org_id = 1;
+  Invitation invitation = 2;
+  User user = 3;
+}
+
+// An org invitation was declined.
+message InvitationDeclined {
+  string org_id = 1;
+  Invitation invitation = 2;
+}
+
+// All host events.
+message HostEvent {
+  oneof event {
+    HostCreated created = 1;
+    HostUpdated updated = 2;
+    HostDeleted deleted = 3;
+  }
+}
+
+// A new host was created.
+message HostCreated {
+  Host host = 1;
+}
+
+// An existing host was updated.
+message HostUpdated {
+  Host host = 1;
+}
+
+// A host was deleted.
+message HostDeleted {
+  string host_id = 1;
+}
+
+// All node events.
+message NodeEvent {
+  oneof event {
+    NodeCreated created = 1;
+    NodeUpdated updated = 2;
+    NodeDeleted deleted = 3;
+  }
+}
+
+// A new node was created.
+message NodeCreated {
+  Node node = 1;
+}
+
+// An existing node was updated.
+message NodeUpdated {
+  Node node = 1;
+}
+
+// A node was deleted.
+message NodeDeleted {
+  string node_id = 1;
+}
+
+// A service for interacting with events.
+service EventService {
+  // Acknowledge the reciept of an event.
+  rpc Ack(EventServiceAckRequest) returns (EventServiceAckResponse);
+  // The response from an event handler.
+  rpc Finalize(EventServiceFinalizeRequest) returns (EventServiceFinalizeResponse);
+  // List events by some filter parameters.
+  rpc List(EventServiceListRequest) returns (EventServiceListResponse);
+}
+
+message EventServiceAckRequest {
+  // Acknowledge the reciept of these event ids.
+  repeated string event_ids = 1;
+}
+
+message EventServiceAckResponse {}
+
+message EventServiceFinalizeRequest {
+  // The event id to finalize.
+  string event_id = 1;
+  // The outcome from handling the event.
+  EventOutcome outcome = 2;
+  // A description of the outcome for the user.
+  optional string description = 3;
+}
+
+enum EventOutcome {
+  EVENT_OUTCOME_UNSPECIFIED = 0;
+  EVENT_OUTCOME_OK = 1;
+  EVENT_OUTCOME_ERROR = 2;
+}
+
+message EventServiceFinalizeResponse {}
+
+message EventServiceListRequest {
+  // Common search parameters.
+  blockjoy.common.v1.Search search = 1;
+  // Sort the results in this order.
+  repeated EventSort sort = 2;
+  // If non-empty, only return these events.
+  repeated string event_ids = 3;
+  // If non-empty, only return events for these resources.
+  repeated blockjoy.common.v1.Resource resource_ids = 4;
+  // If non-empty, only return events in these states.
+  repeated EventState states = 5;
+  // Only return events created on or after this time.
+  google.protobuf.Timestamp after = 6;
+  // Only return events created before this time.
+  google.protobuf.Timestamp before = 7;
+}
+
+message EventSort {
+  EventSortField field = 1;
+  blockjoy.common.v1.SortOrder order = 2;
+}
+
+enum EventSortField {
+  EVENT_SORT_FIELD_UNSPECIFIED = 0;
+  EVENT_SORT_FIELD_CREATED_AT = 1;
+  EVENT_SORT_FIELD_ACKED_AT = 2;
+  EVENT_SORT_FIELD_OUTCOME_AT = 3;
+}
+
+enum EventState {
+  EVENT_STATE_UNSPECIFIED = 0;
+  EVENT_STATE_CREATED = 1;
+  EVENT_STATE_ACKNOWLEDGED = 2;
+  EVENT_STATE_FINALIZED = 3;
+}
+
+message EventServiceListResponse {
+  repeated Event events = 1;
+  uint64 total = 2;
+}

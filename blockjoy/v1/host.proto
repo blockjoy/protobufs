@@ -128,35 +128,22 @@ message HostServiceGetResponse {
 }
 
 message HostServiceListRequest {
-  // Only list private hosts with these org ids.
-  repeated string org_ids = 1;
-  // Only list hosts running these blockvisor versions.
-  repeated string bv_versions = 2;
-  // The number of results to skip.
-  uint64 offset = 3;
-  // Limit the number of results.
-  uint64 limit = 4;
-  // Search these parameters.
-  optional HostSearch search = 5;
-  // Sort the results in this order.
-  repeated HostSort sort = 6;
-}
-
-message HostSearch {
-  // How to combine the parameters.
-  blockjoy.common.v1.SearchOperator operator = 1;
-  // Search for this host id.
-  optional string host_id = 2;
-  // Search for this host name.
-  optional string network_name = 3;
-  // Search for this display name.
-  optional string display_name = 4;
-  // Search for this blockvisor version.
-  optional string bv_version = 5;
-  // Search for this operating system.
-  optional string os = 6;
-  // Search for this ip address.
-  optional string ip = 7;
+  // Common search parameters.
+  blockjoy.common.v1.Search search = 1;
+  // Sort order of the results.
+  repeated HostSort sort = 2;
+  // If set, only list private hosts with these org ids.
+  repeated string org_ids = 3;
+  // If set, only list hosts running these blockvisor versions.
+  repeated string bv_versions = 4;
+  // If set, match this network name.
+  optional string network_name = 5;
+  // If set, match this display name.
+  optional string display_name = 6;
+  // If set, match this operating system.
+  optional string os = 7;
+  // If set, match this ip address.
+  optional string ip = 8;
 }
 
 message HostSort {

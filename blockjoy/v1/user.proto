@@ -42,28 +42,16 @@ message UserServiceGetResponse {
 }
 
 message UserServiceListRequest {
-  // Return only users from this org.
-  optional string org_id = 1;
-  // The number of results to skip.
-  uint64 offset = 2;
-  // Limit the number of results.
-  uint64 limit = 3;
-  // Search these parameters.
-  optional UserSearch search = 5;
-  // Sort the results in this order.
-  repeated UserSort sort = 6;
-}
-
-// Search users by these fields.
-message UserSearch {
-  // How to combine the parameters.
-  blockjoy.common.v1.SearchOperator operator = 1;
-  // Search for this user id.
-  optional string user_id = 2;
-  // Search for matching emails (case-insensitive and '%' is a wildcard).
-  optional string email = 3;
-  // Search for this full name.
-  optional string name = 4;
+  // Common search parameters.
+  blockjoy.common.v1.Search search = 1;
+  // Sort order of the results.
+  repeated UserSort sort = 2;
+  // If set, only return users in this org.
+  optional string org_id = 3;
+  // If set, match this email address.
+  optional string email = 4;
+  // If set, match this name.
+  optional string name = 5;
 }
 
 message UserSort {
