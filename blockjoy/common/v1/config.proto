@@ -40,11 +40,11 @@ message ImageConfig {
   // The store id pointing to external archive data.
   string store_id = 4;
   // The configured image property values.
-  repeated ImagePropertyValue values = 5;
+  repeated PropertyValueConfig values = 5;
 }
 
 // A configured image property.
-message ImagePropertyValue {
+message PropertyValueConfig {
   // The key of the image property.
   string key = 1;
   // The group key for switches and enums.

@@ -88,11 +88,19 @@ message NodeServiceCreateRequest {
   // How to determine the host placment of the new node.
   blockjoy.common.v1.NodePlacement placement = 4;
   // The image properties changed from their default values.
-  repeated blockjoy.common.v1.ImagePropertyValue new_values = 5;
+  repeated NewImagePropertyValue new_values = 5;
   // Additional firewall rules to add to the node.
   repeated blockjoy.common.v1.FirewallRule add_rules = 6;
   // A list of tags that are attached to this node.
   optional blockjoy.common.v1.Tags tags = 7;
+}
+
+// An image property value changed from the default.
+message NewImagePropertyValue {
+  // The key of the image property.
+  string key = 1;
+  // The set value of the image property.
+  string value = 2;
 }
 
 message NodeServiceCreateResponse {
@@ -226,7 +234,7 @@ message NodeServiceUpdateConfigRequest {
   // Update the note that explains what this node is for.
   optional string new_note = 5;
   // Update these property keys to these values.
-  repeated blockjoy.common.v1.ImagePropertyValue new_values = 6;
+  repeated NewImagePropertyValue new_values = 6;
   // Replace the firewall config with a new one.
   optional blockjoy.common.v1.FirewallConfig new_firewall = 7;
   // Update the node tags.

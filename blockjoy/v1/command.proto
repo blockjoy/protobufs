@@ -127,7 +127,7 @@ message NodeUpdate {
   optional string new_org_name = 5;
   optional string new_display_name = 6;
   optional string new_note = 7;
-  repeated blockjoy.common.v1.ImagePropertyValue new_values = 8;
+  repeated blockjoy.common.v1.PropertyValueConfig new_values = 8;
   optional blockjoy.common.v1.FirewallConfig new_firewall = 9;
 }
 
