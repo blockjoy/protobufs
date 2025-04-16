@@ -6,6 +6,8 @@ package blockjoy.v1;
 service DiscoveryService {
   // List available services.
   rpc Services(DiscoveryServiceServicesRequest) returns (DiscoveryServiceServicesResponse);
+  // Get API service version.
+  rpc ApiVersion(DiscoveryServiceApiVersionRequest) returns (DiscoveryServiceApiVersionResponse);
 }
 
 message DiscoveryServiceServicesRequest {}
@@ -13,4 +15,11 @@ message DiscoveryServiceServicesRequest {}
 message DiscoveryServiceServicesResponse {
   // The address of the MQTT server.
   string notification_url = 1;
+}
+
+message DiscoveryServiceApiVersionRequest {}
+
+message DiscoveryServiceApiVersionResponse {
+  // Semantic version of the API instance.
+  string version = 1;
 }
